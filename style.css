@@ -79,16 +79,46 @@ header {
 
 .brand-title {
     font-family: var(--title-font);
-    position: relative; /* Để nằm trên lớp nền mờ */
-    font-size: 4.5rem; /* Tăng kích thước cho phù hợp với font mới */
-    font-weight: 700; /* Làm chữ đậm hơn để dễ đọc */
+    font-size: 4.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 10;
+    display: flex; /* Sử dụng flex để các span nằm cạnh nhau */
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-title span:first-child {
+    /* "Ẩm thực " */
     background: linear-gradient(to right, var(--gold-color), var(--brown-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    -webkit-text-stroke: 1px #331a00; /* Thêm viền cho chữ, màu nâu rất đậm */
-    letter-spacing: 1px; /* Giảm khoảng cách ký tự cho tự nhiên hơn */
-    z-index: 10; /* Đảm bảo chữ nằm trên nền mờ */
+    -webkit-text-stroke: 1px #331a00;
+    padding-right: 10px; /* Khoảng cách nhỏ */
+}
+
+.vietnam-part {
+    position: relative;
+    color: transparent; /* Ẩn chữ gốc */
+    background: linear-gradient(45deg, #da251d 25%, #c81e15 75%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: wave-text 3s infinite linear;
+}
+
+.vietnam-part::before {
+    content: '★';
+    position: absolute;
+    color: var(--gold-color);
+    font-size: 1.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+}
+
+.brand-title {
 }
 
 .brand-title-bg {
@@ -105,6 +135,11 @@ header {
     z-index: 9; /* Nằm dưới chữ */
 }
 
+@keyframes wave-text {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 .star-container .fa-star {
     font-size: 2.5rem;
     color: var(--gold-color);
