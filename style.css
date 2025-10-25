@@ -1,0 +1,1212 @@
+/* Cài đặt chung và biến màu */
+:root {
+    --primary-font: 'Nunito', sans-serif;
+    --title-font: 'Dancing Script', cursive;
+    --brown-color-rgb: 139, 69, 19; /* RGB của #8B4513 */
+    --gold-color: #FFD700;
+    --brown-color: #8B4513;
+    --light-blue-hover: rgba(173, 216, 230, 0.2);
+    --dark-overlay: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--primary-font);
+    color: #333;
+    overflow-x: hidden; /* Ngăn cuộn ngang trang */
+    background-color: #f4f4f4; /* Màu nền dự phòng */
+}
+
+/* PHẦN NỀN VÀ LỚP PHỦ */
+.background-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url('https://media.vneconomy.vn/images/upload/2024/02/06/079d71f7-a765-4da9-bd9b-5e1acae90243.png'); /* THAY ẢNH CỦA BẠN VÀO ĐÂY */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -2;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05), transparent 70%);
+    z-index: -1;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* PHẦN 1: HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    position: relative;
+    /* Đảm bảo header có position: relative để brand-title-bg có thể position: absolute bên trong */
+    z-index: 10;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 30%; /* Bo tròn kiểu icon app */
+    object-fit: cover;
+    object-position: center; /* Đảm bảo ảnh được căn giữa trong khung */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+.brand-title {
+    font-family: var(--title-font);
+    position: relative; /* Để nằm trên lớp nền mờ */
+    font-size: 4.5rem; /* Tăng kích thước cho phù hợp với font mới */
+    font-weight: 700; /* Làm chữ đậm hơn để dễ đọc */
+    background: linear-gradient(to right, var(--gold-color), var(--brown-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 1px #331a00; /* Thêm viền cho chữ, màu nâu rất đậm */
+    letter-spacing: 1px; /* Giảm khoảng cách ký tự cho tự nhiên hơn */
+    z-index: 10; /* Đảm bảo chữ nằm trên nền mờ */
+}
+
+.brand-title-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 40px); /* Chiều rộng tương đối với header */
+    max-width: 600px; /* Giới hạn chiều rộng */
+    height: 100px; /* Chiều cao của lớp nền */
+    background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ */
+    backdrop-filter: blur(8px); /* Hiệu ứng làm mờ */
+    border-radius: 15px;
+    z-index: 9; /* Nằm dưới chữ */
+}
+
+.star-container .fa-star {
+    font-size: 2.5rem;
+    color: var(--gold-color);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.star-container .fa-star:hover {
+    transform: scale(1.2) rotate(15deg);
+}
+
+#fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-overlay);
+    z-index: 999;
+    pointer-events: none; /* Cho phép click xuyên qua */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#fireworks-canvas.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PHẦN 2: BANNER SLIDE */
+.banner-slider-section {
+    position: relative;
+    height: 400px;
+    margin: 30px 0;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.slider-container {
+    height: 100%;
+}
+
+.slider-track {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.7s ease-in-out;
+}
+
+.slide {
+    min-height: 100%;
+    width: 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.slide:hover img {
+    transform: scale(1.05);
+}
+
+.slider-btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.336);
+    border: none;
+    padding: 10px 10px;
+    cursor: pointer;
+    z-index: 5;
+    border-radius: 50%;
+}
+
+.slider-btn.prev-btn { top: 10px; }
+.slider-btn.next-btn { bottom: 10px; }
+
+/* PHẦN 3: THANH TAB */
+.main-nav {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+#nav-toggle-btn {
+    display: none; /* Ẩn trên desktop */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.nav-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600; /* Sử dụng độ đậm 600 từ font Nunito */
+    transition: color 0.3s, background-color 0.3s;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    background-color: var(--light-blue-hover);
+    color: #007bff;
+}
+
+.nav-link.active {
+    color: var(--brown-color);
+}
+
+.nav-underline {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background-color: var(--brown-color);
+    transition: left 0.4s ease, width 0.4s ease;
+}
+
+/* PHẦN 4: NỘI DUNG CÁC TAB */
+.content-sections-wrapper {
+    position: relative; /* Cần thiết để các section con có thể position: absolute */
+}
+
+.content-sections-container {
+    position: relative;
+}
+
+.content-section {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    min-height: 400px;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.content-section.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative; /* Tab active sẽ chiếm không gian */
+}
+
+/* Tab Giới thiệu */
+.intro-main-text {
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    color: #555;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.feature-card {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(var(--brown-color-rgb), 0.15);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--brown-color);
+    margin-bottom: 15px;
+    display: inline-block;
+    background-color: rgba(var(--brown-color-rgb), 0.1);
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 50%;
+}
+
+.feature-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+/* Tab Thực đơn */
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.search-container {
+    position: relative;
+}
+.search-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+#search-menu-input {
+    padding: 10px 15px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    width: 250px;
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+}
+#search-menu-input:focus {
+    outline: none;
+    width: 300px;
+    box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
+}
+/* Áp dụng style tương tự cho ô tìm kiếm ở tab Đánh giá */
+#search-review-input {
+    padding: 10px 15px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    width: 250px;
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+}
+#search-review-input:focus {
+    outline: none;
+    width: 300px;
+    box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
+}
+
+/* Huy hiệu đếm số lượng món ăn */
+.item-count-badge {
+    display: inline-block;
+    background-color: rgba(var(--brown-color-rgb), 0.8);
+    color: white;
+    font-size: 0.9rem; /* Kích thước chữ nhỏ hơn tiêu đề */
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 14px;
+    margin-left: 10px;
+    vertical-align: middle; /* Căn giữa theo chiều dọc với văn bản */
+    font-family: var(--primary-font); /* Dùng font chính, không phải font tiêu đề */
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+.menu-item {
+    /* --- Thiết kế thẻ món ăn mới --- */
+    height: 250px; /* Chiều cao cố định cho thẻ */
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Căn nội dung xuống dưới */
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* Hiệu ứng fade-in khi tải */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn-up 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Lớp phủ gradient dưới chân thẻ */
+.menu-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    z-index: 1;
+    transition: height 0.3s ease;
+}
+
+/* Lớp phủ hover */
+.menu-item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    z-index: 2;
+}
+
+.menu-item:hover .menu-item-overlay {
+    opacity: 1;
+}
+
+.menu-item-overlay p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    transform: translateY(10px);
+    transition: transform 0.3s ease 0.1s;
+}
+
+.menu-item:hover .menu-item-overlay p {
+    transform: translateY(0);
+}
+
+.detail-btn {
+    background-color: var(--brown-color);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    transform: translateY(10px);
+    transition: transform 0.3s ease 0.2s, background-color 0.3s;
+}
+
+.menu-item:hover .detail-btn {
+    transform: translateY(0);
+}
+
+.detail-btn:hover {
+    background-color: #6a3410;
+}
+
+/* Thông tin chính của món ăn */
+.menu-item-content {
+    position: relative;
+    z-index: 2;
+    padding: 15px;
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover .menu-item-content {
+    transform: translateY(100%); /* Ẩn đi khi hover */
+}
+
+.menu-item-content h3 {
+    font-family: var(--title-font);
+    margin: 0 0 5px 0;
+    font-size: 1.8rem; /* Tăng kích thước cho font script */
+    font-weight: 700; /* Đảm bảo độ đậm */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.menu-item-content .price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold-color);
+}
+
+/* --- Tab Đặt hàng --- */
+
+.order-menu-header {
+    margin-bottom: 15px;
+}
+
+.order-menu-header input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.order-menu-header input:focus {
+    outline: none;
+    border-color: var(--brown-color);
+    box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
+}
+
+/* Tab Đặt hàng */
+.order-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: flex-start;
+}
+.order-menu-selection h3, .order-form-container h3 {
+    font-size: 1.5rem;
+    color: var(--brown-color);
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(var(--brown-color-rgb), 0.2);
+    padding-bottom: 10px;
+}
+
+.order-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.order-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s;
+}
+.order-menu-item:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.order-menu-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.order-item-details {
+    flex-grow: 1;
+}
+.order-item-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+.order-item-details p {
+    margin: 0;
+    color: #666;
+    font-weight: 600;
+}
+
+.add-to-cart-btn {
+    background-color: rgba(var(--brown-color-rgb), 0.1);
+    color: var(--brown-color);
+    border: 1px solid rgba(var(--brown-color-rgb), 0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+.add-to-cart-btn:hover {
+    background-color: var(--brown-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.order-form-container {
+    background-color: #fdfdfd;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+#order-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #555;
+}
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: var(--brown-color);
+    box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
+}
+
+.cart-summary {
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+.cart-summary h4 {
+    margin-bottom: 15px;
+}
+.cart-empty-message {
+    color: #888;
+    text-align: center;
+    padding: 20px 0;
+}
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.cart-item-name {
+    flex-grow: 1;
+}
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+.quantity-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    line-height: 22px;
+    text-align: center;
+}
+.cart-item-quantity {
+    margin: 0 10px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+.cart-item-price {
+    font-weight: 600;
+    min-width: 80px;
+    text-align: right;
+}
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+.remove-item-btn:hover {
+    color: #dc3545;
+}
+.cart-total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #ccc;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--brown-color);
+}
+
+.error-message { color: #dc3545; font-size: 0.85em; }
+.notice { text-align: center; color: #777; font-style: italic; font-size: 0.9em; margin-top: 15px; }
+.form-buttons { display: flex; gap: 15px; margin-top: 20px; }
+.form-buttons button { flex: 1; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.form-buttons button[type="submit"] { background-color: var(--brown-color); }
+.form-buttons button[type="submit"]:hover { background-color: #6a3410; transform: translateY(-2px); }
+.form-buttons button[type="reset"] { background-color: #6c757d; }
+.form-buttons button[type="reset"]:hover { background-color: #5a6268; transform: translateY(-2px); }
+
+/* Tab Đánh giá - Kiểu Accordion */
+.review-description {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #666;
+    font-size: 1.05rem; 
+}
+
+#reviews-by-dish-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.dish-review-section {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.4s ease, height 0.4s ease;
+    height: 300px; /* Đặt chiều cao cố định cho thẻ */
+    overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+    cursor: pointer;
+    opacity: 1;
+    transform: scale(1);
+}
+.dish-review-section:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(var(--brown-color-rgb), 0.12);
+}
+
+.dish-review-section.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    height: 0;
+    margin-bottom: -25px; /* Bù lại gap khi item bị ẩn */
+    pointer-events: none;
+}
+
+.dish-review-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+}
+.dish-review-header img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+.dish-review-header-info {
+    flex-grow: 1;
+}
+.dish-review-header-info h4 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+.dish-review-header .rating {
+    font-size: 1rem;
+    color: var(--gold-color);
+}
+
+.dish-review-highlight {
+    padding: 0 20px 20px 20px;
+    flex-grow: 1;
+    display: flex;
+    overflow-y: auto; /* Cho phép cuộn nội dung bên trong */
+    flex-direction: column;
+}
+
+.highlight-comment {
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--brown-color);
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.highlight-comment.no-comment {
+    border-left-color: #ccc;
+    text-align: center;
+}
+
+.dish-review-footer {
+    text-align: right;
+    margin-top: auto; /* Đẩy xuống dưới cùng */
+    padding: 0 20px 15px 20px;
+}
+
+.view-all-reviews-btn {
+    color: var(--brown-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.view-all-reviews-btn i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.dish-review-section:hover .view-all-reviews-btn i {
+    transform: translateX(4px);
+}
+
+/* Bỏ các style accordion cũ */
+.dish-review-header .toggle-icon,
+.dish-review-content {
+    display: none;
+}
+
+/* Nút Xem thêm / Thu gọn */
+
+/* Tab Liên hệ */
+.contact-description, .support-description {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 1.05rem;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.contact-form-container {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+}
+
+.contact-form-container textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    resize: vertical;
+    min-height: 120px;
+}
+.contact-form-container textarea:focus {
+    outline: none;
+    border-color: var(--brown-color);
+    box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: var(--brown-color);
+    margin-top: 10px;
+}
+.submit-btn:hover {
+    background-color: #6a3410;
+    transform: translateY(-2px);
+}
+
+.contact-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-info-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+}
+.contact-info-card i {
+    font-size: 2rem;
+    color: var(--brown-color);
+    margin-bottom: 10px;
+}
+.contact-info-card h4 {
+    margin: 0 0 5px 0;
+}
+.contact-info-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Tab Hỗ trợ */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.faq-item {
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+.faq-question {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 15px;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Responsive cho menu thu gọn */
+@media (max-width: 768px) {
+    .brand-title { font-size: 2.5rem; }
+    #nav-toggle-btn { display: block; }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-links.open { display: flex; }
+    .nav-underline { display: none; } /* Ẩn gạch chân trên mobile */
+}
+
+/* MODAL CHI TIẾT MÓN ĂN */
+.menu-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Nền tối mờ */
+    display: flex; /* Dùng flexbox để căn giữa */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Đảm bảo modal nằm trên cùng */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-detail-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 90vw; /* Rộng 70% màn hình */
+    height: 90vh; /* Cao 70% màn hình */
+    max-width: 1000px; /* Giới hạn chiều rộng tối đa trên màn hình lớn */
+    max-height: 90vh; /* Giới hạn chiều cao để có thể cuộn */
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* Tùy chỉnh cho modal thông tin nhóm */
+.team-modal-content {
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    padding: 25px;
+    text-align: center;
+}
+
+.team-modal-content h2 {
+    font-family: var(--title-font);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--brown-color);
+}
+
+.team-info-section {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.team-info-section ul {
+    list-style-position: inside;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal-btn:hover {
+    color: #dc3545;
+}
+
+.detail-header {
+    position: relative;
+    height: 300px; /* Tăng chiều cao ảnh trong modal */
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.detail-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-header h2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 20%, transparent 100%);
+    color: white;
+    padding: 20px;
+    margin: 0;
+    font-family: var(--title-font);
+}
+
+.detail-body {
+    padding: 20px;
+}
+
+.detail-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Tạo kiểu riêng cho phần bình luận để tách biệt */
+.detail-body .detail-section:last-child {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa; /* Màu nền ngoài, đậm hơn màu trắng của bình luận */
+    border-radius: 8px;
+    border-top: none; /* Bỏ đường kẻ trên cùng */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* Thêm hiệu ứng chiều sâu (bóng đổ vào trong) */
+}
+
+
+.variations-list, .toppings-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.variations-list li, .toppings-list li {
+    background-color: #f8f8f8;    
+    padding: 8px 15px;
+    border-radius: 18px; /* Bo tròn hơn để giống viên thuốc */
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.variations-list li:hover, .toppings-list li:hover {
+    background-color: var(--brown-color);
+    color: white;
+    border-color: var(--brown-color);
+}
+
+.variation-detail-image, .topping-detail-image {
+    position: absolute;
+    bottom: 100%; /* Hiển thị phía trên item */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: none; /* Mặc định ẩn */
+    z-index: 1001;
+}
+
+.variation-detail-image img, .topping-detail-image img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+}
+
+/* KHU VỰC BÌNH LUẬN TRONG MODAL */
+.all-comments-section {
+    max-height: 200px; /* Giảm chiều cao của khu vực bình luận */
+    overflow-y: auto; /* Giữ chức năng cuộn */
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    padding: 10px 15px 10px 10px; /* Điều chỉnh padding để nội dung không quá sát lề phải */
+    /* Ẩn thanh cuộn */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Định dạng chung cho tất cả avatar trong bình luận */
+.full-comment-item .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Đảm bảo hình tròn */
+    object-fit: cover; /* Cắt ảnh vừa vặn với khung tròn */
+    flex-shrink: 0; /* Ngăn avatar bị co lại */
+}
+
+.all-comments-section::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+/* AVATAR CHỮ CÁI */
+.avatar-initial {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--brown-color);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Các lớp màu cho avatar */
+.avatar-color-1 { background-color: #e57373; } /* Red */
+.avatar-color-2 { background-color: #81c784; } /* Green */
+.avatar-color-3 { background-color: #64b5f6; } /* Blue */
+.avatar-color-4 { background-color: #ffb74d; } /* Orange */
+.avatar-color-5 { background-color: #ba68c8; } /* Purple */
+.avatar-color-6 { background-color: #4db6ac; } /* Teal */
+
+/* BÌNH LUẬN TRONG MODAL */
+.full-comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px; /* Điều chỉnh khoảng cách giữa các thẻ */
+    padding: 15px; /* Thêm padding xung quanh nội dung */
+    background-color: #fff; /* Nền trắng cho mỗi thẻ bình luận */
+    border-radius: 6px; /* Bo góc cho thẻ */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Thêm bóng đổ nhẹ để nổi bật */
+    border-bottom: none; /* Bỏ đường kẻ cũ */
+}
+
+.comment-text {
+    line-height: 1.5;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.individual-rating {
+    color: var(--gold-color);
+}
