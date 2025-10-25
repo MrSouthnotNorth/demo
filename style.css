@@ -368,68 +368,101 @@ header {
 
 .intro-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 250px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
+/* --- HIỆU ỨNG LẬT THẺ 3D --- */
 .intro-card {
+    background-color: transparent;
+    height: 280px;
+    perspective: 1000px; /* Tạo không gian 3D */
+    cursor: pointer;
+}
+
+.card-inner {
     position: relative;
-    padding: 20px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     border-radius: 15px;
+}
+
+.intro-card:hover .card-inner {
+    transform: rotateY(180deg); /* Lật thẻ khi hover */
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Ẩn mặt sau khi không lật */
+    backface-visibility: hidden;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Mặt trước của thẻ */
+.card-front {
+    background-color: #bbb;
     color: white;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
     background-size: cover;
     background-position: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.intro-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(var(--brown-color-rgb), 0.2);
-}
-
-/* Lớp phủ gradient để chữ dễ đọc */
-.intro-card::before {
+.card-front::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+}
+
+.card-front i, .card-front h3 {
     z-index: 1;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
 
-.intro-card i, .intro-card h3, .intro-card p {
-    position: relative;
-    z-index: 2;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+.card-front i {
+    font-size: 2.5rem;
+    color: var(--gold-color);
+    margin-bottom: 15px;
 }
 
-.intro-card i {
+.card-front h3 {
+    font-family: var(--title-font);
     font-size: 2.2rem;
-    margin-bottom: 10px;
+}
+
+/* Mặt sau của thẻ */
+.card-back {
+    background-color: var(--brown-color);
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card-back h4 {
+    font-family: var(--title-font);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
     color: var(--gold-color);
 }
 
-.intro-card h3 {
-    font-family: var(--title-font);
-    font-size: 2rem;
-    margin-bottom: 5px;
-}
-
-.intro-card p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.intro-card.large {
-    grid-column: span 2;
+.card-back p {
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 /* Tab Thực đơn */
@@ -1123,26 +1156,98 @@ header {
 
 /* Tùy chỉnh cho modal thông tin nhóm */
 .team-modal-content {
-    width: 90%;
-    max-width: 500px;
+    width: 95%;
+    max-width: 900px; /* Tăng chiều rộng để chứa lưới thẻ */
     height: auto;
-    padding: 25px;
-    text-align: center;
+    padding: 30px;
+    background-color: #fdfaf5; /* Dùng màu nền trắng ngà */
+    border: 2px solid #e8e0d4;
 }
 
-.team-modal-content h2 {
-    font-family: var(--title-font);
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+.team-close-btn {
+    color: #aaa;
+}
+.team-close-btn:hover {
     color: var(--brown-color);
 }
 
-.team-info-section {
-    margin-bottom: 20px;
-    text-align: left;
+.team-header {
+    text-align: center;
+    margin-bottom: 30px;
 }
-.team-info-section ul {
-    list-style-position: inside;
+
+.team-header h2 {
+    font-family: var(--title-font);
+    font-size: 3rem;
+    color: var(--brown-color);
+    margin-bottom: 5px;
+}
+
+.team-header p {
+    font-style: italic;
+    color: #777;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.team-member-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.team-member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(var(--brown-color-rgb), 0.15);
+}
+
+.member-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid rgba(var(--brown-color-rgb), 0.2);
+}
+
+.member-name {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.member-role {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.member-socials a {
+    color: #aaa;
+    margin: 0 8px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.member-socials a:hover {
+    color: var(--brown-color);
+}
+
+.team-footer {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    border-top: 1px dashed #e8e0d4;
+    padding-top: 20px;
+    margin-top: 10px;
 }
 
 @keyframes fadeInScale {
