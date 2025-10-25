@@ -124,18 +124,18 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'comtam',
             name: 'Cơm Tấm',
             price: 55000,
-            image: 'images/Menu/Comtam/comtam.jpg',
+            image: 'images/Menu/comtam/comtam.jpg',
             description: 'Món ăn từ gạo tấm (hạt gạo vỡ), phổ biến ở miền Nam, ăn kèm sườn nướng, chả trứng.',
             variations: [
-                { name: 'Cơm tấm sườn bì chả', image: 'https://via.placeholder.com/100x100?text=Com+Tam+Suon+Bi+Cha' },
-                { name: 'Cơm tấm thịt kho trứng', image: 'https://via.placeholder.com/100x100?text=Com+Tam+Thit+Kho+Trung' },
-                { name: 'Cơm tấm gà nướng', image: 'https://via.placeholder.com/100x100?text=Com+Tam+Ga+Nuong' }
+                { name: 'Cơm tấm sườn bì chả', image: 'images/Menu/comtam/comtamsuonbicha.jpg' },
+                { name: 'Cơm tấm thịt kho trứng', image: 'images/Menu/comtam/comtamthitkhotrung.png' },
+                { name: 'Cơm tấm gà nướng', image: 'images/Menu/comtam/comtamganuong.jpg' }
             ],
             toppings: [
-                { name: 'Nước mắm chua ngọt đặc trưng', image: 'https://via.placeholder.com/100x100?text=Nuoc+Mam+Com+Tam' },
-                { name: 'Mỡ hành', image: 'https://via.placeholder.com/100x100?text=Mo+Hanh' },
-                { name: 'Đồ chua', image: 'https://via.placeholder.com/100x100?text=Do+Chua' },
-                { name: 'Cà chua/dưa chuột', image: 'https://via.placeholder.com/100x100?text=Ca+Chua+Dua+Chuot' }
+                { name: 'Nước mắm chua ngọt đặc trưng', image: 'images/Menu/TOPPING/nuocchamchuangot.jpg' },
+                { name: 'Mỡ hành', image: 'images/Menu/TOPPING/mohanh.jpg' },
+                { name: 'Đồ chua', image: 'images/Menu/TOPPING/dochua.jpg' },
+                { name: 'Cà chua/dưa chuột', image: 'images/Menu/TOPPING/cachuaduachua.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -144,18 +144,19 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-bo-hue',
             name: 'Bún Bò Huế',
             price: 50000,
-            image: 'images/Menu/Placeholder/bun-bo-hue.jpg',
+            image: 'images/Menu/BunboHue/bunbohue.jpg',
             description: 'Món bún có nguồn gốc từ Huế, nước dùng đậm đà vị ruốc, sả, ớt, có màu đỏ của dầu điều.',
             variations: [
-                { name: 'Bún bò giò heo', image: 'https://via.placeholder.com/100x100?text=Bun+Bo+Gio+Heo' },
-                { name: 'Bún bò chả cua', image: 'https://via.placeholder.com/100x100?text=Bun+Bo+Cha+Cua' },
-                { name: 'Bún bò không mắm ruốc (cho người không quen)', image: 'https://via.placeholder.com/100x100?text=Bun+Bo+Khong+Mam+Ruoc' }
+                { name: 'Bún bò giò heo', image: 'images/Menu/BunboHue/bunbogioheo.jpg' },
+                { name: 'Bún bò chả cua', image: 'images/Menu/BunboHue/bunbochacua.jpg'},
+                { name: 'Bún bò tái', image: 'images/Menu/BunboHue/bunbotai.jpg'},
+                { name: 'Bún bò chay', image: 'images/Menu/BunboHue/bunbochay.jpg' }
             ],
             toppings: [
-                { name: 'Rau sống (bắp chuối bào, giá đỗ, rau thơm)', image: 'https://via.placeholder.com/100x100?text=Rau+Song' },
-                { name: 'Ớt chưng', image: 'https://via.placeholder.com/100x100?text=Ot+Chung' },
-                { name: 'Mắm ruốc pha', image: 'https://via.placeholder.com/100x100?text=Mam+Ruoc+Pha' },
-                { name: 'Chanh', image: 'https://via.placeholder.com/100x100?text=Chanh' }
+                { name: 'Rau sống (bắp chuối bào, giá đỗ, rau thơm)', image: 'images/Menu/TOPPING/rausong.jpg' },
+                { name: 'Ớt chưng', image: 'images/Menu/TOPPING/ot.jpg' },
+                { name: 'Mắm ruốc pha', image: 'images/Menu/TOPPING/mamruocpha.jpg' },
+                { name: 'Chanh', image: 'images/Menu/TOPPING/chanh.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -164,17 +165,17 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'cao-lau',
             name: 'Cao Lầu',
             price: 45000,
-            image: 'images/Menu/Placeholder/cao-lau.jpg',
+            image: 'images/Menu/caolau/img.jpg',
             description: 'Đặc sản Hội An, sợi mì màu vàng đặc trưng (làm bằng nước giếng Bá Lễ), ăn với thịt xá xíu, da heo chiên giòn và ít nước dùng.',
             variations: [
-                { name: 'Cao lầu khô', image: 'https://via.placeholder.com/100x100?text=Cao+Lau+Kho' },
-                { name: 'Cao lầu nước (nhiều nước dùng hơn)', image: 'https://via.placeholder.com/100x100?text=Cao+Lau+Nuoc' }
+                { name: 'Cao lầu chay', image: 'images/Menu/caolau/caolauchay.jpg' },
+                { name: 'Cao lầu truyền thống', image: 'images/Menu/caolau/caolautruyenthong.jpg' }
             ],
             toppings: [
-                { name: 'Rau sống', image: 'https://via.placeholder.com/100x100?text=Rau+Song' },
-                { name: 'Bánh đa/bánh vằn thắn chiên giòn', image: 'https://via.placeholder.com/100x100?text=Banh+Da+Chien+Gion' },
-                { name: 'Ớt xanh', image: 'https://via.placeholder.com/100x100?text=Ot+Xanh' },
-                { name: 'Nước tương/nước mắm pha', image: 'https://via.placeholder.com/100x100?text=Nuoc+Tuong' }
+                { name: 'Rau sống', image: 'images/Menu/TOPPING/rausong.jpg' },
+                { name: 'Bánh đa/bánh vằn thắn chiên giòn', image: 'images/Menu/TOPPING/banhvanthanchiengion.jpg' },
+                { name: 'Ớt', image: 'images/Menu/TOPPING/ot.jpg' },
+                { name: 'Nước tương/nước mắm pha', image: 'images/Menu/TOPPING/nuocmam.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -183,20 +184,20 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'mi-quang',
             name: 'Mì Quảng',
             price: 40000,
-            image: 'images/Menu/Placeholder/mi-quang.jpg',
+            image: 'images/Menu/Miquang/img.jpg',
             description: 'Đặc sản Quảng Nam, mì sợi dẹt, nước dùng sền sệt, đậm đà, ít nước, thường có tôm, thịt lợn, trứng cút.',
             variations: [
-                { name: 'Mì Quảng gà', image: 'https://via.placeholder.com/100x100?text=Mi+Quang+Ga' },
-                { name: 'Mì Quảng tôm thịt', image: 'https://via.placeholder.com/100x100?text=Mi+Quang+Tom+Thit' },
-                { name: 'Mì Quảng cá lóc', image: 'https://via.placeholder.com/100x100?text=Mi+Quang+Ca+Loc' },
-                { name: 'Mì Quảng ếch', image: 'https://via.placeholder.com/100x100?text=Mi+Quang+Ech' },
-                { name: 'Mì Quảng chay', image: 'https://via.placeholder.com/100x100?text=Mi+Quang+Chay' }
+                { name: 'Mì Quảng gà', image: 'images/Menu/Miquang/miquangga.jpg' },
+                { name: 'Mì Quảng tôm thịt', image: 'images/Menu/Miquang/miquangtomthit.jpg' },
+                { name: 'Mì Quảng cá lóc', image: 'images/Menu/Miquang/miquangcaloc.jpg' },
+                { name: 'Mì Quảng ếch', image: 'images/Menu/Miquang/miquangech.jpg' },
+                { name: 'Mì Quảng chay', image: 'images/Menu/Miquang/miquangchay.jpg' }
             ],
             toppings: [
-                { name: 'Bánh đa nướng (bánh tráng mè)', image: 'https://via.placeholder.com/100x100?text=Banh+Da+Nuong' },
-                { name: 'Đậu phộng rang', image: 'https://via.placeholder.com/100x100?text=Dau+Phong+Rang' },
-                { name: 'Ớt xanh', image: 'https://via.placeholder.com/100x100?text=Ot+Xanh' },
-                { name: 'Rau sống (cải con, xà lách, húng)', image: 'https://via.placeholder.com/100x100?text=Rau+Song' }
+                { name: 'Bánh đa nướng (bánh tráng mè)', image: 'images/Menu/TOPPING/banhtrang.jpg' },
+                { name: 'Đậu phộng rang', image: 'images/Menu/TOPPING/dauphongrang.jpg' },
+                { name: 'Ớt', image: 'images/Menu/TOPPING/ot.jpg' },
+                { name: 'Rau sống (cải con, xà lách, húng)', image: 'images/Menu/TOPPING/rausong.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -205,17 +206,17 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-xeo',
             name: 'Bánh Xèo',
             price: 35000,
-            image: 'images/Menu/Placeholder/banh-xeo.jpg',
+            image: 'images/Menu/banhxeo/img.jpg',
             description: 'Loại bánh làm từ bột gạo, nghệ, đổ mỏng, chiên giòn, nhân tôm, thịt, giá đỗ.',
             variations: [
-                { name: 'Bánh xèo miền Tây (lớn, nhân nhiều rau, có nước cốt dừa)', image: 'https://via.placeholder.com/100x100?text=Banh+Xeo+Mien+Tay' },
-                { name: 'Bánh xèo miền Trung (nhỏ, khuôn đúc)', image: 'https://via.placeholder.com/100x100?text=Banh+Xeo+Mien+Trung' },
-                { name: 'Bánh xèo chay', image: 'https://via.placeholder.com/100x100?text=Banh+Xeo+Chay' }
+                { name: 'Bánh xèo miền Tây (lớn, nhân nhiều rau, có nước cốt dừa)', image: 'images/Menu/banhxeo/banhxeomientay.jpg' },
+                { name: 'Bánh xèo miền Trung (nhỏ, khuôn đúc)', image: 'images/Menu/banhxeo/banhxeomientrung.jpg' },
+                { name: 'Bánh xèo tôm thịt', image: 'images/Menu/banhxeo/banhxeotomthit.jpg' },
+                { name: 'Bánh xèo chay', image: 'images/Menu/banhxeo/banhxeochay.jpg' }
             ],
             toppings: [
-                { name: 'Rau sống (cải bẹ xanh, xà lách, rau thơm)', image: 'https://via.placeholder.com/100x100?text=Rau+Song' },
-                { name: 'Bánh tráng cuốn', image: 'https://via.placeholder.com/100x100?text=Banh+Trang+Cuon' },
-                { name: 'Nước chấm chua ngọt', image: 'https://via.placeholder.com/100x100?text=Nuoc+Cham+Chua+Ngot' }
+                { name: 'Rau sống (cải bẹ xanh, xà lách, rau thơm)', image: 'images/Menu/TOPPING/rausong.jpg' },
+                { name: 'Nước chấm chua ngọt', image: 'images/Menu/TOPPING/nuocchamchuangot.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -224,16 +225,16 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'goi-cuon',
             name: 'Gỏi Cuốn',
             price: 30000,
-            image: 'images/Menu/Placeholder/goi-cuon.jpg',
+            image: 'images/Menu/Goicuon/img.jpg',
             description: 'Món cuốn tươi mát, dùng bánh tráng cuốn tôm, thịt luộc, bún tươi và rau sống.',
             variations: [
-                { name: 'Gỏi cuốn tai heo', image: 'https://via.placeholder.com/100x100?text=Goi+Cuon+Tai+Heo' },
-                { name: 'Gỏi cuốn chay', image: 'https://via.placeholder.com/100x100?text=Goi+Cuon+Chay' },
-                { name: 'Gỏi cuốn bò bía (có củ sắn, lạp xưởng)', image: 'https://via.placeholder.com/100x100?text=Goi+Cuon+Bo+Bia' }
+                { name: 'Gỏi cuốn tôm thịt', image: 'images/Menu/Goicuon/goicuontomthit.jpg' },
+                { name: 'Gỏi cuốn chay', image: 'images/Menu/Goicuon/goicuonchay.jpg' },
+                { name: 'Gỏi cuốn bò bía (có củ sắn, lạp xưởng)', image: 'images/Menu/Goicuon/goicuonbobia.jpg' }
             ],
             toppings: [
-                { name: 'Tương chấm (thường là tương đen pha đậu phộng)', image: 'https://via.placeholder.com/100x100?text=Tuong+Cham' },
-                { name: 'Nước mắm chua ngọt', image: 'https://via.placeholder.com/100x100?text=Nuoc+Mam+Chua+Ngot' }
+                { name: 'Tương chấm (thường là tương đen pha đậu phộng)', image: 'images/Menu/TOPPING/tuongdauphong.jpg' },
+                { name: 'Nước mắm chua ngọt', image: 'images/Menu/TOPPING/nuocchamchuangot.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -242,20 +243,20 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-rieu-cua',
             name: 'Bún Riêu Cua',
             price: 45000,
-            image: 'images/Menu/Placeholder/bun-rieu-cua.jpg',
+            image: 'images/Menu/Bunrieucua/bunrieucua.jpg',
             description: 'Món bún với nước dùng riêu cua (gạch và thịt cua đồng giã), cà chua, có vị chua thanh.',
             variations: [
-                { name: 'Bún riêu cua giò heo', image: 'https://via.placeholder.com/100x100?text=Bun+Rieu+Cua+Gio+Heo' },
-                { name: 'Bún riêu cua ốc', image: 'https://via.placeholder.com/100x100?text=Bun+Rieu+Cua+Oc' },
-                { name: 'Bún riêu chay', image: 'https://via.placeholder.com/100x100?text=Bun+Rieu+Chay' }
+                { name: 'Bún riêu cua giò heo', image: 'images/Menu/Bunrieucua/bunrieucuagioheo.jpg' },
+                { name: 'Bún riêu cua ốc', image: 'images/Menu/Bunrieucua/bunrieucuaoc.jpg' },
+                { name: 'Bún riêu chay', image: 'images/Menu/Bunrieucua/bunrieucuachay.jpg' }
             ],
             toppings: [
-                { name: 'Mắm tôm', image: 'https://via.placeholder.com/100x100?text=Mam+Tom' },
-                { name: 'Rau muống chẻ', image: 'https://via.placeholder.com/100x100?text=Rau+Muong+Che' },
-                { name: 'Giá đỗ', image: 'https://via.placeholder.com/100x100?text=Gia+Do' },
-                { name: 'Rau thơm', image: 'https://via.placeholder.com/100x100?text=Rau+Thom' },
-                { name: 'Ớt chưng', image: 'https://via.placeholder.com/100x100?text=Ot+Chung' },
-                { name: 'Chanh', image: 'https://via.placeholder.com/100x100?text=Chanh' }
+                { name: 'Mắm tôm', image: 'images/Menu/TOPPING/mamtom.jpg' },
+                { name: 'Rau muống chẻ', image: 'images/Menu/TOPPING/raumuongche.jpg' },
+                { name: 'Giá đỗ', image: 'images/Menu/TOPPING/giado.jpg' },
+                { name: 'Rau thơm', image: 'images/Menu/TOPPING/rauthom.jpg' },
+                { name: 'Ớt chưng', image: 'images/Menu/TOPPING/ot.jpg' },
+                { name: 'Chanh', image: 'images/Menu/TOPPING/chanh.jpg' }
             ],
             comments: [],
             rating: '★★★★☆'
@@ -264,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'cha-ca-la-vong',
             name: 'Chả Cá Lã Vọng',
             price: 70000,
-            image: 'images/Menu/Placeholder/cha-ca-la-vong.jpg',
+            image: 'images/Menu/Chacalavong/chacalavong.jpg',
             description: 'Đặc sản Hà Nội, cá lăng/cá nheo thái miếng, ướp nghệ, mẻ, nướng và chiên trên chảo nóng cùng hành, thì là.',
             variations: [
                 { name: 'Chả cá cuốn (ăn bằng cách cuốn chả cá với bún và rau)', image: 'https://via.placeholder.com/100x100?text=Cha+Ca+Cuon' },
@@ -284,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-khot',
             name: 'Bánh Khọt',
             price: 35000,
-            image: 'images/Menu/Placeholder/banh-khot.jpg',
+            image: 'images/Menu/banhkhot/banhkhot.jpg',
             description: 'Bánh làm từ bột gạo pha nước cốt dừa, đúc trong khuôn nhỏ, có nhân tôm, chiên giòn.',
             variations: [
                 { name: 'Bánh khọt Vũng Tàu (màu vàng, nhân tôm, có dừa nạo)', image: 'https://via.placeholder.com/100x100?text=Banh+Khot+Vung+Tau' },
@@ -301,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-dau-mam-tom',
             name: 'Bún Đậu Mắm Tôm',
             price: 50000,
-            image: 'images/Menu/Placeholder/bun-dau-mam-tom.jpg',
+            image: 'images/Menu/Bundaumamtom/bundaumamtom.jpg',
             description: 'Món ăn gồm bún lá, đậu phụ chiên giòn, chả cốm, dồi lợn, và đặc biệt là mắm tôm.',
             variations: [
                 { name: 'Bún đậu thập cẩm', image: 'https://via.placeholder.com/100x100?text=Bun+Dau+Thap+Cam' },
@@ -321,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'nem-ran',
             name: 'Nem Rán (Chả Giò)',
             price: 40000,
-            image: 'images/Menu/Placeholder/nem-ran.jpg',
+            image: 'images/Menu/Nemran/nemran.jpg',
             description: 'Món cuốn từ bánh tráng với nhân thịt heo, tôm, miến, mộc nhĩ, cuốn lại và chiên giòn.',
             variations: [
                 { name: 'Nem rán miền Bắc (nhân nhiều miến, trứng)', image: 'https://via.placeholder.com/100x100?text=Nem+Ran+Mien+Bac' },
@@ -340,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bo-kho',
             name: 'Bò Kho',
             price: 60000,
-            image: 'images/Menu/Placeholder/bo-kho.jpg',
+            image: 'images/Menu/bokho/bokho.jpg',
             description: 'Thịt bò và cà rốt được hầm mềm trong nước dùng đậm vị sả, quế, hoa hồi, bột cà ri.',
             variations: [
                 { name: 'Bò kho bánh mì', image: 'https://via.placeholder.com/100x100?text=Bo+Kho+Banh+Mi' },
@@ -363,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-beo',
             name: 'Bánh Bèo',
             price: 30000,
-            image: 'images/Menu/Placeholder/banh-beo.jpg',
+            image: 'images/Menu/banhbeo/banhbeo.jpg',
             description: 'Bánh làm từ bột gạo, hấp trong chén nhỏ, có nhân tôm chấy, mỡ hành.',
             variations: [
                 { name: 'Bánh bèo chén', image: 'https://via.placeholder.com/100x100?text=Banh+Beo+Chen' },
@@ -380,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-bot-loc',
             name: 'Bánh Bột Lọc',
             price: 30000,
-            image: 'images/Menu/Placeholder/banh-bot-loc.jpg',
+            image: 'images/Menu/banhbotloc/img.jpg',
             description: 'Bánh làm từ bột năng, trong suốt, nhân tôm và thịt lợn, được gói trong lá chuối hoặc để trần.',
             variations: [
                 { name: 'Bánh bột lọc gói lá chuối (hấp)', image: 'https://via.placeholder.com/100x100?text=Banh+Bot+Loc+Goi' },
@@ -397,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'canh-chua-ca',
             name: 'Canh Chua Cá',
             price: 55000,
-            image: 'images/Menu/Placeholder/canh-chua-ca.jpg',
+            image: 'images/Menu/Canhchuaca/canhchuaca.jpg',
             description: 'Món canh truyền thống miền Nam, vị chua ngọt đặc trưng của me, thơm, cà chua, và cay của ớt, dùng với cá (cá lóc, cá diêu hồng...).',
             variations: [
                 { name: 'Canh chua tôm', image: 'https://via.placeholder.com/100x100?text=Canh+Chua+Tom' },
@@ -418,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'ca-ri-ga',
             name: 'Cà Ri Gà',
             price: 60000,
-            image: 'images/Menu/Placeholder/ca-ri-ga.jpg',
+            image: 'images/Menu/Cariga/cariga.jpg',
             description: 'Món cà ri kiểu Việt, thịt gà hầm với khoai tây, cà rốt, nước cốt dừa, thơm mùi sả và bột cà ri.',
             variations: [
                 { name: 'Cà ri vịt', image: 'https://via.placeholder.com/100x100?text=Ca+Ri+Vit' },
@@ -438,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-cuon',
             name: 'Bánh Cuốn',
             price: 35000,
-            image: 'images/Menu/Placeholder/banh-cuon.jpg',
+            image: 'images/Menu/banhcuon/img.jpg',
             description: 'Bánh làm từ bột gạo tráng mỏng, hấp chín, có nhân thịt heo băm, mộc nhĩ.',
             variations: [
                 { name: 'Bánh cuốn trứng (tráng thêm trứng)', image: 'https://via.placeholder.com/100x100?text=Banh+Cuon+Trung' },
@@ -458,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bo-la-lot',
             name: 'Bò Lá Lốt',
             price: 50000,
-            image: 'images/Menu/Placeholder/bo-la-lot.jpg',
+            image: 'images/Menu/Bolalot/bolalot.jpg',
             description: 'Thịt bò xay ướp gia vị, cuốn trong lá lốt và nướng trên than hồng.',
             variations: [
                 { name: 'Bò cuốn mỡ chài', image: 'https://via.placeholder.com/100x100?text=Bo+Cuon+Mo+Chai' }
@@ -478,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-canh',
             name: 'Bánh Canh',
             price: 40000,
-            image: 'images/Menu/Placeholder/banh-canh.jpg',
+            image: 'images/Menu/banhcanh/banhcanh.jpg',
             description: 'Món nước dùng sợi bánh làm từ bột gạo/bột năng/bột lọc, nước dùng hầm xương.',
             variations: [
                 { name: 'Bánh canh cua', image: 'https://via.placeholder.com/100x100?text=Banh+Canh+Cua' },
@@ -501,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'oc-luoc-xao',
             name: 'Ốc Luộc/Xào',
             price: 60000,
-            image: 'images/Menu/Placeholder/oc-luoc-xao.jpg',
+            image: 'images/Menu/ocluocxao/ocluocxao.jpg',
             description: 'Ốc (hương, mít, móng tay...) được luộc hoặc xào với các gia vị.',
             variations: [
                 { name: 'Ốc luộc sả', image: 'https://via.placeholder.com/100x100?text=Oc+Luoc+Sa' },
@@ -521,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'lau-mam',
             name: 'Lẩu Mắm',
             price: 150000,
-            image: 'images/Menu/Placeholder/lau-mam.jpg',
+            image: 'images/Menu/laumam/laumam.jpg',
             description: 'Đặc sản miền Tây, lẩu nấu từ mắm cá linh/cá sặc, có vị mắm đặc trưng, ăn kèm thịt, cá, hải sản và nhiều loại rau.',
             variations: [
                 { name: 'Lẩu mắm chay', image: 'https://via.placeholder.com/100x100?text=Lau+Mam+Chay' }
@@ -538,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'ga-nuong',
             name: 'Gà Nướng Mật Ong/Muối Ớt',
             price: 120000,
-            image: 'images/Menu/Placeholder/ga-nuong.jpg',
+            image: 'images/Menu/ganuong/ganuong.jpg',
             description: 'Gà được tẩm ướp gia vị, mật ong/muối ớt và nướng trên than hoặc lò.',
             variations: [
                 { name: 'Gà nướng lu', image: 'https://via.placeholder.com/100x100?text=Ga+Nuong+Lu' },
@@ -557,7 +558,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'thit-kho-tau',
             name: 'Thịt Kho Tàu',
             price: 50000,
-            image: 'images/Menu/Placeholder/thit-kho-tau.jpg',
+            image: 'images/Menu/thitkhotau/thitkhotau.jpg',
             description: 'Thịt ba chỉ và trứng vịt/gà được kho nhừ trong nước dừa tươi, có màu cánh giá.',
             variations: [
                 { name: 'Thịt kho tiêu', image: 'https://via.placeholder.com/100x100?text=Thit+Kho+Tieu' },
@@ -576,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-bong-lan-trung-muoi',
             name: 'Bánh Bông Lan Trứng Muối',
             price: 30000,
-            image: 'images/Menu/Placeholder/banh-bong-lan-trung-muoi.jpg',
+            image: 'images/Menu/banhbonglantrungmuoi/banhbonglantrungmuoi.jpg',
             description: 'Bánh bông lan mềm, bên trên có lớp sốt phô mai/bơ và trứng muối, chà bông (ruốc).',
             variations: [
                 { name: 'Bánh bông lan phô mai trứng muối', image: 'https://via.placeholder.com/100x100?text=Banh+Bong+Lan+Pho+Mai' },
@@ -595,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'hu-tieu',
             name: 'Hủ Tiếu',
             price: 45000,
-            image: 'images/Menu/Placeholder/hu-tieu.jpg',
+            image: 'images/Menu/Hutieu/hutieu.jpg',
             description: 'Món ăn miền Nam, dùng sợi hủ tiếu (từ bột gạo/bột năng), nước dùng thanh ngọt.',
             variations: [
                 { name: 'Hủ tiếu Nam Vang (có lòng, tôm, thịt)', image: 'https://via.placeholder.com/100x100?text=Hu+Tieu+Nam+Vang' },
@@ -620,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'che',
             name: 'Chè (Tổng quát)',
             price: 25000,
-            image: 'images/Menu/Placeholder/che.jpg',
+            image: 'images/Menu/Che/che.jpg',
             description: 'Món tráng miệng truyền thống, dạng lỏng, ngọt, có nhiều loại nguyên liệu.',
             variations: [
                 { name: 'Chè trôi nước', image: 'https://via.placeholder.com/100x100?text=Che+Troi+Nuoc' },
@@ -641,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'xoi',
             name: 'Xôi',
             price: 30000,
-            image: 'images/Menu/Placeholder/xoi.jpg',
+            image: 'images/Menu/xoixeo/img.jpg',
             description: 'Món ăn từ gạo nếp được nấu/đồ chín.',
             variations: [
                 { name: 'Xôi xéo (nếp đồ với nghệ, mỡ gà, đậu xanh)', image: 'https://via.placeholder.com/100x100?text=Xoi+Xeo' },
@@ -663,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-tet-banh-chung',
             name: 'Bánh Tét/Bánh Chưng',
             price: 80000,
-            image: 'images/Menu/Placeholder/banh-tet-banh-chung.jpg',
+            image: 'images/Menu/Banhtetbanhchung/banhtetbanhchung.jpg',
             description: 'Món bánh truyền thống dịp Tết, làm từ gạo nếp, đậu xanh, thịt lợn, gói trong lá dong/lá chuối.',
             variations: [
                 { name: 'Bánh chưng nhân chay', image: 'https://via.placeholder.com/100x100?text=Banh+Chung+Chay' },
@@ -681,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-da-lon',
             name: 'Bánh Da Lợn',
             price: 20000,
-            image: 'images/Menu/Placeholder/banh-da-lon.jpg',
+            image: 'images/Menu/banhdalon/bandalon.jpg',
             description: 'Loại bánh ngọt dẻo, nhiều lớp, làm từ bột năng, bột gạo, nước cốt dừa, lá dứa, khoai môn.',
             variations: [
                 { name: 'Bánh da lợn lá dứa', image: 'https://via.placeholder.com/100x100?text=Banh+Da+Lon+La+Dua' },
@@ -697,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-ca',
             name: 'Bún Cá (Tổng quát)',
             price: 45000,
-            image: 'images/Menu/Placeholder/bun-ca.jpg',
+            image: 'images/Menu/Bunca/bunca.jpg',
             description: 'Món bún có nước dùng nấu từ xương cá hoặc đầu cá, và chả cá/cá tươi chiên/nấu.',
             variations: [
                 { name: 'Bún cá rô đồng', image: 'https://via.placeholder.com/100x100?text=Bun+Ca+Ro+Dong' },
@@ -717,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'long-xao-dua-chua',
             name: 'Lòng Xào Dưa Chua',
             price: 60000,
-            image: 'images/Menu/Placeholder/long-xao-dua-chua.jpg',
+            image: 'images/Menu/longxaoduachua/longxaodua.jpg',
             description: 'Lòng lợn (non hoặc già) được làm sạch, xào với dưa cải muối chua.',
             variations: [
                 { name: 'Lòng xào hành tây', image: 'https://via.placeholder.com/100x100?text=Long+Xao+Hanh+Tay' },
@@ -735,7 +736,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'goi-nom',
             name: 'Gỏi (Nộm)',
             price: 50000,
-            image: 'images/Menu/Placeholder/goi-nom.jpg',
+            image: 'images/Menu/Goinom/goinom.jpg',
             description: 'Món salad kiểu Việt, nguyên liệu chính trộn với nước mắm chua ngọt, chanh, ớt.',
             variations: [
                 { name: 'Gỏi gà xé phay', image: 'https://via.placeholder.com/100x100?text=Goi+Ga+Xe+Phay' },
@@ -756,7 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-gai',
             name: 'Bánh Gai',
             price: 20000,
-            image: 'images/Menu/Placeholder/banh-gai.jpg',
+            image: 'images/Menu/banhgai/banhgai.jpg',
             description: 'Bánh làm từ lá gai và bột nếp, nhân đậu xanh, dừa, bọc ngoài bằng lá chuối khô.',
             variations: [
                 { name: 'Bánh gai nhân dừa', image: 'https://via.placeholder.com/100x100?text=Banh+Gai+Nhan+Dua' },
@@ -772,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-pia',
             name: 'Bánh Pía',
             price: 25000,
-            image: 'images/Menu/Placeholder/banh-pia.jpg',
+            image: 'images/Menu/banhpia/banhpia.jpg',
             description: 'Bánh nướng hình tròn, nhiều lớp da mỏng, nhân đậu xanh, mỡ, sầu riêng (đặc trưng miền Tây).',
             variations: [
                 { name: 'Bánh pía nhân sầu riêng', image: 'https://via.placeholder.com/100x100?text=Banh+Pia+Sau+Rieng' },
@@ -788,7 +789,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'mam-kho',
             name: 'Mắm Kho',
             price: 60000,
-            image: 'images/Menu/Placeholder/mam-kho.jpg',
+            image: 'images/Menu/mamkho/mamkho.jpg',
             description: 'Món ăn miền Tây, nấu từ các loại mắm (cá linh, cá sặc) với thịt ba chỉ, sả, ớt.',
             variations: [
                 { name: 'Mắm chưng (hỗn hợp mắm, thịt băm, trứng)', image: 'https://via.placeholder.com/100x100?text=Mam+Chung' },
@@ -807,7 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'chao-long',
             name: 'Cháo Lòng',
             price: 40000,
-            image: 'images/Menu/Placeholder/chao-long.jpg',
+            image: 'images/Menu/chaolong/chaolong.jpg',
             description: 'Cháo gạo nấu nhừ, ăn kèm lòng lợn (tim, gan, dồi, lưỡi...), huyết luộc.',
             variations: [
                 { name: 'Cháo lòng miền Bắc (cháo trắng)', image: 'https://via.placeholder.com/100x100?text=Chao+Long+Mien+Bac' },
@@ -829,7 +830,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-gio',
             name: 'Bánh Giò',
             price: 25000,
-            image: 'images/Menu/Placeholder/banh-gio.jpg',
+            image: 'images/Menu/banhgio/banhgio.jpg',
             description: 'Bánh làm từ bột gạo tẻ, nhân thịt lợn băm, mộc nhĩ, gói trong lá chuối và hấp chín.',
             variations: [
                 { name: 'Bánh giò chay', image: 'https://via.placeholder.com/100x100?text=Banh+Gio+Chay' }
@@ -847,7 +848,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-moc',
             name: 'Bún Mọc',
             price: 45000,
-            image: 'images/Menu/Placeholder/bun-moc.jpg',
+            image: 'images/Menu/bunmoc/bunmoc.jpg',
             description: 'Món bún có nước dùng hầm xương, topping chính là mọc (giò sống viên).',
             variations: [
                 { name: 'Bún mọc sườn', image: 'https://via.placeholder.com/100x100?text=Bun+Moc+Suon' },
@@ -866,7 +867,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'canh-rieu-ca',
             name: 'Canh Riêu Cá (Tổng quát)',
             price: 55000,
-            image: 'images/Menu/Placeholder/canh-rieu-ca.jpg',
+            image: 'images/Menu/canhrieuca/canhrieuca.jpg',
             description: 'Canh nấu với cá (thường là cá đồng), có vị chua của cà chua, me, hoặc dấm bỗng.',
             variations: [
                 { name: 'Canh riêu cá chép', image: 'https://via.placeholder.com/100x100?text=Canh+Rieu+Ca+Chep' },
@@ -883,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-thit-nuong',
             name: 'Bún Thịt Nướng',
             price: 45000,
-            image: 'images/Menu/Placeholder/bun-thit-nuong.jpg',
+            image: 'images/Menu/bunthitnuong/bunthitnuong.jpg',
             description: 'Bún tươi, thịt lợn nướng tẩm ướp đậm đà, ăn kèm rau sống và nước chấm.',
             variations: [
                 { name: 'Bún chả giò thịt nướng', image: 'https://via.placeholder.com/100x100?text=Bun+Cha+Gio+Thit+Nuong' },
@@ -899,29 +900,10 @@ document.addEventListener('DOMContentLoaded', function() {
             rating: '★★★★☆'
         },
         {
-            id: 'banh-da-cua',
-            name: 'Bánh Đa Cua',
-            price: 50000,
-            image: 'images/Menu/Placeholder/banh-da-cua.jpg',
-            description: 'Đặc sản Hải Phòng, dùng bánh đa đỏ, nước dùng riêu cua đậm đà.',
-            variations: [
-                { name: 'Bánh đa cua bể (dùng cua biển)', image: 'https://via.placeholder.com/100x100?text=Banh+Da+Cua+Be' },
-                { name: 'Bánh đa cua khô (trộn)', image: 'https://via.placeholder.com/100x100?text=Banh+Da+Cua+Kho' }
-            ],
-            toppings: [
-                { name: 'Chả lá lốt', image: 'https://via.placeholder.com/100x100?text=Cha+La+Lot' },
-                { name: 'Mọc', image: 'https://via.placeholder.com/100x100?text=Moc' },
-                { name: 'Rau nhút', image: 'https://via.placeholder.com/100x100?text=Rau+Nhut' },
-                { name: 'Mắm tôm', image: 'https://via.placeholder.com/100x100?text=Mam+Tom' }
-            ],
-            comments: [],
-            rating: '★★★★☆'
-        },
-        {
             id: 'banh-uot',
             name: 'Bánh Ướt',
             price: 30000,
-            image: 'images/Menu/Placeholder/banh-uot.jpg',
+            image: 'images/Menu/banhuot/banhuot.jpg',
             description: 'Bột gạo tráng mỏng như bánh cuốn nhưng không nhân, ăn kèm chả, nem.',
             variations: [
                 { name: 'Bánh ướt chả lụa', image: 'https://via.placeholder.com/100x100?text=Banh+Uot+Cha+Lua' },
@@ -939,7 +921,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'chao-vit-ga',
             name: 'Cháo Vịt/Gà',
             price: 40000,
-            image: 'images/Menu/Placeholder/chao-vit-ga.jpg',
+            image: 'images/Menu/chaovit/chaovit.jpg',
             description: 'Cháo gạo nấu với thịt vịt hoặc thịt gà xé, có hành, tiêu.',
             variations: [
                 { name: 'Cháo gà nấm', image: 'https://via.placeholder.com/100x100?text=Chao+Ga+Nam' },
@@ -958,7 +940,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'thang-co',
             name: 'Thắng Cố',
             price: 80000,
-            image: 'images/Menu/Placeholder/thang-co.jpg',
+            image: 'images/Menu/thangco/thangco.jpg',
             description: 'Đặc sản vùng cao, nấu từ thịt và lục phủ ngũ tạng của ngựa (hoặc bò, lợn) cùng gia vị.',
             variations: [
                 { name: 'Thắng cố ngựa (truyền thống)', image: 'https://via.placeholder.com/100x100?text=Thang+Co+Ngua' },
@@ -977,7 +959,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-tom-ho-tay',
             name: 'Bánh Tôm Hồ Tây',
             price: 35000,
-            image: 'images/Menu/Placeholder/banh-tom-ho-tay.jpg',
+            image: 'images/Menu/banhtom/banhtom.jpg',
             description: 'Bánh tôm tươi bọc bột chiên giòn, có nguồn gốc từ Hà Nội.',
             variations: [
                 { name: 'Bánh tôm khoai lang', image: 'https://via.placeholder.com/100x100?text=Banh+Tom+Khoai+Lang' }
@@ -990,29 +972,10 @@ document.addEventListener('DOMContentLoaded', function() {
             rating: '★★★★☆'
         },
         {
-            id: 'banh-cuon-trung',
-            name: 'Bánh Cuốn Trứng',
-            price: 40000,
-            image: 'images/Menu/Placeholder/banh-cuon-trung.jpg',
-            description: 'Biến thể của bánh cuốn, tráng thêm trứng gà/vịt vào lớp bột cuốn.',
-            variations: [
-                { name: 'Bánh cuốn trứng nhân thịt', image: 'https://via.placeholder.com/100x100?text=Banh+Cuon+Trung+Nhan+Thit' },
-                { name: 'Bánh cuốn trứng chay', image: 'https://via.placeholder.com/100x100?text=Banh+Cuon+Trung+Chay' }
-            ],
-            toppings: [
-                { name: 'Chả lụa', image: 'https://via.placeholder.com/100x100?text=Cha+Lua' },
-                { name: 'Hành phi', image: 'https://via.placeholder.com/100x100?text=Hanh+Phi' },
-                { name: 'Rau thơm', image: 'https://via.placeholder.com/100x100?text=Rau+Thom' },
-                { name: 'Nước chấm (như bánh cuốn thông thường)', image: 'https://via.placeholder.com/100x100?text=Nuoc+Cham' }
-            ],
-            comments: [],
-            rating: '★★★★☆'
-        },
-        {
             id: 'canh-mang-vit',
             name: 'Canh Măng Vịt',
             price: 55000,
-            image: 'images/Menu/Placeholder/canh-mang-vit.jpg',
+            image: 'images/Menu/canhmangvit/canhmangvit.jpg',
             description: 'Món canh/bún nước dùng nấu từ thịt vịt và măng tươi hoặc măng khô.',
             variations: [
                 { name: 'Bún măng vịt', image: 'https://via.placeholder.com/100x100?text=Bun+Mang+Vit' }
@@ -1030,7 +993,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banh-tam-bi',
             name: 'Bánh Tằm Bì',
             price: 40000,
-            image: 'images/Menu/Placeholder/banh-tam-bi.jpg',
+            image: 'images/Menu/banhtambi/banhtambi.jpg',
             description: 'Món ăn miền Nam với sợi bánh tằm (làm từ bột gạo, dày hơn bún), ăn kèm bì heo trộn thính và nước cốt dừa.',
             variations: [
                 { name: 'Bánh tằm cà ri (ăn với cà ri gà)', image: 'https://via.placeholder.com/100x100?text=Banh+Tam+Ca+Ri' },
@@ -1051,7 +1014,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-ken',
             name: 'Bún Kèn',
             price: 45000,
-            image: 'images/Menu/Placeholder/bun-ken.jpg',
+            image: 'images/Menu/bunken/bunken.jpg',
             description: 'Đặc sản Hà Tiên (Kiên Giang). Bún ăn với nước dùng đặc sệt nấu từ cá lóc xay, nước cốt dừa, và sả ớt.',
             variations: [
                 { name: 'Bún kèn khô (ít nước dùng)', image: 'https://via.placeholder.com/100x100?text=Bun+Ken+Kho' }
@@ -1069,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'don',
             name: 'Don',
             price: 35000,
-            image: 'images/Menu/Placeholder/don.jpg',
+            image: 'images/Menu/don/don.jpg',
             description: 'Đặc sản Quảng Ngãi. Món nước dùng nấu từ con don (giống hến, nhỏ hơn), ăn kèm với hành tây và bánh tráng mè nướng.',
             variations: [
                 { name: 'Don xào (don xào khô)', image: 'https://via.placeholder.com/100x100?text=Don+Xao' }
@@ -1087,7 +1050,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'long-heo-tiet-canh',
             name: 'Lòng Heo Tiết Canh',
             price: 70000,
-            image: 'images/Menu/Placeholder/long-heo-tiet-canh.jpg',
+            image: 'images/Menu/longheotietcanh/longheotietcanh.jpg',
             description: 'Món ăn gồm lòng heo luộc (dồi, tim, gan, phèo, phổi), ăn kèm bát tiết canh (tiết heo tươi đánh với nước mắm, đậu phộng).',
             variations: [
                 { name: 'Lòng heo luộc thập cẩm', image: 'https://via.placeholder.com/100x100?text=Long+Heo+Thap+Cam' },
@@ -1109,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'bun-thang',
             name: 'Bún Thang',
             price: 55000,
-            image: 'images/Menu/Placeholder/bun-thang.jpg',
+            image: 'images/Menu/bunthang/bunthang.jpg',
             description: 'Đặc sản Hà Nội. Món bún nước dùng ninh từ xương, có topping cầu kỳ: trứng tráng mỏng, giò lụa, thịt gà xé, nấm hương.',
             variations: [],
             toppings: [
@@ -2040,14 +2003,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navToggleBtn = document.getElementById('nav-toggle-btn');
     const navLinksContainer = document.getElementById('nav-links');
     const navLinks = document.querySelectorAll('.nav-link');
-    const navUnderline = document.querySelector('.nav-underline');
     const contentContainer = document.querySelector('.content-sections-container');
-
-    // Cập nhật gạch chân
-    const updateUnderline = (activeLink) => {
-        navUnderline.style.width = `${activeLink.offsetWidth}px`;
-        navUnderline.style.left = `${activeLink.offsetLeft}px`;
-    };
 
     // Chuyển tab
     navLinks.forEach(link => {
@@ -2055,7 +2011,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             navLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
-            updateUnderline(link);
     
             const targetId = link.getAttribute('href');
             const targetSection = document.querySelector(targetId);
@@ -2071,9 +2026,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Khởi tạo gạch chân
-    updateUnderline(document.querySelector('.nav-link.active'));
 
     // Menu toggle trên mobile
     navToggleBtn.addEventListener('click', () => {

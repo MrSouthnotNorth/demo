@@ -55,195 +55,257 @@
         </section>
 
         <!-- PHẦN 3: THANH TAB TÍNH NĂNG -->
-        <nav class="main-nav">
-            <button id="nav-toggle-btn"><i class="fa-solid fa-bars"></i></button>
-            <div class="nav-links" id="nav-links">
-                <a href="#gioi-thieu" class="nav-link active" data-tab="0">Giới thiệu</a>
-                <a href="#thuc-don" class="nav-link" data-tab="1">Thực đơn</a>
-                <a href="#danh-gia" class="nav-link" data-tab="2">Đánh giá</a>
-                <a href="#dat-hang" class="nav-link" data-tab="3">Đặt hàng</a>
-                <a href="#lien-he" class="nav-link" data-tab="4">Liên hệ</a>
-                <a href="#ho-tro" class="nav-link" data-tab="5">Hỗ trợ</a>
-                <div class="nav-underline"></div>
-            </div>
-        </nav>
-
-        <!-- PHẦN 4: NỘI DUNG CÁC TAB -->
-        <main class="content-sections-wrapper">
-            <div class="content-sections-container">
-                <!-- Tab Giới thiệu -->
-                <section id="gioi-thieu" class="content-section active">
-                    <h2>Giới thiệu Ẩm thực Việt</h2>
-                    <p class="intro-main-text">
-                        Ẩm thực Việt Nam không chỉ là những món ăn ngon mà còn là một phần của di sản văn hóa dân tộc. Với sự kết hợp hài hòa giữa các hương vị chua, cay, mặn, ngọt, cùng việc sử dụng các loại rau thơm tươi ngon, mỗi món ăn là một bản giao hưởng của hương vị, đánh thức mọi giác quan.
-                    </p>
-                    <div class="features-grid">
-                        <div class="feature-card">
-                            <div class="feature-icon">
+        <div class="main-content-frame">
+            <nav class="main-nav">
+                <button id="nav-toggle-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="nav-links" id="nav-links">
+                    <a href="#gioi-thieu" class="nav-link active" data-tab="0">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="nav-link-text">Giới thiệu</span>
+                    </a>
+                    <a href="#thuc-don" class="nav-link" data-tab="1">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span class="nav-link-text">Thực đơn</span>
+                    </a>
+                    <a href="#danh-gia" class="nav-link" data-tab="2">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="nav-link-text">Đánh giá</span>
+                    </a>
+                    <a href="#dat-hang" class="nav-link" data-tab="3">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="nav-link-text">Đặt hàng</span>
+                    </a>
+                    <a href="#lien-he" class="nav-link" data-tab="4">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span class="nav-link-text">Liên hệ</span>
+                    </a>
+                    <a href="#ho-tro" class="nav-link" data-tab="5">
+                        <i class="fa-solid fa-question-circle"></i>
+                        <span class="nav-link-text">Hỗ trợ</span>
+                    </a>
+                </div>
+            </nav>
+    
+            <!-- PHẦN 4: NỘI DUNG CÁC TAB -->
+            <main class="content-sections-wrapper">
+                <div class="content-sections-container">
+                    <!-- Tab Giới thiệu -->
+                    <section id="gioi-thieu" class="content-section active intro-tab">
+                        <div class="intro-header">
+                            <h2 class="intro-title">Tinh hoa Ẩm Thực Việt Nam</h2>
+                            <p class="intro-subtitle">
+                                Nơi mỗi món ăn là một câu chuyện, mỗi hương vị là một ký ức.
+                            </p>
+                        </div>
+                        <p class="intro-main-text">
+                            Ẩm thực Việt Nam không chỉ là những món ăn ngon mà còn là một phần của di sản văn hóa dân tộc. Với sự kết hợp hài hòa giữa các hương vị chua, cay, mặn, ngọt, cùng việc sử dụng các loại rau thơm tươi ngon, mỗi món ăn là một bản giao hưởng của hương vị, đánh thức mọi giác quan.
+                        </p>
+                        <div class="intro-grid">
+                            <div class="intro-card" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbr6Imf8xY8nPCnsERFXvnZRnpIwDaPgYbUw&s');">
                                 <i class="fa-solid fa-pepper-hot"></i>
+                                <h3>Hương Vị Tinh Tế</h3>
+                                <p>Sự cân bằng hoàn hảo giữa các vị, sử dụng nước mắm làm nền tảng và gia vị đặc trưng.</p>
                             </div>
-                            <h3>Hương Vị Tinh Tế</h3>
-                            <p>Sự cân bằng hoàn hảo giữa các vị, sử dụng nước mắm làm nền tảng và các loại gia vị đặc trưng tạo nên một bản sắc riêng biệt.</p>
-                        </div>
-                        <div class="feature-card">
-                            <div class="feature-icon">
+                            <div class="intro-card" style="background-image: url('https://nongsandungha.com/wp-content/uploads/2021/05/0000063746586374658_2358199.jpg');">
                                 <i class="fa-solid fa-leaf"></i>
+                                <h3>Nguyên Liệu Tươi Ngon</h3>
+                                <p>Ưu tiên rau củ quả tươi theo mùa, đảm bảo sự tươi mới và giá trị dinh dưỡng.</p>
                             </div>
-                            <h3>Nguyên Liệu Tươi Ngon</h3>
-                            <p>Ưu tiên sử dụng các loại rau củ quả tươi theo mùa, đảm bảo sự tươi mới và giá trị dinh dưỡng trong từng món ăn.</p>
-                        </div>
-                        <div class="feature-card">
-                            <div class="feature-icon">
+                            <div class="intro-card large" style="background-image: url('https://cdn.giaoducthoidai.vn/images/b4508baace0d9fe4c8bbd296e259642e0b7a991e8b7ad92c86ffaa1e519961b4d12f4b51e54f47f643370b55727db86b1b4e64b67a2ecbf68ee4d09cd45a3494/am-thuc-nhat-QUUB.jpg');">
                                 <i class="fa-solid fa-book-open"></i>
+                                <h3>Di Sản Văn Hóa</h3>
+                                <p>Mỗi món ăn đều gắn liền với một câu chuyện, một vùng miền, thể hiện bề dày lịch sử và văn hóa phong phú của dân tộc Việt Nam.</p>
                             </div>
-                            <h3>Di Sản Văn Hóa</h3>
-                            <p>Mỗi món ăn đều gắn liền với một câu chuyện, một vùng miền, thể hiện bề dày lịch sử và văn hóa phong phú của dân tộc.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Tab Thực đơn -->
-                <section id="thuc-don" class="content-section">
-                    <div class="menu-header">
-                        <h2>Thực đơn đa dạng <span id="menu-count" class="item-count-badge"></span></h2>
-                        <div class="search-container">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="search-menu-input" placeholder="Tìm kiếm món ăn...">
-                        </div>
-                    </div>
-                    <div class="menu-grid">
-                        <!-- Các món ăn sẽ được JS tự động chèn vào đây -->
-                    </div>
-                </section>
-
-                <!-- Tab Đánh giá -->
-                <section id="danh-gia" class="content-section">
-                    <div class="menu-header">
-                        <h2>Đánh giá từ khách hàng <span id="review-count" class="item-count-badge"></span></h2>
-                        <div class="search-container">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="search-review-input" placeholder="Tìm kiếm món ăn...">
-                        </div>
-                    </div>
-                    <p class="review-description">Nhấp vào một món ăn để xem tất cả các đánh giá chi tiết.</p>
-                    <div id="reviews-by-dish-container">
-                        <!-- Các đánh giá theo món sẽ được chèn vào đây -->
-                    </div>
-                </section>
-
-                <!-- Tab Đặt hàng -->
-                <section id="dat-hang" class="content-section">
-                    <div class="order-layout">
-                        <!-- Cột trái: Chọn món -->
-                        <div class="order-menu-selection">
-                            <div class="order-menu-header">
-                                <h3>Chọn món ăn</h3>
-                                <input type="text" id="search-order-input" placeholder="Tìm món để đặt...">
+                            <div class="intro-card" style="background-image: url('https://kenh14cdn.com/2017/4-1509073009648.jpg');">
+                                <i class="fa-solid fa-palette"></i>
+                                <h3>Triết lý Ngũ vị</h3>
+                                <p>Sự hòa quyện của 5 vị: chua, cay, mặn, ngọt, đắng, tạo nên sự cân bằng âm dương độc đáo.</p>
                             </div>
-                            <div id="order-menu-list" class="order-menu-list">
-                                <!-- Danh sách món ăn sẽ được JS chèn vào đây -->
+                            <div class="intro-card" style="background-image: url('https://khaihoanphuquoc.com.vn/wp-content/uploads/2023/08/d0b9d0c66d6a48db991b3702417f6cef.jpg');">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <h3>Văn hóa Vùng miền</h3>
+                                <p>Khám phá sự khác biệt thú vị trong ẩm thực từ Bắc vào Nam, mỗi nơi một bản sắc.</p>
+                            </div>
+                            <div class="intro-card" style-="background-image: url('https://cdn.24h.com.vn/upload/2-2020/images/2020-05-19//1589857021-trinh-bay-mon-an-nhu-tranh-nghe-thuat-khong-no-an-chi-muon-treo-tuong-thoi-4.jpg');">
+                                <i class="fa-solid fa-gem"></i>
+                                <h3>Nghệ thuật Trình bày</h3>
+                                <p>Không chỉ ngon miệng, món ăn Việt còn được chăm chút về màu sắc và cách trình bày đẹp mắt.</p>
                             </div>
                         </div>
-
-                        <!-- Cột phải: Form thông tin và giỏ hàng -->
-                        <div class="order-form-container">
-                            <h3>Thông tin giao hàng</h3>
-                            <form id="order-form">
-                                <div class="form-group">
-                                    <label for="customer-name">Tên người đặt</label>
-                                    <input type="text" id="customer-name" placeholder="Nhập tên của bạn" required>
+                    </section>
+    
+                    <!-- Tab Thực đơn -->
+                    <section id="thuc-don" class="content-section">
+                        <div class="menu-header">
+                            <h2>Thực đơn đa dạng <span id="menu-count" class="item-count-badge"></span></h2>
+                            <div class="search-container">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="search-menu-input" placeholder="Tìm kiếm món ăn...">
+                            </div>
+                        </div>
+                        <div class="menu-grid">
+                            <!-- Các món ăn sẽ được JS tự động chèn vào đây -->
+                        </div>
+                    </section>
+    
+                    <!-- Tab Đánh giá -->
+                    <section id="danh-gia" class="content-section">
+                        <div class="menu-header">
+                            <h2>Đánh giá từ khách hàng <span id="review-count" class="item-count-badge"></span></h2>
+                            <div class="search-container">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="search-review-input" placeholder="Tìm kiếm món ăn...">
+                            </div>
+                        </div>
+                        <p class="review-description">Nhấp vào một món ăn để xem tất cả các đánh giá chi tiết.</p>
+                        <div id="reviews-by-dish-container">
+                            <!-- Các đánh giá theo món sẽ được chèn vào đây -->
+                        </div>
+                    </section>
+    
+                    <!-- Tab Đặt hàng -->
+                    <section id="dat-hang" class="content-section">
+                        <div class="order-layout">
+                            <!-- Cột trái: Chọn món -->
+                            <div class="order-menu-selection">
+                                <div class="order-menu-header">
+                                    <h3>Chọn món ăn</h3>
+                                    <input type="text" id="search-order-input" placeholder="Tìm món để đặt...">
                                 </div>
-                                <div class="form-group">
-                                    <label for="customer-phone">Số điện thoại</label>
-                                    <input type="tel" id="customer-phone" placeholder="VD: 0912345678" required>
-                                    <small id="phone-error" class="error-message"></small>
+                                <div id="order-menu-list" class="order-menu-list">
+                                    <!-- Danh sách món ăn sẽ được JS chèn vào đây -->
                                 </div>
-                                <div class="form-group">
-                                    <label for="customer-address">Địa chỉ</label>
-                                    <input type="text" id="customer-address" placeholder="VD: 123 Đường ABC, Quận 1, TP.HCM" required>
-                                </div>
-                                
-                                <div class="cart-summary">
-                                    <h4>Giỏ hàng của bạn</h4>
-                                    <div id="cart-items-container">
-                                        <p class="cart-empty-message">Giỏ hàng đang trống</p>
+                            </div>
+    
+                            <!-- Cột phải: Form thông tin và giỏ hàng -->
+                            <div class="order-form-container">
+                                <h3>Thông tin giao hàng</h3>
+                                <form id="order-form">
+                                    <div class="form-group">
+                                        <label for="customer-name">Tên người đặt</label>
+                                        <input type="text" id="customer-name" placeholder="Nhập tên của bạn" required>
                                     </div>
-                                    <div id="cart-total" class="cart-total"></div>
-                                </div>
-
-                                <p class="notice">Lưu ý: Thanh toán khi nhận hàng.</p>
-                                <div class="form-buttons">
-                                    <button type="submit">Đặt Hàng</button>
-                                    <button type="reset">Hủy Bỏ</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Tab Liên hệ -->
-                <section id="lien-he" class="content-section">
-                    <h2>Liên hệ với chúng tôi</h2>
-                    <p class="contact-description">Chúng tôi luôn sẵn lòng lắng nghe. Đừng ngần ngại gửi cho chúng tôi bất kỳ câu hỏi hoặc phản hồi nào.</p>
-                    <div class="contact-layout">
-                        <div class="contact-form-container">
-                            <form id="contact-form">
-                                <div class="form-group">
-                                    <label for="contact-name">Tên của bạn</label>
-                                    <input type="text" id="contact-name" placeholder="Nhập tên của bạn" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="contact-email">Email</label>
-                                    <input type="email" id="contact-email" placeholder="Nhập địa chỉ email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="contact-message">Lời nhắn</label>
-                                    <textarea id="contact-message" rows="5" placeholder="Nội dung bạn muốn gửi..." required></textarea>
-                                </div>
-                                <button type="submit" class="submit-btn">Gửi tin nhắn</button>
-                            </form>
-                        </div>
-                        <div class="contact-info-container">
-                            <div class="contact-info-card">
-                                <i class="fa-solid fa-location-dot"></i>
-                                <h4>Địa chỉ</h4>
-                                <p>123 Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
-                            </div>
-                            <div class="contact-info-card">
-                                <i class="fa-solid fa-phone"></i>
-                                <h4>Điện thoại</h4>
-                                <p>0123.456.789</p>
-                            </div>
-                            <div class="contact-info-card">
-                                <i class="fa-solid fa-envelope"></i>
-                                <h4>Email</h4>
-                                <p>lienhe@amthucviet.com</p>
+                                    <div class="form-group">
+                                        <label for="customer-phone">Số điện thoại</label>
+                                        <input type="tel" id="customer-phone" placeholder="VD: 0912345678" required>
+                                        <small id="phone-error" class="error-message"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customer-address">Địa chỉ</label>
+                                        <input type="text" id="customer-address" placeholder="VD: 123 Đường ABC, Quận 1, TP.HCM" required>
+                                    </div>
+                                    
+                                    <div class="cart-summary">
+                                        <h4>Giỏ hàng của bạn</h4>
+                                        <div id="cart-items-container">
+                                            <p class="cart-empty-message">Giỏ hàng đang trống</p>
+                                        </div>
+                                        <div id="cart-total" class="cart-total"></div>
+                                    </div>
+    
+                                    <p class="notice">Lưu ý: Thanh toán khi nhận hàng.</p>
+                                    <div class="form-buttons">
+                                        <button type="submit">Đặt Hàng</button>
+                                        <button type="reset">Hủy Bỏ</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <!-- Tab Hỗ trợ -->
-                <section id="ho-tro" class="content-section">
-                    <h2>Hỗ trợ khách hàng</h2>
-                    <p class="support-description">Tìm câu trả lời cho các câu hỏi thường gặp hoặc liên hệ trực tiếp với chúng tôi.</p>
-                    
-                    <div class="faq-container">
-                        <h3>Câu hỏi thường gặp (FAQ)</h3>
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>Làm thế nào để đặt hàng?</span>
-                                <i class="fa-solid fa-chevron-down"></i>
+                    </section>
+    
+                    <!-- Tab Liên hệ -->
+                    <section id="lien-he" class="content-section">
+                        <h2>Liên hệ với chúng tôi</h2>
+                        <p class="contact-description">Chúng tôi luôn sẵn lòng lắng nghe. Đừng ngần ngại gửi cho chúng tôi bất kỳ câu hỏi hoặc phản hồi nào.</p>
+                        <div class="contact-layout">
+                            <div class="contact-form-container">
+                                <form id="contact-form">
+                                    <div class="form-group">
+                                        <label for="contact-name">Tên của bạn</label>
+                                        <input type="text" id="contact-name" placeholder="Nhập tên của bạn" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact-email">Email</label>
+                                        <input type="email" id="contact-email" placeholder="Nhập địa chỉ email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact-message">Lời nhắn</label>
+                                        <textarea id="contact-message" rows="5" placeholder="Nội dung bạn muốn gửi..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn">Gửi tin nhắn</button>
+                                </form>
                             </div>
-                            <div class="faq-answer">
-                                <p>Bạn có thể đặt hàng trực tiếp qua tab "Đặt hàng" trên trang web. Chỉ cần chọn món, điền thông tin và nhấn "Đặt Hàng". Chúng tôi sẽ liên hệ xác nhận đơn hàng của bạn ngay sau đó.</p>
+                            <div class="contact-info-container">
+                                <div class="contact-info-card">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <h4>Địa chỉ</h4>
+                                    <p>103 Đường Nguyễn Trãi, Quang Tri, Vietnam</p>
+                                </div>
+                                <div class="contact-info-card">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <h4>Điện thoại</h4>
+                                    <p>0838.179.346</p>
+                                </div>
+                                <div class="contact-info-card">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <h4>Email</h4>
+                                    <p>nthnam208@gmail.com</p>
+                                </div>
                             </div>
                         </div>
-                        <!-- Thêm các câu hỏi khác ở đây -->
-                    </div>
-                </section>
-            </div>
-        </main>
+                    </section>
+    
+                    <!-- Tab Hỗ trợ -->
+                    <section id="ho-tro" class="content-section">
+                        <h2>Hỗ trợ khách hàng</h2>
+                        <p class="support-description">Tìm câu trả lời cho các câu hỏi thường gặp hoặc liên hệ trực tiếp với chúng tôi.</p>
+                        
+                        <div class="faq-container">
+                            <h3>Câu hỏi thường gặp (FAQ)</h3>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Làm thế nào để đặt hàng?</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Bạn có thể đặt hàng trực tiếp qua tab "Đặt hàng" trên trang web. Chỉ cần chọn món, điền thông tin và nhấn "Đặt Hàng". Chúng tôi sẽ liên hệ xác nhận đơn hàng của bạn ngay sau đó.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Chính sách giao hàng và phí ship như thế nào?</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer faq-answer-meme">
+                                    <p>Không biết nữa, cái này hỏi chủ quán đi nha</p>
+                                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2024/03/anh-meme-xin-loi-12-3.jpg" alt="meme under construction">
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Tôi có thể thanh toán bằng những hình thức nào?</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer faq-answer-meme">
+                                    <p>Trời ơi, Bank hoặc là tiền mặt đi, chả lẽ bằng lá cây</p>
+                                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2024/03/anh-meme-xin-loi-6-2.jpg" alt="meme under construction">
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Làm sao để hủy đơn hàng đã đặt?</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer faq-answer-meme">
+                                    <p>Lỡ mua rồi thì ăn luôn đê!</p>
+                                    <img src="https://cdn2.fptshop.com.vn/unsafe/800x0/meme_xin_loi_2_e54f2b401b.jpg" alt="meme under construction">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
     </div>
 
     <!-- Modal chi tiết món ăn -->
@@ -302,7 +364,7 @@
                 <p>nthnam208@gmail.com</p>
             </div>
             <div class="team-info-section">
-                <h3>đôi lời cảm ơn</h3>
+                <h3>Đôi lời cảm ơn</h3>
                 <p>Xin chân thành cảm ơn bạn đã ghé thăm và trải nghiệm trang web của chúng tôi. Mọi đóng góp của bạn là nguồn động lực to lớn để chúng tôi tiếp tục phát triển!</p>
             </div>
         </div>
