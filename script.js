@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'buncha',
             name: 'Bún Chả',
             price: 45000,
-            image: 'images/Menu/Buncha/buncha.jpg',
+            image: 'images/Menu/Buncha/Buncha.jpg',
             description: 'Đặc sản Hà Nội, gồm bún tươi, chả thịt lợn băm và chả miếng nướng trên than hoa, ăn kèm với nước chấm chua ngọt.',
             variations: [
                 { name: 'Bún chả que tre', image: 'images/Menu/Buncha/bunchaquetre.jpg' },
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'banhmi',
             name: 'Bánh Mì',
             price: 25000,
-            image: 'images/Menu/Banhmi/banhmi.jpg',
+            image: 'images/Menu/BanhMi/banhmi.jpg',
             description: 'Ổ bánh mì baguette vỏ giòn, bên trong có nhân đa dạng.',
             variations: [
                 { name: 'Bánh mì thịt nướng', image: 'images/Menu/BanhMi/banhmithitnuong.jpg' },
