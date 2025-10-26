@@ -41,6 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return avatarColors[index];
     }
 
+    // Hàm xử lý khi ảnh bị lỗi
+    function handleImageError(event) {
+        const placeholderText = "Ảnh đang được cập nhật.\nRất xin lỗi vì sự bất tiện này!";
+        event.target.src = `https://via.placeholder.com/200x200/f0f0f0/808080?text=${encodeURIComponent(placeholderText)}`;
+    }
+
     const menuItemsData = [
         {
             id: 'pho',
@@ -2077,7 +2083,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const menuItemDiv = document.createElement('div');
             menuItemDiv.className = 'order-menu-item';
             menuItemDiv.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
+                <img src="${item.image}" alt="${item.name}" onerror="handleImageError(event)">
                 <div class="order-item-details">
                     <h4>${item.name}</h4>
                     <p>${formatCurrency(item.price)}</p>
@@ -2229,7 +2235,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const menuItemDiv = document.createElement('div');
             menuItemDiv.className = 'menu-item';
             menuItemDiv.dataset.itemId = item.id;
-            menuItemDiv.style.backgroundImage = `url('${item.image}')`;
             // Thêm độ trễ cho hoạt ảnh để các thẻ xuất hiện lần lượt
             menuItemDiv.style.animationDelay = `${index * 0.05}s`;
 
@@ -2237,6 +2242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const shortDescription = item.description.length > 100 ? item.description.substring(0, 100) + '...' : item.description;
 
             menuItemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" class="menu-item-bg-image" onerror="handleImageError(event)">
                 <!-- Lớp phủ hiện ra khi hover -->
                 <div class="menu-item-overlay">
                     <p>${shortDescription}</p>
@@ -2300,7 +2306,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             section.innerHTML = `
                 <div class="dish-review-header">
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${item.image}" alt="${item.name}" onerror="handleImageError(event)">
                     <div class="dish-review-header-info">
                         <h4>${item.name}</h4>
                         <div class="rating">${item.rating}</div>
@@ -2336,6 +2342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!item) return;
 
         detailItemImage.src = item.image;
+        detailItemImage.onerror = handleImageError;
         detailItemName.textContent = item.name;
         detailItemDescription.textContent = item.description;
 
@@ -2351,7 +2358,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (v.image) {
                 const imgDiv = document.createElement('div');
                 imgDiv.classList.add('variation-detail-image');
-                imgDiv.innerHTML = `<img src="${v.image}" alt="${v.name}">`;
+                imgDiv.innerHTML = `<img src="${v.image}" alt="${v.name}" onerror="handleImageError(event)">`;
                 li.appendChild(imgDiv);
                 li.addEventListener('mouseenter', () => imgDiv.style.display = 'block');
                 li.addEventListener('mouseleave', () => imgDiv.style.display = 'none');
@@ -2366,7 +2373,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (t.image) {
                 const imgDiv = document.createElement('div');
                 imgDiv.classList.add('topping-detail-image');
-                imgDiv.innerHTML = `<img src="${t.image}" alt="${t.name}">`;
+                imgDiv.innerHTML = `<img src="${t.image}" alt="${t.name}" onerror="handleImageError(event)">`;
                 li.appendChild(imgDiv);
                 li.addEventListener('mouseenter', () => imgDiv.style.display = 'block');
                 li.addEventListener('mouseleave', () => imgDiv.style.display = 'none');
@@ -2457,6 +2464,69 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === teamInfoModal) {
             teamInfoModal.classList.remove('active');
         }
+    });
+
+    // --- PHẦN BỨC TƯỜNG ẢNH KHI CLICK VÀO TIÊU ĐỀ ---
+    const brandTitle = document.querySelector('.brand-title');
+    const imageWallOverlay = document.getElementById('image-wall-overlay');
+    const closeImageWallBtn = document.getElementById('close-image-wall-btn');
+    const imageWallGrid = document.getElementById('image-wall-grid');
+
+    // Hàm thu thập tất cả ảnh từ banner và menu
+    function getAllImagePaths() {
+        const imagePaths = new Set(); // Dùng Set để tránh trùng lặp
+
+        // Thêm ảnh banner
+        for (let i = 1; i <= 11; i++) {
+            imagePaths.add(`images/Banner/banner-slide-${i}.jpg`);
+        }
+
+        // Thêm ảnh từ dữ liệu món ăn (menuItemsData)
+        menuItemsData.forEach(item => {
+            // Thêm ảnh chính
+            if (item.image && !item.image.includes('placeholder')) imagePaths.add(item.image);
+            // Thêm ảnh các biến tấu
+            item.variations.forEach(v => {
+                if (v.image && !v.image.includes('placeholder')) imagePaths.add(v.image);
+            });
+            // Thêm ảnh các topping
+            item.toppings.forEach(t => {
+                if (t.image && !t.image.includes('placeholder')) imagePaths.add(t.image);
+            });
+        });
+
+        return Array.from(imagePaths); // Chuyển Set thành Array
+    }
+
+    // Hàm xáo trộn mảng (Fisher-Yates shuffle)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Mở và tạo "bức tường ảnh"
+    brandTitle.addEventListener('click', () => {
+        imageWallGrid.innerHTML = ''; // Xóa ảnh cũ
+        const allImages = shuffleArray(getAllImagePaths());
+
+        allImages.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `Ảnh ẩm thực ${index + 1}`;
+            img.onerror = handleImageError;
+            img.style.animationDelay = `${index * 0.02}s`; // Tạo hiệu ứng xuất hiện lần lượt
+            imageWallGrid.appendChild(img);
+        });
+
+        imageWallOverlay.classList.add('active');
+    });
+
+    // Đóng "bức tường ảnh"
+    closeImageWallBtn.addEventListener('click', () => {
+        imageWallOverlay.classList.remove('active');
     });
 
     // --- PHẦN HỖ TRỢ: FAQ ACCORDION ---
