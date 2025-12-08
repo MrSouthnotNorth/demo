@@ -136,12 +136,36 @@ header {
 .menu-item { width: 100% !important; }
 .menu-item-bg-image { width:100% !important; aspect-ratio: 3 / 4; height: auto !important; object-fit: cover; }
 
-/* Banner: show only the first image on mobile to save space and avoid long vertical stacks */
-.banner-slider-section { height: 220px; overflow: hidden; }
-.slider-track { display: block; }
-.slider-track .slide { display: none; }
-.slider-track .slide:first-child { display: block; width: 100%; height: 100%; }
-.slider-btn { display: none; }
+/* Banner: keep slider functional on mobile and set images to 5:3 aspect ratio */
+.banner-slider-section { height: auto; max-height: 260px; overflow: hidden; border-radius: 10px; }
+.slider-track { display: flex; flex-direction: row; width: 100%; transition: transform 0.7s ease-in-out; }
+.slide { min-width: 100%; flex: 0 0 100%; display: block; }
+.slide img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 5 / 3; display: block; }
+.slider-btn { display: block; }
+
+/* Emphasize special 'Biến tấu' label with a small flag/star motif */
+.vietnam-special { position: relative; display: inline-block; padding-left: 22px; }
+.vietnam-special::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 12px;
+    background: #da251d; /* red flag */
+    border-radius: 2px;
+}
+.vietnam-special::after {
+    content: '★';
+    position: absolute;
+    left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold-color);
+    font-size: 10px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
 
 /* Order layout: form first, then menu selection */
 .order-layout { display: flex; flex-direction: column; gap: 12px; }
@@ -164,6 +188,14 @@ header {
     padding: 12px 14px;
     min-height: 50px;
     border-radius: 10px;
+}
+
+/* Increase brand title further on common mobile sizes, but clamp for very small phones */
+@media (max-width: 760px) {
+    .brand-title { font-size: 2.2rem; }
+}
+@media (max-width: 480px) {
+    .brand-title { font-size: 1.6rem; }
 }
 
 /* modal adjustments */
