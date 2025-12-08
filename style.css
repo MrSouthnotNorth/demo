@@ -22,6 +22,9 @@ body {
     background-color: #f4f4f4; /* Màu nền dự phòng */
 }
 
+/* Mobile helper classes removed (mobile UI will be recreated from scratch) */
+/* .no-scroll removed */
+
 /* PHẦN NỀN VÀ LỚP PHỦ */
 .background-banner {
     position: fixed;
@@ -271,39 +274,52 @@ header {
 
 .nav-links {
     display: flex;
-    justify-content: space-around; /* Dàn đều các icon */
+    justify-content: center; /* Giữ các icon gần nhau hơn */
     align-items: center;
+    gap: 10px; /* Khoảng cách nhỏ giữa ô */
     position: relative;
 }
 
 .nav-link {
     position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80px; /* Đặt chiều rộng cố định */
-    height: 60px; /* Đặt chiều cao cố định */
+    width: 56px; /* Rút nhỏ lại để tiết kiệm không gian */
+    height: 56px;
+    padding: 6px;
     text-decoration: none;
     color: #555;
-    transition: color 0.3s;
+    transition: all 0.25s ease;
     cursor: pointer;
+    border-radius: 10px;
+    overflow: visible;
 }
 
 .nav-link i {
-    font-size: 1.8rem; /* Tăng kích thước icon */
-    margin-bottom: 5px;
-    transition: transform 0.3s ease, color 0.3s ease;
+    font-size: 1.6rem; /* Vừa phải cho icon */
+    margin: 0; /* Giữ icon ở giữa */
+    transition: transform 0.25s ease, color 0.25s ease;
     z-index: 2; /* Đảm bảo icon nằm trên vòng tròn */
 }
 
 .nav-link-text {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    opacity: 0; /* Mặc định ẩn tên */
-    transition: opacity 0.3s ease;
+    opacity: 0; /* Ẩn tên mặc định */
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     position: absolute;
-    bottom: -5px; /* Vị trí của chữ khi hiện ra */
+    bottom: -30px; /* Vị trí chữ khi hiện ra */
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    padding: 6px 8px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    white-space: nowrap;
+    color: #333;
+    z-index: 20;
 }
 
 .nav-link:hover {
@@ -311,16 +327,21 @@ header {
 }
 
 .nav-link:hover i {
-    transform: scale(1.2); /* Phóng to icon khi hover */
-    color: var(--brown-color); /* Đổi màu icon khi hover */
+    transform: scale(1.08); /* Nhẹ phóng to icon khi hover */
+    color: var(--brown-color);
 }
 
-.nav-link:hover .nav-link-text {
-    opacity: 1; /* Hiện tên khi hover */
-}
-
+/* Chỉ hiện tên khi thẻ active (đã bấm) */
 .nav-link.active {
     color: var(--brown-color);
+    width: auto; /* Mở rộng để chứa chữ */
+    padding: 8px 12px;
+}
+
+.nav-link.active .nav-link-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
 /* Vòng tròn báo hiệu mục đang được chọn */
@@ -837,6 +858,22 @@ header {
     box-shadow: 0 0 0 3px rgba(var(--brown-color-rgb), 0.15);
 }
 
+/* Giới hạn chiều rộng và canh giữa các ô nhập trong form để tránh lệch về một bên */
+.order-form-container .form-group,
+.contact-form-container .form-group {
+    max-width: 480px; /* Không để input kéo quá rộng trên màn hình lớn */
+    margin-left: auto;
+    margin-right: auto; /* Canh giữa nội dung form trong cột */
+}
+
+.order-form-container .form-group input,
+.order-form-container .form-group textarea,
+.contact-form-container .form-group input,
+.contact-form-container .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .cart-summary {
     margin-top: 25px;
     border-top: 1px solid #eee;
@@ -1159,16 +1196,82 @@ header {
     margin-top: 10px;
 }
 
-/* Responsive cho menu thu gọn */
-@media (max-width: 768px) {
-    .brand-title { font-size: 2.5rem; }
-    #nav-toggle-btn { display: block; }
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
+/* Mobile responsive rules (mobile & tablet) */
+@media (max-width: 900px) {
+    /* Performance - avoid fixed background on small devices */
+    .background-banner { background-attachment: scroll; background-position: center top; }
+
+    /* Header adjustments - smaller logo, centered title */
+    header { padding: 8px 8px; justify-content: center; }
+    .logo { position: absolute; left: 12px; top: 8px; z-index: 12; padding: 6px; }
+    .logo img { width: 56px; height: 56px; }
+    .star-container { position: absolute; right: 12px; top: 12px; z-index: 12; }
+    .star-container .fa-star { font-size: 1.6rem; }
+
+    .brand-title { font-size: 2.4rem; display: block; text-align: center; padding: 0 56px; }
+    .brand-title-bg { max-width: 460px; height: 70px; }
+
+    /* Make main nav sticky & always visible at top of content */
+    .main-nav { position: sticky; top: 0; background: rgba(255,255,255,0.94); backdrop-filter: blur(6px); z-index: 20; border-bottom: 1px solid #eee; }
+    #nav-toggle-btn { display: none; } /* hide hamburger on mobile - tabs always visible */
+
+    .nav-links { display: flex; flex-direction: row; justify-content: space-around; align-items: center; width: 100%; padding: 8px 6px; gap: 6px; }
+    .nav-link { width: auto; min-width: 60px; min-height: 48px; padding: 8px 10px; border-radius: 10px; flex-direction: column; }
+    .nav-link i { font-size: 1.4rem; margin: 0; }
+    .nav-link-text { opacity: 1; position: relative; bottom: auto; font-size: 0.85rem; }
+    .nav-link.active { background: rgba(var(--brown-color-rgb),0.06); }
+
+    /* Content layout adjustments */
+    .main-content-frame { margin-top: 8px; padding: 12px; }
+    .intro-grid, .menu-grid, .order-menu-list, .team-grid { grid-template-columns: 1fr !important; gap: 12px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .menu-item { width: 100%; height: auto; }
+    .menu-item-bg-image { height: 160px; }
+
+    /* Order: form on top (priority), selections below */
+    .order-layout { display: flex; flex-direction: column; gap: 12px; }
+    .order-form-container { order: 1; }
+    .order-menu-selection { order: 2; }
+
+    /* Contact: form first, info second */
+    .contact-layout { display: flex; flex-direction: column; gap: 12px; }
+    .contact-form-container { order: 1; }
+    .contact-info-container { order: 2; }
+    .contact-info-card { text-align: left; padding: 12px; }
+
+    /* Modals more friendly for mobile */
+    .modal-content { width: 100vw; height: 100vh; max-width: none; max-height: none; border-radius: 0; margin: 0; }
+    .menu-detail-modal.active { align-items: flex-start; padding-top: 56px; }
+
+    /* Increase tap target sizes */
+    a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    .logo { padding: 8px; border-radius: 8px; }
+}
+
+@media (max-width: 480px) {
+    /* Extra-small phones */
+    .brand-title { font-size: 1.6rem; padding: 0 48px; }
+    .logo img { width: 48px; height: 48px; }
+    .star-container .fa-star { font-size: 1.4rem; }
+
+    .slider-container { height: 140px; }
+    .slider-track .slide { min-width: 92%; }
+
+    .nav-links { padding: 6px 4px; gap: 4px; }
+    .nav-link { min-height: 50px; padding: 10px 8px; }
+    .nav-link i { font-size: 1.25rem; }
+
+    .menu-item-bg-image { height: 140px; }
+    .intro-title { font-size: 1.4rem; }
+    .intro-main-text { font-size: 0.98rem; line-height: 1.45; }
+
+    .order-form-container input, .order-form-container textarea, .contact-form-container input, .contact-form-container textarea { font-size: 1rem; min-height: 44px; }
+
+    /* Safe area / taller phones */
+    @supports(padding: env(safe-area-inset-bottom)) {
+        body { padding-bottom: env(safe-area-inset-bottom); }
+        .menu-detail-modal.active { padding-top: calc(12px + env(safe-area-inset-top)); }
     }
-    .nav-links.open { display: flex; } 
 }
 
 /* MODAL CHI TIẾT MÓN ĂN */

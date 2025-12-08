@@ -2006,7 +2006,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- PHẦN 3 & 4: TABS ---
-    const navToggleBtn = document.getElementById('nav-toggle-btn');
     const navLinksContainer = document.getElementById('nav-links');
     const navLinks = document.querySelectorAll('.nav-link');
     const contentContainer = document.querySelector('.content-sections-container');
@@ -2033,10 +2032,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Menu toggle trên mobile
-    navToggleBtn.addEventListener('click', () => {
-        navLinksContainer.classList.toggle('open');
-    });
+    // Menu toggle handled by mobile setup (setupMobileNav) to avoid duplicate listeners
 
     // --- PHẦN ĐẶT HÀNG: VALIDATE SĐT ---
     const phoneInput = document.getElementById('customer-phone');
@@ -2561,5 +2557,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollableContent.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
+
+    // Mobile sliding nav removed: nav buttons are always visible under header now.
 
 });
