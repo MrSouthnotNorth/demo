@@ -1,446 +1,220 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ẩm Thực Việt Nam</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather:wght@700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <!-- Mobile-only stylesheet (keeps desktop `style.css` untouched) -->
-    <link rel="stylesheet" href="mobile.css" media="(max-width:900px)">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#07090d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="./manifest.json" />
+  <title>TANCHJIM BUNNY STUDIO | Hardware PEQ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #090b0f; }
+    ::-webkit-scrollbar-thumb { background: #1e2430; border-radius: 99px; }
+    input[type="number"]::-webkit-inner-spin-button { opacity: 0.3; }
+    input[type="range"] { accent-color: #06b6d4; }
+    canvas { touch-action: none; }
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.35)); }
+      50% { filter: drop-shadow(0 0 22px rgba(34, 211, 238, 0.65)); }
+    }
+    .device-connected-glow { animation: pulseGlow 3s infinite ease-in-out; }
+  </style>
 </head>
-<body>
-    <!-- Lớp nền cố định và lớp phủ mờ -->
-    <div class="background-banner"></div>
-    <div class="background-overlay"></div>
+<body class="bg-[#07090d] text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen flex flex-col pb-20 sm:pb-8">
 
-    <!-- Container chính cho nội dung -->
-    <div class="main-container">
-        <!-- PHẦN 1: HEADER -->
-        <header>
-            <div class="logo">
-                <img src="images/logo/logo.png" alt="Logo Ẩm thực Việt Nam">
-            </div>
-            <h1 class="brand-title">
-                <span>Ẩm thực </span><span class="vietnam-part">Việt Nam</span>
-            </h1>
-            <div class="star-container">
-                <i class="fa-solid fa-star" id="fireworks-trigger"></i>
-            </div>            
-            <!-- Nền mờ cho tiêu đề -->
-            <div class="brand-title-bg"></div>
-        </header>
-        <div id="fireworks-canvas"></div>
-
-        <!-- PHẦN 2: BANNER SLIDE -->
-        <section class="banner-slider-section">
-            <div class="slider-container">
-                <div class="slider-track">
-                    <div class="slide"><img src="images/Banner/banner-slide-1.jpg" alt="Banner 1"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-2.jpg" alt="Banner 2"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-3.jpg" alt="Banner 3"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-4.jpg" alt="Banner 4"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-5.jpg" alt="Banner 5"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-6.jpg" alt="Banner 6"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-7.jpg" alt="Banner 7"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-8.jpg" alt="Banner 8"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-9.jpg" alt="Banner 9"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-10.jpg" alt="Banner 10"></div>
-                    <div class="slide"><img src="images/Banner/banner-slide-11.jpg" alt="Banner 11"></div>
-                </div>
-            </div>
-            <button class="slider-btn prev-btn"><i class="fa-solid fa-chevron-up"></i></button>
-            <button class="slider-btn next-btn"><i class="fa-solid fa-chevron-down"></i></button>
-        </section>
-
-        <!-- PHẦN 3: THANH TAB TÍNH NĂNG -->
-        <div class="main-content-frame">
-            <nav class="main-nav">
-                <button id="nav-toggle-btn"><i class="fa-solid fa-bars"></i></button>
-                <div class="nav-links" id="nav-links">
-                    <a href="#gioi-thieu" class="nav-link active" data-tab="0">
-                        <i class="fa-solid fa-house"></i>
-                        <span class="nav-link-text">Giới thiệu</span>
-                    </a>
-                    <a href="#thuc-don" class="nav-link" data-tab="1">
-                        <i class="fa-solid fa-utensils"></i>
-                        <span class="nav-link-text">Thực đơn</span>
-                    </a>
-                    <a href="#danh-gia" class="nav-link" data-tab="2">
-                        <i class="fa-solid fa-star"></i>
-                        <span class="nav-link-text">Đánh giá</span>
-                    </a>
-                    <a href="#dat-hang" class="nav-link" data-tab="3">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="nav-link-text">Đặt hàng</span>
-                    </a>
-                    <a href="#lien-he" class="nav-link" data-tab="4">
-                        <i class="fa-solid fa-envelope"></i>
-                        <span class="nav-link-text">Liên hệ</span>
-                    </a>
-                    <a href="#ho-tro" class="nav-link" data-tab="5">
-                        <i class="fa-solid fa-question-circle"></i>
-                        <span class="nav-link-text">Hỗ trợ</span>
-                    </a>
-                </div>
-            </nav>
-    
-            <!-- PHẦN 4: NỘI DUNG CÁC TAB -->
-            <main class="content-sections-wrapper">
-                <div class="content-sections-container">
-                    <!-- Tab Giới thiệu -->
-                    <section id="gioi-thieu" class="content-section active intro-tab">
-                        <div class="intro-header">
-                            <h2 class="intro-title">Tinh hoa Ẩm Thực Việt Nam</h2>
-                            <p class="intro-subtitle">
-                                Nơi mỗi món ăn là một câu chuyện, mỗi hương vị là một ký ức.
-                            </p>
-                        </div>
-                        <p class="intro-main-text">
-                            Ẩm thực Việt Nam không chỉ là những món ăn ngon mà còn là một phần của di sản văn hóa dân tộc. Với sự kết hợp hài hòa giữa các hương vị chua, cay, mặn, ngọt, cùng việc sử dụng các loại rau thơm tươi ngon, mỗi món ăn là một bản giao hưởng của hương vị, đánh thức mọi giác quan.
-                        </p>
-                        <div class="intro-grid">
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/1.jpeg');">
-                                        <i class="fa-solid fa-pepper-hot"></i><h3>Hương Vị Tinh Tế</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Hương Vị Tinh Tế</h4><p>Sự cân bằng hoàn hảo giữa các vị, sử dụng nước mắm làm nền tảng và các loại gia vị đặc trưng tạo nên một bản sắc riêng biệt.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/2.jpg');">
-                                        <i class="fa-solid fa-leaf"></i><h3>Nguyên Liệu Tươi Ngon</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Nguyên Liệu Tươi Ngon</h4><p>Ưu tiên sử dụng các loại rau củ quả tươi theo mùa, đảm bảo sự tươi mới và giá trị dinh dưỡng trong từng món ăn.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/3.jpg');">
-                                        <i class="fa-solid fa-book-open"></i><h3>Di Sản Văn Hóa</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Di Sản Văn Hóa</h4><p>Mỗi món ăn đều gắn liền với một câu chuyện, một vùng miền, thể hiện bề dày lịch sử và văn hóa phong phú của dân tộc.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/4.webp');">
-                                        <i class="fa-solid fa-palette"></i><h3>Triết lý Ngũ vị</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Triết lý Ngũ vị</h4><p>Sự hòa quyện của 5 vị: chua, cay, mặn, ngọt, đắng, tạo nên sự cân bằng âm dương độc đáo trong ẩm thực Việt.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/5.webp');">
-                                        <i class="fa-solid fa-map-location-dot"></i><h3>Văn hóa Vùng miền</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Văn hóa Vùng miền</h4><p>Khám phá sự khác biệt thú vị trong ẩm thực từ Bắc vào Nam, mỗi nơi một bản sắc, mỗi vùng một hương vị đặc trưng.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="intro-card">
-                                <div class="card-inner">
-                                    <div class="card-front" style="background-image: url('images/introduce/6.jpg');">
-                                        <i class="fa-solid fa-gem"></i><h3>Nghệ thuật Trình bày</h3>
-                                    </div>
-                                    <div class="card-back">
-                                        <h4>Nghệ thuật Trình bày</h4><p>Không chỉ ngon miệng, món ăn Việt còn được chăm chút về màu sắc và cách trình bày đẹp mắt, hài hòa.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-    
-                    <!-- Tab Thực đơn -->
-                    <section id="thuc-don" class="content-section">
-                        <div class="menu-header">
-                            <h2>Thực đơn đa dạng <span id="menu-count" class="item-count-badge"></span></h2>
-                            <div class="search-container">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" id="search-menu-input" placeholder="Tìm kiếm món ăn...">
-                            </div>
-                        </div>
-                        <div class="menu-grid">
-                            <!-- Các món ăn sẽ được JS tự động chèn vào đây -->
-                        </div>
-                    </section>
-    
-                    <!-- Tab Đánh giá -->
-                    <section id="danh-gia" class="content-section">
-                        <div class="menu-header">
-                            <h2>Đánh giá từ khách hàng <span id="review-count" class="item-count-badge"></span></h2>
-                            <div class="search-container">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" id="search-review-input" placeholder="Tìm kiếm món ăn...">
-                            </div>
-                        </div>
-                        <p class="review-description">Nhấp vào một món ăn để xem tất cả các đánh giá chi tiết.</p>
-                        <div id="reviews-by-dish-container">
-                            <!-- Các đánh giá theo món sẽ được chèn vào đây -->
-                        </div>
-                    </section>
-    
-                    <!-- Tab Đặt hàng -->
-                    <section id="dat-hang" class="content-section">
-                        <div class="order-layout">
-                            <!-- Cột trái: Chọn món -->
-                            <div class="order-menu-selection">
-                                <div class="order-menu-header">
-                                    <h3>Chọn món ăn</h3>
-                                    <input type="text" id="search-order-input" placeholder="Tìm món để đặt...">
-                                </div>
-                                <div id="order-menu-list" class="order-menu-list">
-                                    <!-- Danh sách món ăn sẽ được JS chèn vào đây -->
-                                </div>
-                            </div>
-    
-                            <!-- Cột phải: Form thông tin và giỏ hàng -->
-                            <div class="order-form-container">
-                                <h3>Thông tin giao hàng</h3>
-                                <form id="order-form">
-                                    <div class="form-group">
-                                        <label for="customer-name">Tên người đặt</label>
-                                        <input type="text" id="customer-name" placeholder="Nhập tên của bạn" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="customer-phone">Số điện thoại</label>
-                                        <input type="tel" id="customer-phone" placeholder="VD: 0912345678" required>
-                                        <small id="phone-error" class="error-message"></small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="customer-address">Địa chỉ</label>
-                                        <input type="text" id="customer-address" placeholder="VD: 123 Đường ABC, Quận 1, TP.HCM" required>
-                                    </div>
-                                    
-                                    <div class="cart-summary">
-                                        <h4>Giỏ hàng của bạn</h4>
-                                        <div id="cart-items-container">
-                                            <p class="cart-empty-message">Giỏ hàng đang trống</p>
-                                        </div>
-                                        <div id="cart-total" class="cart-total"></div>
-                                    </div>
-    
-                                    <p class="notice">Lưu ý: Thanh toán khi nhận hàng.</p>
-                                    <div class="form-buttons">
-                                        <button type="submit">Đặt Hàng</button>
-                                        <button type="reset">Hủy Bỏ</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-    
-                    <!-- Tab Liên hệ -->
-                    <section id="lien-he" class="content-section">
-                        <h2>Liên hệ với chúng tôi</h2>
-                        <p class="contact-description">Chúng tôi luôn sẵn lòng lắng nghe. Đừng ngần ngại gửi cho chúng tôi bất kỳ câu hỏi hoặc phản hồi nào.</p>
-                        <div class="contact-layout">
-                            <div class="contact-form-container">
-                                <form id="contact-form">
-                                    <div class="form-group">
-                                        <label for="contact-name">Tên của bạn</label>
-                                        <input type="text" id="contact-name" placeholder="Nhập tên của bạn" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contact-email">Email</label>
-                                        <input type="email" id="contact-email" placeholder="Nhập địa chỉ email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contact-message">Lời nhắn</label>
-                                        <textarea id="contact-message" rows="5" placeholder="Nội dung bạn muốn gửi..." required></textarea>
-                                    </div>
-                                    <button type="submit" class="submit-btn">Gửi tin nhắn</button>
-                                </form>
-                            </div>
-                            <div class="contact-info-container">
-                                <div class="contact-info-card">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <h4>Địa chỉ</h4>
-                                    <p>103 Đường Nguyễn Trãi, Quang Tri, Vietnam</p>
-                                </div>
-                                <div class="contact-info-card">
-                                    <i class="fa-solid fa-phone"></i>
-                                    <h4>Điện thoại</h4>
-                                    <p>0838.179.346</p>
-                                </div>
-                                <div class="contact-info-card">
-                                    <i class="fa-solid fa-envelope"></i>
-                                    <h4>Email</h4>
-                                    <p>nthnam208@gmail.com</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-    
-                    <!-- Tab Hỗ trợ -->
-                    <section id="ho-tro" class="content-section">
-                        <h2>Hỗ trợ khách hàng</h2>
-                        <p class="support-description">Tìm câu trả lời cho các câu hỏi thường gặp hoặc liên hệ trực tiếp với chúng tôi.</p>
-                        
-                        <div class="faq-container">
-                            <h3>Câu hỏi thường gặp (FAQ)</h3>
-                            <div class="faq-item">
-                                <div class="faq-question">
-                                    <span>Làm thế nào để đặt hàng?</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>Bạn có thể đặt hàng trực tiếp qua tab "Đặt hàng" trên trang web. Chỉ cần chọn món, điền thông tin và nhấn "Đặt Hàng". Chúng tôi sẽ liên hệ xác nhận đơn hàng của bạn ngay sau đó.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <div class="faq-question">
-                                    <span>Chính sách giao hàng và phí ship như thế nào?</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer faq-answer-meme">
-                                    <p>Không biết nữa, cái này hỏi chủ quán đi nha</p>
-                                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2024/03/anh-meme-xin-loi-12-3.jpg" alt="meme under construction">
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <div class="faq-question">
-                                    <span>Tôi có thể thanh toán bằng những hình thức nào?</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer faq-answer-meme">
-                                    <p>Trời ơi, Bank hoặc là tiền mặt đi, chả lẽ bằng lá cây</p>
-                                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2024/03/anh-meme-xin-loi-6-2.jpg" alt="meme under construction">
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <div class="faq-question">
-                                    <span>Làm sao để hủy đơn hàng đã đặt?</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer faq-answer-meme">
-                                    <p>Lỡ mua rồi thì ăn luôn đê!</p>
-                                    <img src="https://cdn2.fptshop.com.vn/unsafe/800x0/meme_xin_loi_2_e54f2b401b.jpg" alt="meme under construction">
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </main>
+  <!-- TOP HEADER -->
+  <header class="border-b border-slate-800/70 bg-[#0d1017]/90 backdrop-blur-xl sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 flex items-center justify-center font-bold text-slate-950 text-xs sm:text-sm tracking-tighter shadow-lg shadow-cyan-500/25">
+          TJ
         </div>
-    </div>
-
-    <!-- Modal chi tiết món ăn -->
-    <div id="menu-detail-modal" class="menu-detail-modal">
-        <div class="modal-content">
-            <button class="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
-            <div class="detail-header">
-                <img id="detail-item-image" src="" alt="Ảnh món ăn chi tiết">
-                <h2 id="detail-item-name"></h2>
-            </div>
-            <div class="detail-body">
-                <p id="detail-item-description"></p>
-                
-                <div class="detail-section">
-                    <h3>Biến tấu</h3>
-                    <ul id="detail-item-variations" class="variations-list">
-                        <!-- Biến tấu sẽ được thêm bằng JS -->
-                    </ul>
-                </div>
-
-                <div class="detail-section">
-                    <h3>Topping/Ăn kèm</h3>
-                    <ul id="detail-item-toppings" class="toppings-list">
-                        <!-- Topping sẽ được thêm bằng JS -->
-                    </ul>
-                </div>
-
-                <div class="detail-section">
-                    <h3>Đánh giá & Bình luận</h3>
-                    <div id="detail-item-all-comments" class="all-comments-section">
-                        <!-- Bình luận sẽ được thêm bằng JS -->
-                    </div>
-                </div>
-            </div>
+        <div>
+          <h1 class="font-bold text-sm sm:text-base tracking-wide text-white leading-tight">TANCHJIM <span class="text-cyan-400 font-medium">BUNNY</span></h1>
+          <p class="text-[10px] sm:text-[11px] text-slate-400">8-Band DSP Studio</p>
         </div>
-    </div>
+      </div>
 
-    <!-- Modal thông tin nhóm -->
-    <div id="team-info-modal" class="menu-detail-modal">
-        <div class="modal-content team-modal-content">
-            <button class="close-modal-btn team-close-btn"><i class="fa-solid fa-xmark"></i></button>
-            <div class="team-header">
-                <h2>Đội Ngũ Phát Triển</h2>
-                <p>Những con người đứng sau dự án này</p>
-            </div>
-            <div class="team-grid">
-                <!-- Thẻ thành viên -->
-                <div class="team-member-card">
-                    <img src="images/avt/nam.jpg" alt="Avatar" class="member-avatar">
-                    <h3 class="member-name">Nguyễn Thành Nam</h3>
-                    <p class="member-role">Trưởng nhóm - lập trình chính</p>
-                    <div class="member-socials">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-                <div class="team-member-card">
-                    <img src="images/avt/phucle.jpg" alt="Avatar" class="member-avatar">
-                    <h3 class="member-name">Lê Bá Phúc</h3>
-                    <p class="member-role">Hỗ trợ hình ảnh, nội dung</p>
-                    <div class="member-socials">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="team-member-card">
-                    <img src="images/avt/Linh.jpg" alt="Avatar" class="member-avatar">
-                    <h3 class="member-name">Nguyễn Ngọc Thảo Linh</h3>
-                    <p class="member-role">Hỗ trợ hình ảnh, nội dung</p>
-                    <div class="member-socials">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-dribbble"></i></a>
-                    </div>
-                </div>
-                <!-- Thêm 3 thành viên còn lại tương tự -->
-                <!-- Bạn có thể thay đổi ảnh và vai trò cho phù hợp -->
-                <div class="team-member-card"><img src="images/avt/Ngoc.jpg" alt="Avatar" class="member-avatar"><h3 class="member-name">Thái Hoàng Bảo Ngọc</h3><p class="member-role">Hỗ trợ hình ảnh, nội dung</p><div class="member-socials"><a href="#"><i class="fab fa-facebook-f"></i></a></div></div>
-                <div class="team-member-card"><img src="images/avt/Quynh.jpg" alt="Avatar" class="member-avatar"><h3 class="member-name">Phạm Hoàng Như Quỳnh</h3><p class="member-role">Hỗ trợ hình ảnh, nội dung</p><div class="member-socials"><a href="#"><i class="fab fa-facebook-f"></i></a></div></div>
-                <div class="team-member-card"><img src="images/avt/Binh.jpg" alt="Avatar" class="member-avatar"><h3 class="member-name">Nguyễn Thị Thanh Bình</h3><p class="member-role">Hỗ trợ hình ảnh, nội dung</p><div class="member-socials"><a href="#"><i class="fab fa-facebook-f"></i></a></div></div>
-            </div>
-            <div class="team-footer">
-                <p>"Xin chân thành cảm ơn bạn đã ghé thăm và trải nghiệm trang web của chúng tôi. Mọi đóng góp của bạn là nguồn động lực to lớn để chúng tôi tiếp tục phát triển!"</p>
-            </div>
+      <div class="flex items-center gap-2">
+        <!-- Nút so sánh A/B (Bypass EQ) -->
+        <button id="btnBypassToggle" class="bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/30 text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5">
+          <span id="bypassDot" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <span id="bypassText">EQ: ON</span>
+        </button>
+
+        <!-- Nút kết nối -->
+        <button id="btnConnect" class="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 text-slate-950 font-bold text-[11px] sm:text-xs px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span id="connectBtnLabel">Kết nối</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col gap-4 sm:gap-5">
+
+    <!-- HARDWARE DEVICE SHOWCASE & AUDIO TESTER ROW -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      
+      <!-- Card 1: Hình minh họa thiết bị kết nối & Thông số phần cứng -->
+      <div class="lg:col-span-7 bg-gradient-to-br from-[#0f141e] to-[#0a0d14] p-4 sm:p-5 rounded-2xl border border-slate-800/80 shadow-lg flex items-center gap-4 sm:gap-5 relative overflow-hidden">
+        <!-- SVG Minh họa tai nghe Tanchjim Bunny + USB-C DSP -->
+        <div id="deviceVisualWrap" class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-2xl bg-[#07090d] border border-slate-800/90 flex items-center justify-center relative">
+          <svg viewBox="0 0 120 120" class="w-20 h-20 sm:w-24 sm:h-24 transition-all duration-500">
+            <!-- Dây cáp -->
+            <path d="M 35 78 C 20 95, 55 112, 75 96 C 90 84, 88 65, 95 48" fill="none" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Đầu giắc USB-C DSP -->
+            <rect x="87" y="24" width="16" height="26" rx="4" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+            <rect x="91" y="15" width="8" height="9" rx="1.5" fill="#94a3b8"/>
+            <circle cx="95" cy="37" r="2.5" fill="#22d3ee"/>
+            <!-- Housing IEM Tanchjim Bunny (Vỏ trong suốt ánh bạc) -->
+            <path d="M 28 42 C 28 26, 56 24, 62 40 C 67 54, 56 76, 40 76 C 27 76, 23 58, 28 42 Z" fill="url(#iemGrad)" stroke="#cbd5e1" stroke-width="1.8"/>
+            <!-- Faceplate kim loại chữ TJ -->
+            <path d="M 34 44 C 34 33, 52 32, 56 43 C 59 52, 51 67, 41 67 C 33 67, 30 55, 34 44 Z" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+            <text x="44" y="54" font-size="10" font-family="sans-serif" font-weight="bold" fill="#38bdf8" text-anchor="middle">BUNNY</text>
+            <!-- Ống nozzle & Eartip -->
+            <path d="M 60 44 L 72 39 L 75 47 L 62 52 Z" fill="#64748b"/>
+            <ellipse cx="74" cy="43" rx="4.5" ry="8" transform="rotate(-20 74 43)" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+            <defs>
+              <linearGradient id="iemGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#334155" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
-    </div>
 
-    <!-- Lớp phủ "Bức tường ảnh" khi click vào tiêu đề -->
-    <div id="image-wall-overlay">
-        <button id="close-image-wall-btn"><i class="fa-solid fa-xmark"></i></button>
-        <div id="image-wall-grid">
-            <!-- Hình ảnh sẽ được JS chèn vào đây -->
+        <!-- Thông tin trạng thái thiết bị -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse shrink-0"></span>
+            <h2 id="deviceName" class="font-bold text-sm sm:text-base text-white truncate">Chưa kết nối Tanchjim Bunny</h2>
+          </div>
+          <p id="deviceSubInfo" class="text-xs text-slate-400 mb-3 truncate">Cắm cáp USB-C DSP và bấm "Kết nối" để đồng bộ phần cứng</p>
+
+          <!-- Badges thông số kỹ thuật -->
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] font-mono">
+            <span class="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-slate-300">DAC: 48kHz/24-bit</span>
+            <span id="headroomBadge" class="bg-emerald-950/50 border border-emerald-800/50 px-2.5 py-1 rounded-lg text-emerald-300">Headroom: An toàn (0.0 dB)</span>
+            <button id="btnPullHardware" disabled class="bg-slate-800/90 hover:bg-slate-700 disabled:opacity-35 text-cyan-300 px-2.5 py-1 rounded-lg transition cursor-pointer">
+              ↻ Đọc từ chip
+            </button>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Nút quay lại đầu trang -->
-    <a id="back-to-top-btn" class="back-to-top-btn"><i class="fa-solid fa-arrow-up"></i></a>
+      <!-- Card 2: Bộ phát âm thanh kiểm tra EQ (Audio Signal Generator) -->
+      <div class="lg:col-span-5 bg-[#0e121a] p-4 sm:p-5 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+            Kiểm tra âm thanh trực tiếp
+          </span>
+          <span id="toneStatus" class="text-[11px] font-mono text-slate-500">Tắt</span>
+        </div>
+        <p class="text-[11px] text-slate-400 mb-3">Phát tín hiệu chuẩn để nghe thử độ cân bằng dải tần sau khi chỉnh EQ:</p>
+        <div class="grid grid-cols-3 gap-2">
+          <button id="btnTestPink" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+            Pink Noise
+          </button>
+          <button id="btnTestSweep" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+            Sweep 20-20k
+          </button>
+          <button id="btnTestBass" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+            Sub-Bass 50Hz
+          </button>
+        </div>
+      </div>
+    </section>
 
-    <!-- Thư viện pháo hoa -->
-    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.7/dist/index.umd.js"></script>
-    <!-- Script chính -->
-    <script src="script.js"></script>
+    <!-- PROFILE & ACTION TOOLBAR -->
+    <section class="bg-[#0e121a] p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex-1 sm:flex-initial flex items-center gap-2 bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2">
+          <span class="text-[11px] font-semibold uppercase text-slate-400">Profile:</span>
+          <select id="presetSelect" class="w-full sm:w-auto bg-transparent text-xs sm:text-sm font-medium text-white focus:outline-none cursor-pointer"></select>
+        </div>
+
+        <button id="btnSaveCustomPreset" class="bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+          + Lưu Profile
+        </button>
+
+        <button id="btnDeleteCustomPreset" class="hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-medium px-2.5 py-2 rounded-xl transition cursor-pointer" title="Xóa profile">
+          Xóa
+        </button>
+
+        <button id="btnShareProfile" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer" title="Copy link chia sẻ sang điện thoại">
+          Chia sẻ Link
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-2 rounded-xl cursor-pointer select-none">
+          <input type="checkbox" id="chkAutoWrite" checked class="w-3.5 h-3.5 accent-emerald-500 rounded" />
+          <span class="text-xs font-medium text-emerald-400">Live Sync</span>
+        </label>
+
+        <input type="file" id="fileImport" accept=".txt" class="hidden" />
+        <button id="btnImport" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+          Import
+        </button>
+        <button id="btnExport" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+          Export
+        </button>
+        <button id="btnReset" class="bg-slate-900 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+          Flat
+        </button>
+        <button id="btnSyncHardware" class="hidden sm:inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+          Lưu vào tai nghe
+        </button>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FREQUENCY RESPONSE GRAPH -->
+    <section class="bg-[#0e121a] p-3.5 sm:p-5 rounded-2xl border border-slate-800/80 shadow-xl relative">
+      <div class="flex items-center justify-between gap-2 mb-2.5 px-1">
+        <span class="text-xs font-medium text-slate-300">Đáp tuyến tần số (20Hz – 20kHz)</span>
+        <span id="hoverReadout" class="text-[11px] sm:text-xs font-mono text-cyan-400 bg-cyan-950/40 px-2.5 py-1 rounded-lg border border-cyan-800/40">
+          Chạm & kéo node để chỉnh
+        </span>
+      </div>
+      <div class="w-full h-[250px] sm:h-[310px] relative rounded-xl overflow-hidden bg-[#080a0f] border border-slate-800/90 shadow-inner">
+        <canvas id="eqCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+      </div>
+    </section>
+
+    <!-- RESPONSIVE 8-BAND CONTROLS (Tự động hiển thị dạng Card trên Mobile & Bảng trên Desktop) -->
+    <section id="bandsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <!-- Render động 8 Card điều khiển tối ưu cho cả chuột và ngón tay -->
+    </section>
+
+    <!-- COMPACT HARDWARE LOG -->
+    <section class="bg-[#0b0e14] rounded-2xl border border-slate-800/70 p-3.5">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Nhật ký phần cứng (WebHID)</span>
+        <button id="btnClearLog" class="text-[11px] text-slate-500 hover:text-slate-300 cursor-pointer">Xóa</button>
+      </div>
+      <div id="hidLogBox" class="font-mono text-[11px] text-slate-400 h-20 overflow-y-auto space-y-1 bg-[#07090d] p-2.5 rounded-xl border border-slate-800/60">
+        <div>[SYSTEM] Sẵn sàng hoạt động trên macOS & Mobile.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MOBILE FLOATING ACTION BAR (Chỉ hiện trên màn hình điện thoại) -->
+  <div class="sm:hidden fixed bottom-0 inset-x-0 bg-[#0d1017]/95 backdrop-blur-xl border-t border-slate-800 p-3 z-40 flex items-center gap-2">
+    <button id="btnMobileSave" class="flex-1 bg-emerald-500 active:bg-emerald-400 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-lg shadow-emerald-500/20">
+      Lưu EQ vào tai nghe Bunny
+    </button>
+  </div>
+
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
