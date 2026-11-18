@@ -1,7 +1,7 @@
 /**
  * app.js
  * TANCHJIM BUNNY STUDIO - Desktop & Mobile Responsive Controller
- * Tích hợp: Audio Signal Generator, A/B Bypass Compare, Shareable URL Profile, Touch-optimized Canvas.
+ * Tích hợp 24 Preset (Clone tai nghe + Thể loại nhạc + Gaming) & Lưu Profile cá nhân.
  */
 
 import { calculateTotalResponse, calculateBiquadCoefficients, getBiquadMagnitudeDb } from './dspMath.js';
@@ -12,48 +12,293 @@ const MAX_FREQ = 20000;
 const MIN_DB = -10;
 const MAX_DB = 10;
 
-const STORAGE_LAST_STATE = 'tanchjim_bunny_last_state_v5';
-const STORAGE_USER_PRESETS = 'tanchjim_bunny_user_presets_v5';
+const STORAGE_LAST_STATE = 'tanchjim_bunny_last_state_v6';
+const STORAGE_USER_PRESETS = 'tanchjim_bunny_user_presets_v6';
 const DEFAULT_FREQS = [40, 100, 250, 600, 1500, 3500, 7000, 12000];
 
+// ============================================================================
+// KHO 24 PRESET CHUYÊN SÂU (8-BAND PEAK, ±10dB)
+// ============================================================================
 const BUILTIN_PRESETS = {
-  flat: { name: 'Flat (Nguyên bản)', bands: [] },
-  fps: {
-    name: 'Gaming FPS (Nghe bước chân)',
-    bands: [
-      { freq: 60, gain: -3.5, q: 1.0, enabled: true },
-      { freq: 180, gain: -2.0, q: 1.2, enabled: true },
-      { freq: 2200, gain: 3.5, q: 1.6, enabled: true },
-      { freq: 4500, gain: 4.0, q: 1.8, enabled: true },
-      { freq: 8500, gain: 2.0, q: 1.4, enabled: true },
-    ],
+  // --- NHÓM 1: TIÊU CHUẨN THAM CHIẾU ---
+  flat: {
+    category: 'Tiêu chuẩn tham chiếu',
+    name: 'Flat (Âm thanh nguyên bản của Bunny)',
+    bands: [],
   },
-  harman: {
-    name: 'Harman IE 2019 Target',
+  harman2019: {
+    category: 'Tiêu chuẩn tham chiếu',
+    name: 'Harman IE 2019v2 Target (Cân bằng chuẩn mực)',
     bands: [
-      { freq: 60, gain: 3.5, q: 0.8, enabled: true },
-      { freq: 200, gain: -2.2, q: 1.3, enabled: true },
+      { freq: 45, gain: 3.8, q: 0.75, enabled: true },
+      { freq: 110, gain: 2.2, q: 0.9, enabled: true },
+      { freq: 210, gain: -2.4, q: 1.3, enabled: true },
       { freq: 1500, gain: 1.2, q: 1.8, enabled: true },
       { freq: 3200, gain: 2.8, q: 2.0, enabled: true },
       { freq: 8000, gain: 1.5, q: 1.5, enabled: true },
     ],
   },
-  vocal: {
-    name: 'Vocal & Acoustic (Trong trẻo)',
+
+  // --- NHÓM 2: CLONE MÀU ÂM CÁC TAI NGHE HUYỀN THOẠI ---
+  clone_origin: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Tanchjim Origin (Flagship Vocal & Tự nhiên)',
     bands: [
-      { freq: 110, gain: -2.0, q: 1.1, enabled: true },
-      { freq: 900, gain: 1.5, q: 1.4, enabled: true },
-      { freq: 2600, gain: 3.2, q: 1.8, enabled: true },
-      { freq: 5200, gain: 1.8, q: 2.2, enabled: true },
+      { freq: 55, gain: 1.8, q: 0.85, enabled: true },
+      { freq: 190, gain: -1.4, q: 1.2, enabled: true },
+      { freq: 1200, gain: 1.0, q: 1.5, enabled: true },
+      { freq: 2800, gain: 2.4, q: 1.8, enabled: true },
+      { freq: 5500, gain: 1.2, q: 2.2, enabled: true },
+      { freq: 11500, gain: 2.0, q: 1.4, enabled: true },
     ],
   },
-  bass: {
-    name: 'Sub-Bass Boost (Trầm sâu)',
+  clone_blessing3: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Moondrop Blessing 3 (Trong trẻo, chi tiết cao)',
     bands: [
-      { freq: 45, gain: 5.5, q: 0.9, enabled: true },
-      { freq: 100, gain: 3.5, q: 1.1, enabled: true },
-      { freq: 220, gain: -1.8, q: 1.5, enabled: true },
-      { freq: 3500, gain: 1.2, q: 1.8, enabled: true },
+      { freq: 40, gain: 2.5, q: 0.8, enabled: true },
+      { freq: 180, gain: -2.8, q: 1.1, enabled: true },
+      { freq: 1800, gain: 1.5, q: 1.6, enabled: true },
+      { freq: 3100, gain: 3.2, q: 1.9, enabled: true },
+      { freq: 6500, gain: 1.8, q: 2.4, enabled: true },
+      { freq: 12500, gain: 2.5, q: 1.5, enabled: true },
+    ],
+  },
+  clone_hd600: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Sennheiser HD600 (Mid ngọt, mộc mạc tự nhiên)',
+    bands: [
+      { freq: 45, gain: -2.5, q: 0.8, enabled: true },
+      { freq: 140, gain: 1.2, q: 1.0, enabled: true },
+      { freq: 1100, gain: 1.8, q: 1.3, enabled: true },
+      { freq: 3300, gain: 2.2, q: 1.7, enabled: true },
+      { freq: 6000, gain: -1.8, q: 2.0, enabled: true },
+      { freq: 10000, gain: -1.5, q: 1.5, enabled: true },
+    ],
+  },
+  clone_z1r: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Sony IER-Z1R (Sub-bass uy lực, Treble lấp lánh)',
+    bands: [
+      { freq: 38, gain: 5.8, q: 0.85, enabled: true },
+      { freq: 95, gain: 2.5, q: 1.0, enabled: true },
+      { freq: 320, gain: -2.5, q: 1.2, enabled: true },
+      { freq: 1600, gain: -1.2, q: 1.5, enabled: true },
+      { freq: 4200, gain: 1.8, q: 1.8, enabled: true },
+      { freq: 9500, gain: 3.8, q: 1.6, enabled: true },
+      { freq: 14000, gain: 3.0, q: 1.5, enabled: true },
+    ],
+  },
+  clone_hexa: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Truthear Hexa (Neutral Studio Monitor)',
+    bands: [
+      { freq: 50, gain: 1.5, q: 0.8, enabled: true },
+      { freq: 200, gain: -2.2, q: 1.2, enabled: true },
+      { freq: 2500, gain: 1.8, q: 1.7, enabled: true },
+      { freq: 4800, gain: 0.8, q: 2.0, enabled: true },
+      { freq: 11000, gain: 1.5, q: 1.4, enabled: true },
+    ],
+  },
+  clone_timeless: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: 7Hz Timeless Planar (Tốc độ nhanh, V-Shape mượt)',
+    bands: [
+      { freq: 45, gain: 4.2, q: 0.85, enabled: true },
+      { freq: 240, gain: -1.8, q: 1.3, enabled: true },
+      { freq: 2200, gain: 2.2, q: 1.6, enabled: true },
+      { freq: 5000, gain: 2.5, q: 2.0, enabled: true },
+      { freq: 10500, gain: 2.8, q: 1.5, enabled: true },
+    ],
+  },
+  clone_airpods2: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Apple AirPods Pro 2 (Dễ nghe, ấm áp hiện đại)',
+    bands: [
+      { freq: 50, gain: 3.6, q: 0.8, enabled: true },
+      { freq: 130, gain: 2.0, q: 1.0, enabled: true },
+      { freq: 450, gain: -1.2, q: 1.3, enabled: true },
+      { freq: 2400, gain: 1.6, q: 1.7, enabled: true },
+      { freq: 5800, gain: -1.5, q: 2.2, enabled: true },
+      { freq: 9500, gain: 1.2, q: 1.6, enabled: true },
+    ],
+  },
+  clone_portapro: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Koss Porta Pro (Retro ấm dày, thư giãn)',
+    bands: [
+      { freq: 80, gain: 4.5, q: 0.8, enabled: true },
+      { freq: 180, gain: 3.2, q: 1.0, enabled: true },
+      { freq: 1200, gain: 1.0, q: 1.3, enabled: true },
+      { freq: 3500, gain: -2.2, q: 1.6, enabled: true },
+      { freq: 8500, gain: -3.5, q: 1.4, enabled: true },
+    ],
+  },
+  clone_utopia: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Focal Utopia (Độ động cao, âm hình sắc nét)',
+    bands: [
+      { freq: 45, gain: 2.0, q: 0.8, enabled: true },
+      { freq: 160, gain: -1.0, q: 1.2, enabled: true },
+      { freq: 1400, gain: 1.6, q: 1.5, enabled: true },
+      { freq: 3000, gain: 2.5, q: 1.8, enabled: true },
+      { freq: 6200, gain: 2.2, q: 2.2, enabled: true },
+      { freq: 12000, gain: 1.8, q: 1.5, enabled: true },
+    ],
+  },
+  clone_er4xr: {
+    category: 'Clone màu âm tai nghe nổi tiếng',
+    name: 'Clone: Etymotic ER4XR (Chuẩn kiểm âm phòng thu)',
+    bands: [
+      { freq: 50, gain: 1.2, q: 0.8, enabled: true },
+      { freq: 220, gain: -1.5, q: 1.2, enabled: true },
+      { freq: 2700, gain: 3.8, q: 1.7, enabled: true },
+      { freq: 5500, gain: -1.2, q: 2.0, enabled: true },
+      { freq: 10000, gain: -2.0, q: 1.5, enabled: true },
+    ],
+  },
+
+  // --- NHÓM 3: THỂ LOẠI ÂM NHẠC ---
+  music_vpop: {
+    category: 'Thể loại âm nhạc',
+    name: 'V-Pop & Nhạc Trẻ (Giọng ca sĩ nổi, Bass gọn)',
+    bands: [
+      { freq: 55, gain: 3.2, q: 0.85, enabled: true },
+      { freq: 180, gain: -1.5, q: 1.2, enabled: true },
+      { freq: 1100, gain: 1.4, q: 1.4, enabled: true },
+      { freq: 2800, gain: 2.8, q: 1.8, enabled: true },
+      { freq: 6500, gain: -1.2, q: 2.5, enabled: true }, // Giảm chói âm 's/sh'
+      { freq: 11000, gain: 2.0, q: 1.5, enabled: true },
+    ],
+  },
+  music_edm: {
+    category: 'Thể loại âm nhạc',
+    name: 'EDM / Vinahouse / Club (Sub-bass rung, Drop căng)',
+    bands: [
+      { freq: 40, gain: 6.5, q: 0.8, enabled: true },
+      { freq: 95, gain: 4.0, q: 1.0, enabled: true },
+      { freq: 280, gain: -2.8, q: 1.3, enabled: true },
+      { freq: 1200, gain: -1.2, q: 1.4, enabled: true },
+      { freq: 4500, gain: 2.8, q: 1.7, enabled: true },
+      { freq: 10500, gain: 3.8, q: 1.4, enabled: true },
+    ],
+  },
+  music_acoustic: {
+    category: 'Thể loại âm nhạc',
+    name: 'Acoustic / Bolero / Ballad (Tiếng guitar & giọng ấm)',
+    bands: [
+      { freq: 65, gain: 1.5, q: 0.8, enabled: true },
+      { freq: 240, gain: 1.2, q: 1.1, enabled: true },
+      { freq: 1300, gain: 2.0, q: 1.4, enabled: true },
+      { freq: 3000, gain: 2.5, q: 1.8, enabled: true },
+      { freq: 7500, gain: 1.5, q: 1.6, enabled: true },
+    ],
+  },
+  music_lofi: {
+    category: 'Thể loại âm nhạc',
+    name: 'Lo-Fi / Chill / Study (Êm dịu, nghe lâu không mệt)',
+    bands: [
+      { freq: 65, gain: 3.5, q: 0.8, enabled: true },
+      { freq: 220, gain: 1.8, q: 1.0, enabled: true },
+      { freq: 2500, gain: -1.8, q: 1.5, enabled: true },
+      { freq: 6000, gain: -3.2, q: 1.6, enabled: true },
+      { freq: 11000, gain: -3.8, q: 1.4, enabled: true },
+    ],
+  },
+  music_rock: {
+    category: 'Thể loại âm nhạc',
+    name: 'Rock & Metal (Trống Kick dứt khoát, Guitar điện bén)',
+    bands: [
+      { freq: 60, gain: 3.0, q: 0.9, enabled: true },
+      { freq: 130, gain: 2.2, q: 1.2, enabled: true },
+      { freq: 420, gain: -2.2, q: 1.4, enabled: true },
+      { freq: 2400, gain: 2.8, q: 1.6, enabled: true },
+      { freq: 5200, gain: 2.5, q: 1.9, enabled: true },
+      { freq: 9500, gain: 2.0, q: 1.5, enabled: true },
+    ],
+  },
+  music_hiphop: {
+    category: 'Thể loại âm nhạc',
+    name: 'Hip-Hop / Trap / R&B (808 Bass sâu, Beat nảy)',
+    bands: [
+      { freq: 36, gain: 6.2, q: 0.85, enabled: true },
+      { freq: 85, gain: 3.5, q: 1.1, enabled: true },
+      { freq: 250, gain: -2.0, q: 1.3, enabled: true },
+      { freq: 1800, gain: 1.4, q: 1.5, enabled: true },
+      { freq: 4800, gain: 2.2, q: 1.8, enabled: true },
+      { freq: 11500, gain: 2.5, q: 1.5, enabled: true },
+    ],
+  },
+  music_classical: {
+    category: 'Thể loại âm nhạc',
+    name: 'Giao hưởng / Classical (Âm trường rộng, tách lớp)',
+    bands: [
+      { freq: 45, gain: 1.8, q: 0.8, enabled: true },
+      { freq: 190, gain: -1.5, q: 1.2, enabled: true },
+      { freq: 1000, gain: 0.8, q: 1.4, enabled: true },
+      { freq: 3400, gain: 2.0, q: 1.8, enabled: true },
+      { freq: 8500, gain: 2.5, q: 1.5, enabled: true },
+      { freq: 13500, gain: 3.0, q: 1.4, enabled: true },
+    ],
+  },
+  music_jpop: {
+    category: 'Thể loại âm nhạc',
+    name: 'J-Pop / Anisong (Giọng nữ cao sáng, tiết tấu nhanh)',
+    bands: [
+      { freq: 55, gain: 2.8, q: 0.9, enabled: true },
+      { freq: 200, gain: -2.2, q: 1.3, enabled: true },
+      { freq: 1600, gain: 1.5, q: 1.6, enabled: true },
+      { freq: 3200, gain: 3.0, q: 1.9, enabled: true },
+      { freq: 6800, gain: -1.5, q: 2.5, enabled: true },
+      { freq: 11500, gain: 2.6, q: 1.5, enabled: true },
+    ],
+  },
+
+  // --- NHÓM 4: GAMING & GIẢI TRÍ ---
+  game_fps: {
+    category: 'Gaming & Giải trí',
+    name: 'FPS Pro: Valorant / CS2 (Nghe rõ tiếng bước chân)',
+    bands: [
+      { freq: 55, gain: -4.5, q: 0.9, enabled: true },
+      { freq: 160, gain: -2.5, q: 1.2, enabled: true },
+      { freq: 2200, gain: 3.8, q: 1.6, enabled: true },
+      { freq: 4500, gain: 4.5, q: 1.8, enabled: true },
+      { freq: 8500, gain: 2.5, q: 1.5, enabled: true },
+    ],
+  },
+  game_pubg: {
+    category: 'Gaming & Giải trí',
+    name: 'Battle Royale: PUBG / Warzone (Định hướng tiếng súng)',
+    bands: [
+      { freq: 60, gain: -3.0, q: 0.9, enabled: true },
+      { freq: 190, gain: -1.8, q: 1.2, enabled: true },
+      { freq: 1800, gain: 2.8, q: 1.5, enabled: true },
+      { freq: 3800, gain: 3.8, q: 1.7, enabled: true },
+      { freq: 7500, gain: 2.2, q: 1.5, enabled: true },
+      { freq: 12000, gain: 1.8, q: 1.4, enabled: true },
+    ],
+  },
+  game_moba: {
+    category: 'Gaming & Giải trí',
+    name: 'MOBA / RPG Cinematic (Hiệu ứng kỹ năng hoành tráng)',
+    bands: [
+      { freq: 45, gain: 4.5, q: 0.85, enabled: true },
+      { freq: 140, gain: 2.0, q: 1.1, enabled: true },
+      { freq: 1200, gain: 1.5, q: 1.4, enabled: true },
+      { freq: 3200, gain: 2.2, q: 1.7, enabled: true },
+      { freq: 9000, gain: 2.5, q: 1.5, enabled: true },
+    ],
+  },
+  media_cinema: {
+    category: 'Gaming & Giải trí',
+    name: 'Cinema / Netflix Movie (Rạp chiếu phim, thoại rõ)',
+    bands: [
+      { freq: 38, gain: 5.5, q: 0.8, enabled: true },
+      { freq: 90, gain: 3.0, q: 1.0, enabled: true },
+      { freq: 300, gain: -1.8, q: 1.2, enabled: true },
+      { freq: 1500, gain: 2.5, q: 1.4, enabled: true }, // Tăng độ rõ lời thoại nhân vật
+      { freq: 3200, gain: 2.0, q: 1.7, enabled: true },
+      { freq: 10000, gain: 2.2, q: 1.5, enabled: true },
     ],
   },
 };
@@ -89,7 +334,7 @@ function createEmptyBands() {
 }
 
 // ============================================================================
-// 1. KIỂM TRA NỀN TẢNG (DESKTOP / ANDROID / iOS) & LINK CHIA SẺ
+// 1. KIỂM TRA NỀN TẢNG & KHÔI PHỤC DỮ LIỆU
 // ============================================================================
 function detectPlatformCompatibility() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -202,7 +447,7 @@ function updateHeadroomIndicator() {
 }
 
 // ============================================================================
-// 3. BỘ PHÁT ÂM THANH KIỂM TRA EQ (WEB AUDIO API TONE & PINK NOISE)
+// 3. BỘ PHÁT ÂM THANH KIỂM TRA EQ (WEB AUDIO API)
 // ============================================================================
 let audioCtx = null;
 let activeSource = null;
@@ -233,7 +478,7 @@ function toggleTestAudio(type, btnId) {
   if (audioCtx.state === 'suspended') audioCtx.resume();
 
   const masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0.18; // Âm lượng an toàn bảo vệ tai
+  masterGain.gain.value = 0.18;
   masterGain.connect(audioCtx.destination);
 
   if (type === 'pink') {
@@ -301,7 +546,7 @@ btnBypassToggle.addEventListener('click', async () => {
     dot.className = 'w-2 h-2 rounded-full bg-slate-500';
     txt.textContent = 'EQ: OFF (Gốc)';
     btnBypassToggle.classList.replace('text-cyan-300', 'text-slate-400');
-    appendLog('[A/B] Đã tạm tắt EQ (nghe chất âm gốc của tai nghe).');
+    appendLog('[A/B] Đã tạm tắt EQ (nghe chất âm gốc).');
   } else {
     dot.className = 'w-2 h-2 rounded-full bg-cyan-400';
     txt.textContent = 'EQ: ON';
@@ -317,7 +562,7 @@ btnBypassToggle.addEventListener('click', async () => {
 });
 
 // ============================================================================
-// 5. VẼ BIỂU ĐỒ CANVAS TƯƠNG TÁC (DESKTOP + TOUCH MOBILE)
+// 5. VẼ BIỂU ĐỒ CANVAS TƯƠNG TÁC
 // ============================================================================
 const PADDING = { top: 20, right: 18, bottom: 26, left: 38 };
 
@@ -399,7 +644,6 @@ function renderGraph() {
     sampleFreqs.push(Math.pow(10, Math.log10(MIN_FREQ) + ratio * (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ))));
   }
 
-  // Đường cong riêng của Band đang chạm
   const activeIdx = draggingBandIndex !== -1 ? draggingBandIndex : hoveredBandIndex;
   if (!isBypassed && activeIdx !== -1 && bands[activeIdx].enabled) {
     const b = bands[activeIdx];
@@ -419,7 +663,6 @@ function renderGraph() {
     ctx.setLineDash([]);
   }
 
-  // Đường đáp tuyến chính
   const activeBands = isBypassed ? createEmptyBands() : bands;
   const responseDbs = calculateTotalResponse(activeBands, sampleFreqs);
 
@@ -452,7 +695,6 @@ function renderGraph() {
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
-  // Vẽ các điểm Node (kích thước lớn hơn trên cảm ứng để dễ chạm ngón tay)
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const nodeRadius = isTouch ? 8.5 : 6;
 
@@ -492,7 +734,7 @@ canvas.addEventListener('pointerdown', (e) => {
   const my = e.clientY - rect.top;
 
   let closestIdx = -1;
-  let minDist = 24; // Vùng chạm rộng 24px cho ngón tay điện thoại
+  let minDist = 24;
   bands.forEach((band, idx) => {
     const dist = Math.hypot(mx - freqToX(band.freq, rect.width), my - dbToY(band.gain, rect.height));
     if (dist < minDist) {
@@ -550,7 +792,7 @@ canvas.addEventListener('pointerup', (e) => {
 });
 
 // ============================================================================
-// 6. RENDER 8 BAND CARDS (TỐI ƯU CẢ MOBILE LẪN DESKTOP)
+// 6. RENDER 8 BAND CARDS
 // ============================================================================
 function renderBandCards() {
   bandsContainer.innerHTML = '';
@@ -569,7 +811,6 @@ function renderBandCards() {
         </label>
       </div>
 
-      <!-- Gain Slider & Input -->
       <div>
         <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
           <span>Gain (dB)</span>
@@ -580,7 +821,6 @@ function renderBandCards() {
           class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer" />
       </div>
 
-      <!-- Freq & Q Row -->
       <div class="grid grid-cols-2 gap-2 pt-0.5">
         <div>
           <label class="block text-[10px] uppercase text-slate-500 mb-1">Freq (Hz)</label>
@@ -637,7 +877,7 @@ bandsContainer.addEventListener('input', (e) => {
 });
 
 // ============================================================================
-// 7. QUẢN LÝ PROFILE CÁ NHÂN & CHIA SẺ LINK
+// 7. RENDER DANH SÁCH 24 PRESET PHÂN NHÓM & PROFILE CÁ NHÂN
 // ============================================================================
 function renderPresetDropdown(selectedValue = 'current') {
   const userPresets = getUserPresets();
@@ -645,9 +885,10 @@ function renderPresetDropdown(selectedValue = 'current') {
 
   const optCurrent = document.createElement('option');
   optCurrent.value = 'current';
-  optCurrent.textContent = '● Cấu hình hiện tại';
+  optCurrent.textContent = '● Cấu hình đang chỉnh sửa';
   presetSelect.appendChild(optCurrent);
 
+  // Nhóm Profile cá nhân do bạn lưu
   const userKeys = Object.keys(userPresets);
   if (userKeys.length > 0) {
     const groupUser = document.createElement('optgroup');
@@ -661,15 +902,25 @@ function renderPresetDropdown(selectedValue = 'current') {
     presetSelect.appendChild(groupUser);
   }
 
-  const groupBuiltin = document.createElement('optgroup');
-  groupBuiltin.label = 'Preset tiêu chuẩn';
+  // Tự động gom nhóm 24 Preset tích hợp theo từng category
+  const categories = {};
   Object.entries(BUILTIN_PRESETS).forEach(([key, item]) => {
-    const opt = document.createElement('option');
-    opt.value = `builtin:${key}`;
-    opt.textContent = item.name;
-    groupBuiltin.appendChild(opt);
+    const cat = item.category || 'Khác';
+    if (!categories[cat]) categories[cat] = [];
+    categories[cat].push({ key, name: item.name });
   });
-  presetSelect.appendChild(groupBuiltin);
+
+  Object.entries(categories).forEach(([catName, items]) => {
+    const group = document.createElement('optgroup');
+    group.label = `── ${catName} ──`;
+    items.forEach((item) => {
+      const opt = document.createElement('option');
+      opt.value = `builtin:${item.key}`;
+      opt.textContent = item.name;
+      group.appendChild(opt);
+    });
+    presetSelect.appendChild(group);
+  });
 
   presetSelect.value = selectedValue;
   btnDeleteCustomPreset.classList.toggle('hidden', !presetSelect.value.startsWith('user:'));
@@ -706,14 +957,19 @@ presetSelect.addEventListener('change', (e) => {
   if (val.startsWith('user:')) {
     const key = val.replace('user:', '');
     const userPresets = getUserPresets();
-    if (userPresets[key]) bands = JSON.parse(JSON.stringify(userPresets[key].bands));
+    if (userPresets[key]) {
+      bands = JSON.parse(JSON.stringify(userPresets[key].bands));
+      appendLog(`[PRESET] Nạp profile cá nhân: "${userPresets[key].name}"`);
+    }
   } else if (val.startsWith('builtin:')) {
     const key = val.replace('builtin:', '');
-    const presetData = BUILTIN_PRESETS[key]?.bands || [];
+    const presetObj = BUILTIN_PRESETS[key];
+    const presetData = presetObj?.bands || [];
     bands = createEmptyBands();
     presetData.forEach((p, idx) => {
       if (idx < 8) bands[idx] = { ...bands[idx], ...p };
     });
+    appendLog(`[PRESET] Đã áp dụng mẫu: "${presetObj?.name}"`);
   }
 
   renderBandCards();
