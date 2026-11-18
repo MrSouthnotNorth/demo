@@ -1,7 +1,8 @@
 /**
  * app.js
- * TANCHJIM BUNNY STUDIO - Desktop & Mobile Responsive Controller
- * Tích hợp 24 Preset (Clone tai nghe + Thể loại nhạc + Gaming) & Lưu Profile cá nhân.
+ * TANCHJIM BUNNY STUDIO PRO 2.0
+ * Giữ nguyên toàn bộ tính năng cũ + Wallpaper Uploader, 5 Theme màu,
+ * Phân vùng dải tần khoa học, Vẽ đa đường cong Biquad, Auto-Level & Phím tắt.
  */
 
 import { calculateTotalResponse, calculateBiquadCoefficients, getBiquadMagnitudeDb } from './dspMath.js';
@@ -14,18 +15,36 @@ const MAX_DB = 10;
 
 const STORAGE_LAST_STATE = 'tanchjim_bunny_last_state_v6';
 const STORAGE_USER_PRESETS = 'tanchjim_bunny_user_presets_v6';
+const STORAGE_APPEARANCE = 'tanchjim_bunny_appearance_v1';
+
 const DEFAULT_FREQS = [40, 100, 250, 600, 1500, 3500, 7000, 12000];
 
+// Bảng màu riêng cho từng Band (giúp phân biệt trực quan 8 đường cong trên đồ thị)
+const BAND_COLORS = [
+  '#f43f5e', // Band 1 - Rose
+  '#fb923c', // Band 2 - Orange
+  '#facc15', // Band 3 - Yellow
+  '#4ade80', // Band 4 - Green
+  '#22d3ee', // Band 5 - Cyan
+  '#38bdf8', // Band 6 - Sky
+  '#818cf8', // Band 7 - Indigo
+  '#e879f9', // Band 8 - Fuchsia
+];
+
+// 5 Bảng màu chủ đạo (Accent Themes)
+const THEMES = {
+  cyan: { accent: '#22d3ee', dark: '#06b6d4', glow: 'rgba(34, 211, 238, 0.35)', soft: 'rgba(34, 211, 238, 0.14)' },
+  magenta: { accent: '#f43f5e', dark: '#e11d48', glow: 'rgba(244, 63, 94, 0.35)', soft: 'rgba(244, 63, 94, 0.15)' },
+  amber: { accent: '#f59e0b', dark: '#d97706', glow: 'rgba(245, 158, 11, 0.35)', soft: 'rgba(245, 158, 11, 0.15)' },
+  emerald: { accent: '#10b981', dark: '#059669', glow: 'rgba(16, 185, 129, 0.35)', soft: 'rgba(16, 185, 129, 0.15)' },
+  violet: { accent: '#a855f7', dark: '#9333ea', glow: 'rgba(168, 85, 247, 0.35)', soft: 'rgba(168, 85, 247, 0.15)' },
+};
+
 // ============================================================================
-// KHO 24 PRESET CHUYÊN SÂU (8-BAND PEAK, ±10dB)
+// KHO 24 PRESET CHUYÊN SÂU (GIỮ NGUYÊN 100%)
 // ============================================================================
 const BUILTIN_PRESETS = {
-  // --- NHÓM 1: TIÊU CHUẨN THAM CHIẾU ---
-  flat: {
-    category: 'Tiêu chuẩn tham chiếu',
-    name: 'Flat (Âm thanh nguyên bản của Bunny)',
-    bands: [],
-  },
+  flat: { category: 'Tiêu chuẩn tham chiếu', name: 'Flat (Âm thanh nguyên bản của Bunny)', bands: [] },
   harman2019: {
     category: 'Tiêu chuẩn tham chiếu',
     name: 'Harman IE 2019v2 Target (Cân bằng chuẩn mực)',
@@ -38,8 +57,6 @@ const BUILTIN_PRESETS = {
       { freq: 8000, gain: 1.5, q: 1.5, enabled: true },
     ],
   },
-
-  // --- NHÓM 2: CLONE MÀU ÂM CÁC TAI NGHE HUYỀN THOẠI ---
   clone_origin: {
     category: 'Clone màu âm tai nghe nổi tiếng',
     name: 'Clone: Tanchjim Origin (Flagship Vocal & Tự nhiên)',
@@ -157,8 +174,6 @@ const BUILTIN_PRESETS = {
       { freq: 10000, gain: -2.0, q: 1.5, enabled: true },
     ],
   },
-
-  // --- NHÓM 3: THỂ LOẠI ÂM NHẠC ---
   music_vpop: {
     category: 'Thể loại âm nhạc',
     name: 'V-Pop & Nhạc Trẻ (Giọng ca sĩ nổi, Bass gọn)',
@@ -167,7 +182,7 @@ const BUILTIN_PRESETS = {
       { freq: 180, gain: -1.5, q: 1.2, enabled: true },
       { freq: 1100, gain: 1.4, q: 1.4, enabled: true },
       { freq: 2800, gain: 2.8, q: 1.8, enabled: true },
-      { freq: 6500, gain: -1.2, q: 2.5, enabled: true }, // Giảm chói âm 's/sh'
+      { freq: 6500, gain: -1.2, q: 2.5, enabled: true },
       { freq: 11000, gain: 2.0, q: 1.5, enabled: true },
     ],
   },
@@ -253,8 +268,6 @@ const BUILTIN_PRESETS = {
       { freq: 11500, gain: 2.6, q: 1.5, enabled: true },
     ],
   },
-
-  // --- NHÓM 4: GAMING & GIẢI TRÍ ---
   game_fps: {
     category: 'Gaming & Giải trí',
     name: 'FPS Pro: Valorant / CS2 (Nghe rõ tiếng bước chân)',
@@ -296,7 +309,7 @@ const BUILTIN_PRESETS = {
       { freq: 38, gain: 5.5, q: 0.8, enabled: true },
       { freq: 90, gain: 3.0, q: 1.0, enabled: true },
       { freq: 300, gain: -1.8, q: 1.2, enabled: true },
-      { freq: 1500, gain: 2.5, q: 1.4, enabled: true }, // Tăng độ rõ lời thoại nhân vật
+      { freq: 1500, gain: 2.5, q: 1.4, enabled: true },
       { freq: 3200, gain: 2.0, q: 1.7, enabled: true },
       { freq: 10000, gain: 2.2, q: 1.5, enabled: true },
     ],
@@ -310,6 +323,7 @@ const bandsContainer = document.getElementById('bandsContainer');
 const hoverReadout = document.getElementById('hoverReadout');
 const hidLogBox = document.getElementById('hidLogBox');
 const chkAutoWrite = document.getElementById('chkAutoWrite');
+const chkShowAllCurves = document.getElementById('chkShowAllCurves');
 const btnPullHardware = document.getElementById('btnPullHardware');
 const presetSelect = document.getElementById('presetSelect');
 const btnDeleteCustomPreset = document.getElementById('btnDeleteCustomPreset');
@@ -334,40 +348,157 @@ function createEmptyBands() {
 }
 
 // ============================================================================
-// 1. KIỂM TRA NỀN TẢNG & KHÔI PHỤC DỮ LIỆU
+// 1. HỆ THỐNG CUSTOM WALLPAPER & THEME STUDIO
+// ============================================================================
+let appearance = {
+  theme: 'cyan',
+  bgImage: null,
+  dim: 78,
+  blur: 12,
+};
+
+function applyAppearanceSettings() {
+  const t = THEMES[appearance.theme] || THEMES.cyan;
+  document.documentElement.style.setProperty('--accent', t.accent);
+  document.documentElement.style.setProperty('--accent-dark', t.dark);
+  document.documentElement.style.setProperty('--accent-glow', t.glow);
+  document.documentElement.style.setProperty('--accent-soft', t.soft);
+
+  const bgDiv = document.getElementById('customBgImage');
+  const overlayDiv = document.getElementById('customBgOverlay');
+
+  if (appearance.bgImage) {
+    bgDiv.style.backgroundImage = `url(${appearance.bgImage})`;
+  } else {
+    bgDiv.style.backgroundImage = `radial-gradient(circle at 15% 15%, ${t.soft}, transparent 45%), radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.16), transparent 50%)`;
+  }
+
+  overlayDiv.style.background = `rgba(6, 8, 13, ${appearance.dim / 100})`;
+  overlayDiv.style.backdropFilter = `blur(${appearance.blur}px)`;
+  overlayDiv.style.webkitBackdropFilter = `blur(${appearance.blur}px)`;
+
+  document.getElementById('bgDimSlider').value = appearance.dim;
+  document.getElementById('bgBlurSlider').value = appearance.blur;
+
+  document.querySelectorAll('.theme-swatch').forEach((btn) => {
+    const isSelected = btn.dataset.theme === appearance.theme;
+    btn.classList.toggle('ring-2', isSelected);
+    btn.classList.toggle('ring-white', isSelected);
+    btn.classList.toggle('opacity-75', !isSelected);
+  });
+
+  renderGraph();
+}
+
+function loadAppearance() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_APPEARANCE));
+    if (saved) appearance = { ...appearance, ...saved };
+  } catch {}
+  applyAppearanceSettings();
+}
+
+function saveAppearance() {
+  try {
+    localStorage.setItem(STORAGE_APPEARANCE, JSON.stringify(appearance));
+  } catch (e) {
+    appendLog('[WARN] Ảnh nền quá lớn nên không lưu được vào bộ nhớ trình duyệt (vẫn hiển thị trong phiên này).');
+  }
+}
+
+document.getElementById('btnToggleThemeDrawer').addEventListener('click', () => {
+  document.getElementById('themeDrawer').classList.toggle('hidden');
+});
+
+const bgFileInput = document.getElementById('bgFileInput');
+document.getElementById('btnUploadBg').addEventListener('click', () => bgFileInput.click());
+bgFileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    // Tự động nén ảnh nếu ảnh gốc quá nặng để lưu mượt vào localStorage
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 1920;
+      let w = img.width;
+      let h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+      }
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = w;
+      offCanvas.height = h;
+      offCanvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      appearance.bgImage = offCanvas.toDataURL('image/jpeg', 0.82);
+      appearance.dim = 65; // Tự động giảm độ tối để khoe ảnh nền rõ hơn
+      applyAppearanceSettings();
+      saveAppearance();
+      appendLog(`[THEME] Đã cập nhật ảnh nền mới (${w}x${h}).`);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  bgFileInput.value = '';
+});
+
+document.getElementById('btnResetBg').addEventListener('click', () => {
+  appearance.bgImage = null;
+  appearance.dim = 78;
+  appearance.blur = 12;
+  applyAppearanceSettings();
+  saveAppearance();
+  appendLog('[THEME] Đã khôi phục nền studio mặc định.');
+});
+
+document.getElementById('bgDimSlider').addEventListener('input', (e) => {
+  appearance.dim = Number(e.target.value);
+  applyAppearanceSettings();
+  saveAppearance();
+});
+
+document.getElementById('bgBlurSlider').addEventListener('input', (e) => {
+  appearance.blur = Number(e.target.value);
+  applyAppearanceSettings();
+  saveAppearance();
+});
+
+document.querySelectorAll('.theme-swatch').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    appearance.theme = btn.dataset.theme;
+    applyAppearanceSettings();
+    saveAppearance();
+  });
+});
+
+// ============================================================================
+// 2. KHÔI PHỤC DỮ LIỆU & ĐỒNG BỘ PHẦN CỨNG
 // ============================================================================
 function detectPlatformCompatibility() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isIOS) {
     document.getElementById('deviceSubInfo').textContent =
-      'Chế độ iOS Mobile: Chỉnh đồ thị, nghe thử tín hiệu & tạo link chia sẻ (WebHID hỗ trợ trên Chrome Mac/Android).';
-    appendLog('[iOS] Phát hiện Safari/iOS: Đã bật chế độ Mobile Tuner & Audio Tester.');
+      'Chế độ iOS Mobile: Chỉnh đồ thị, thử âm & tạo link chia sẻ (WebHID hỗ trợ trên Chrome Mac/Android).';
   }
 }
 
 function loadBandsFromUrlHash() {
   try {
     if (window.location.hash.startsWith('#eq=')) {
-      const encoded = window.location.hash.slice(4);
-      const decoded = JSON.parse(atob(encoded));
+      const decoded = JSON.parse(atob(window.location.hash.slice(4)));
       if (Array.isArray(decoded) && decoded.length === 8) {
         appendLog('[SHARE] Đã nạp cấu hình EQ từ đường link chia sẻ!');
         history.replaceState(null, '', window.location.pathname);
         return decoded;
       }
     }
-  } catch (e) {
-    console.warn('Hash không hợp lệ:', e);
-  }
+  } catch {}
   return null;
 }
 
 function getUserPresets() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_USER_PRESETS)) || {};
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(STORAGE_USER_PRESETS)) || {}; } catch { return {}; }
 }
 
 function saveUserPresets(presetsObj) {
@@ -377,7 +508,6 @@ function saveUserPresets(presetsObj) {
 function loadInitialBands() {
   const fromUrl = loadBandsFromUrlHash();
   if (fromUrl) return fromUrl;
-
   try {
     const raw = localStorage.getItem(STORAGE_LAST_STATE);
     if (raw) {
@@ -387,22 +517,17 @@ function loadInitialBands() {
         return parsed;
       }
     }
-  } catch (e) {
-    console.warn(e);
-  }
+  } catch {}
   return createEmptyBands();
 }
 
 function persistBandsToLocal(currentBands) {
-  try {
-    localStorage.setItem(STORAGE_LAST_STATE, JSON.stringify(currentBands));
-  } catch (e) {
-    console.warn(e);
-  }
+  try { localStorage.setItem(STORAGE_LAST_STATE, JSON.stringify(currentBands)); } catch {}
 }
 
 let bands = loadInitialBands();
 let isBypassed = false;
+let selectedBandIndex = 0;
 let draggingBandIndex = -1;
 let hoveredBandIndex = -1;
 let autoWriteTimer = null;
@@ -430,7 +555,7 @@ function scheduleAutoWrite() {
 }
 
 // ============================================================================
-// 2. TÍNH TOÁN HEADROOM AN TOÀN CHỐNG CLIPPING
+// 3. HEADROOM & AUTO-LEVEL (CÂN BẰNG ĐỈNH THÔNG MINH)
 // ============================================================================
 function updateHeadroomIndicator() {
   const testFreqs = [30, 60, 120, 250, 500, 1000, 2500, 5000, 10000, 16000];
@@ -438,20 +563,46 @@ function updateHeadroomIndicator() {
   const maxPeak = Math.max(0, ...resp);
 
   if (maxPeak > 6.5) {
-    headroomBadge.className = 'bg-amber-950/60 border border-amber-700/60 px-2.5 py-1 rounded-lg text-amber-300';
-    headroomBadge.textContent = `Peak: +${maxPeak.toFixed(1)} dB (Nên giảm nhẹ Gain)`;
+    headroomBadge.className = 'bg-amber-950/70 border border-amber-600/60 px-2.5 py-1 rounded-lg text-amber-300';
+    headroomBadge.textContent = `Peak: +${maxPeak.toFixed(1)} dB`;
   } else {
-    headroomBadge.className = 'bg-emerald-950/50 border border-emerald-800/50 px-2.5 py-1 rounded-lg text-emerald-300';
-    headroomBadge.textContent = `Headroom: Tốt (+${maxPeak.toFixed(1)} dB)`;
+    headroomBadge.className = 'bg-emerald-950/60 border border-emerald-700/50 px-2.5 py-1 rounded-lg text-emerald-300';
+    headroomBadge.textContent = `Headroom: +${maxPeak.toFixed(1)} dB`;
   }
 }
 
+document.getElementById('btnAutoLevel').addEventListener('click', () => {
+  const sampleFreqs = Array.from({ length: 100 }, (_, i) =>
+    Math.pow(10, Math.log10(MIN_FREQ) + (i / 99) * (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ)))
+  );
+  const resp = calculateTotalResponse(bands, sampleFreqs);
+  const maxPeak = Math.max(...resp);
+
+  if (maxPeak <= 4.0) {
+    appendLog('[DSP] Đường cong đã nằm trong ngưỡng an toàn, không cần giảm thêm.');
+    return;
+  }
+
+  const offset = Math.round((maxPeak - 4.0) * 10) / 10;
+  bands.forEach((b) => {
+    if (b.enabled && b.gain > 0) {
+      b.gain = Math.max(MIN_DB, Math.round((b.gain - offset) * 10) / 10);
+    }
+  });
+  renderBandCards();
+  renderGraph();
+  scheduleAutoWrite();
+  appendLog(`[DSP] Auto-Level: Đã hạ các đỉnh tăng thêm -${offset} dB để chống méo tiếng.`);
+});
+
 // ============================================================================
-// 3. BỘ PHÁT ÂM THANH KIỂM TRA EQ (WEB AUDIO API)
+// 4. BỘ PHÁT TÍN HIỆU ÂM THANH & REAL-TIME FFT ANALYZER
 // ============================================================================
 let audioCtx = null;
+let analyserNode = null;
 let activeSource = null;
 let activeTestType = null;
+let fftAnimFrame = null;
 
 function stopTestAudio() {
   if (activeSource) {
@@ -459,12 +610,14 @@ function stopTestAudio() {
     activeSource.disconnect();
     activeSource = null;
   }
+  if (fftAnimFrame) cancelAnimationFrame(fftAnimFrame);
   activeTestType = null;
-  document.getElementById('toneStatus').textContent = 'Tắt';
-  document.getElementById('toneStatus').className = 'text-[11px] font-mono text-slate-500';
+  document.getElementById('toneStatus').textContent = 'Sẵn sàng';
+  document.getElementById('toneStatus').className = 'text-[11px] font-mono text-slate-400';
   ['btnTestPink', 'btnTestSweep', 'btnTestBass'].forEach((id) => {
-    document.getElementById(id).classList.remove('border-cyan-400', 'text-cyan-300', 'bg-cyan-950/40');
+    document.getElementById(id).classList.remove('border-accent', 'text-accent', 'bg-accent-soft');
   });
+  renderGraph();
 }
 
 function toggleTestAudio(type, btnId) {
@@ -474,12 +627,17 @@ function toggleTestAudio(type, btnId) {
   }
   stopTestAudio();
 
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 2048;
+  }
   if (audioCtx.state === 'suspended') audioCtx.resume();
 
   const masterGain = audioCtx.createGain();
   masterGain.gain.value = 0.18;
-  masterGain.connect(audioCtx.destination);
+  masterGain.connect(analyserNode);
+  analyserNode.connect(audioCtx.destination);
 
   if (type === 'pink') {
     const bufferSize = audioCtx.sampleRate * 3;
@@ -525,8 +683,15 @@ function toggleTestAudio(type, btnId) {
 
   activeTestType = type;
   document.getElementById('toneStatus').textContent = `Đang phát: ${type.toUpperCase()}`;
-  document.getElementById('toneStatus').className = 'text-[11px] font-mono text-cyan-400 animate-pulse';
-  document.getElementById(btnId).classList.add('border-cyan-400', 'text-cyan-300', 'bg-cyan-950/40');
+  document.getElementById('toneStatus').className = 'text-[11px] font-mono text-accent animate-pulse';
+  document.getElementById(btnId).classList.add('border-accent', 'text-accent', 'bg-accent-soft');
+
+  const loopVisualizer = () => {
+    if (!activeTestType) return;
+    renderGraph();
+    fftAnimFrame = requestAnimationFrame(loopVisualizer);
+  };
+  loopVisualizer();
 }
 
 document.getElementById('btnTestPink').addEventListener('click', () => toggleTestAudio('pink', 'btnTestPink'));
@@ -534,23 +699,25 @@ document.getElementById('btnTestSweep').addEventListener('click', () => toggleTe
 document.getElementById('btnTestBass').addEventListener('click', () => toggleTestAudio('bass', 'btnTestBass'));
 
 // ============================================================================
-// 4. SO SÁNH NHANH A/B (BYPASS EQ)
+// 5. SO SÁNH A/B (BYPASS TOGGLE)
 // ============================================================================
 const btnBypassToggle = document.getElementById('btnBypassToggle');
-btnBypassToggle.addEventListener('click', async () => {
+async function toggleBypass() {
   isBypassed = !isBypassed;
   const dot = document.getElementById('bypassDot');
   const txt = document.getElementById('bypassText');
 
   if (isBypassed) {
     dot.className = 'w-2 h-2 rounded-full bg-slate-500';
-    txt.textContent = 'EQ: OFF (Gốc)';
-    btnBypassToggle.classList.replace('text-cyan-300', 'text-slate-400');
-    appendLog('[A/B] Đã tạm tắt EQ (nghe chất âm gốc).');
+    txt.textContent = 'EQ: OFF';
+    btnBypassToggle.classList.remove('text-accent');
+    btnBypassToggle.classList.add('text-slate-400');
+    appendLog('[A/B] Tạm tắt EQ (Nghe chất âm nguyên bản).');
   } else {
-    dot.className = 'w-2 h-2 rounded-full bg-cyan-400';
+    dot.className = 'w-2 h-2 rounded-full bg-accent';
     txt.textContent = 'EQ: ON';
-    btnBypassToggle.classList.replace('text-slate-400', 'text-cyan-300');
+    btnBypassToggle.classList.remove('text-slate-400');
+    btnBypassToggle.classList.add('text-accent');
     appendLog('[A/B] Đã bật lại cấu hình EQ.');
   }
 
@@ -559,12 +726,13 @@ btnBypassToggle.addEventListener('click', async () => {
     const targetBands = isBypassed ? createEmptyBands() : bands;
     await bunnyController.writeAndSaveBands(targetBands);
   }
-});
+}
+btnBypassToggle.addEventListener('click', toggleBypass);
 
 // ============================================================================
-// 5. VẼ BIỂU ĐỒ CANVAS TƯƠNG TÁC
+// 6. VẼ ĐỒ THỊ KHOA HỌC (PHÂN VÙNG DẢI TẦN + ĐA ĐƯỜNG CONG + FFT SPECTRUM)
 // ============================================================================
-const PADDING = { top: 20, right: 18, bottom: 26, left: 38 };
+const PADDING = { top: 26, right: 18, bottom: 26, left: 38 };
 
 function freqToX(freq, width) {
   const plotW = width - PADDING.left - PADDING.right;
@@ -602,9 +770,59 @@ function renderGraph() {
   const W = rect.width;
   const H = rect.height;
 
-  ctx.fillStyle = '#080a0f';
+  const theme = THEMES[appearance.theme] || THEMES.cyan;
+
+  ctx.fillStyle = 'rgba(6, 8, 13, 0.92)';
   ctx.fillRect(0, 0, W, H);
 
+  // 1. Vẽ phân vùng dải tần âm học khoa học ở dải trên cùng
+  const acousticZones = [
+    { start: 20, end: 60, label: 'SUB-BASS' },
+    { start: 60, end: 250, label: 'BASS' },
+    { start: 250, end: 500, label: 'LOW-MID' },
+    { start: 500, end: 2000, label: 'MIDRANGE' },
+    { start: 2000, end: 6000, label: 'PRESENCE' },
+    { start: 6000, end: 20000, label: 'BRILLIANCE' },
+  ];
+
+  ctx.font = '600 9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  acousticZones.forEach((z, idx) => {
+    const x1 = freqToX(z.start, W);
+    const x2 = freqToX(z.end, W);
+    if (idx % 2 === 0) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.fillRect(x1, PADDING.top, x2 - x1, H - PADDING.top - PADDING.bottom);
+    }
+    if (W > 420 || idx % 2 === 0) {
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
+      ctx.fillText(z.label, (x1 + x2) / 2, 15);
+    }
+  });
+
+  // 2. Vẽ sóng phổ FFT thời gian thực (nếu đang bật âm thanh thử nghiệm)
+  if (activeTestType && analyserNode) {
+    const freqData = new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteFrequencyData(freqData);
+    const nyquist = audioCtx.sampleRate / 2;
+
+    ctx.beginPath();
+    ctx.moveTo(PADDING.left, H - PADDING.bottom);
+    for (let i = 1; i < freqData.length; i++) {
+      const f = (i / freqData.length) * nyquist;
+      if (f < MIN_FREQ || f > MAX_FREQ) continue;
+      const x = freqToX(f, W);
+      const ampRatio = freqData[i] / 255;
+      const y = H - PADDING.bottom - ampRatio * (H - PADDING.top - PADDING.bottom) * 0.75;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W - PADDING.right, H - PADDING.bottom);
+    ctx.closePath();
+    ctx.fillStyle = theme.soft;
+    ctx.fill();
+  }
+
+  // 3. Lưới tần số & dB
   const gridFreqs = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
   ctx.lineWidth = 1;
   ctx.font = '10px "JetBrains Mono", monospace';
@@ -612,7 +830,7 @@ function renderGraph() {
 
   gridFreqs.forEach((f) => {
     const x = freqToX(f, W);
-    ctx.strokeStyle = [100, 1000, 10000].includes(f) ? '#1e2533' : '#11151f';
+    ctx.strokeStyle = [100, 1000, 10000].includes(f) ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)';
     ctx.beginPath();
     ctx.moveTo(x, PADDING.top);
     ctx.lineTo(x, H - PADDING.bottom);
@@ -626,50 +844,55 @@ function renderGraph() {
   ctx.textAlign = 'right';
   gridDbs.forEach((db) => {
     const y = dbToY(db, H);
-    ctx.strokeStyle = db === 0 ? '#334155' : '#11151f';
+    ctx.strokeStyle = db === 0 ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.04)';
     ctx.lineWidth = db === 0 ? 1.5 : 1;
     ctx.beginPath();
     ctx.moveTo(PADDING.left, y);
     ctx.lineTo(W - PADDING.right, y);
     ctx.stroke();
 
-    ctx.fillStyle = db === 0 ? '#94a3b8' : '#64748b';
+    ctx.fillStyle = db === 0 ? '#cbd5e1' : '#64748b';
     ctx.fillText(`${db > 0 ? '+' : ''}${db}`, PADDING.left - 6, y + 3);
   });
 
-  const numSamples = 350;
+  const numSamples = 360;
   const sampleFreqs = [];
   for (let i = 0; i <= numSamples; i++) {
     const ratio = i / numSamples;
     sampleFreqs.push(Math.pow(10, Math.log10(MIN_FREQ) + ratio * (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ))));
   }
 
-  const activeIdx = draggingBandIndex !== -1 ? draggingBandIndex : hoveredBandIndex;
-  if (!isBypassed && activeIdx !== -1 && bands[activeIdx].enabled) {
-    const b = bands[activeIdx];
-    const singleCoeff = calculateBiquadCoefficients(b.freq, b.gain, b.q);
-    ctx.beginPath();
-    sampleFreqs.forEach((f, idx) => {
-      const db = Math.max(MIN_DB, Math.min(MAX_DB, getBiquadMagnitudeDb(singleCoeff, f)));
-      const x = freqToX(f, W);
-      const y = dbToY(db, H);
-      if (idx === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+  // 4. Vẽ đường cong riêng của từng Band (nếu bật chkShowAllCurves)
+  if (!isBypassed && chkShowAllCurves && chkShowAllCurves.checked) {
+    bands.forEach((b, bIdx) => {
+      if (!b.enabled || Math.abs(b.gain) < 0.05) return;
+      const singleCoeff = calculateBiquadCoefficients(b.freq, b.gain, b.q);
+      const isFocused = bIdx === selectedBandIndex || bIdx === draggingBandIndex;
+
+      ctx.beginPath();
+      sampleFreqs.forEach((f, idx) => {
+        const db = Math.max(MIN_DB, Math.min(MAX_DB, getBiquadMagnitudeDb(singleCoeff, f)));
+        const x = freqToX(f, W);
+        const y = dbToY(db, H);
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = BAND_COLORS[bIdx % BAND_COLORS.length];
+      ctx.globalAlpha = isFocused ? 0.75 : 0.25;
+      ctx.lineWidth = isFocused ? 1.8 : 1;
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
     });
-    ctx.strokeStyle = 'rgba(250, 204, 21, 0.5)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 4]);
-    ctx.stroke();
-    ctx.setLineDash([]);
   }
 
+  // 5. Đường đáp tuyến tổng hợp chính
   const activeBands = isBypassed ? createEmptyBands() : bands;
   const responseDbs = calculateTotalResponse(activeBands, sampleFreqs);
 
   const gradient = ctx.createLinearGradient(0, PADDING.top, 0, H - PADDING.bottom);
-  gradient.addColorStop(0, isBypassed ? 'rgba(148, 163, 184, 0.1)' : 'rgba(34, 211, 238, 0.28)');
-  gradient.addColorStop(0.5, 'rgba(34, 211, 238, 0.02)');
-  gradient.addColorStop(1, isBypassed ? 'rgba(148, 163, 184, 0.1)' : 'rgba(34, 211, 238, 0.28)');
+  gradient.addColorStop(0, isBypassed ? 'rgba(148, 163, 184, 0.1)' : theme.glow);
+  gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+  gradient.addColorStop(1, isBypassed ? 'rgba(148, 163, 184, 0.1)' : theme.glow);
 
   const zeroY = dbToY(0, H);
   ctx.beginPath();
@@ -691,34 +914,39 @@ function renderGraph() {
     if (idx === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   });
-  ctx.strokeStyle = isBypassed ? '#64748b' : '#22d3ee';
-  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = isBypassed ? '#64748b' : theme.accent;
+  ctx.lineWidth = 2.8;
+  ctx.shadowColor = isBypassed ? 'transparent' : theme.glow;
+  ctx.shadowBlur = 10;
   ctx.stroke();
+  ctx.shadowBlur = 0;
 
+  // 6. Vẽ 8 điểm điều khiển (Nodes) đa sắc
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const nodeRadius = isTouch ? 8.5 : 6;
+  const nodeRadius = isTouch ? 8.5 : 6.5;
 
   bands.forEach((band, index) => {
     const x = freqToX(band.freq, W);
     const y = dbToY(isBypassed ? 0 : band.gain, H);
-    const isSelected = index === draggingBandIndex || index === hoveredBandIndex;
+    const isSelected = index === draggingBandIndex || index === hoveredBandIndex || index === selectedBandIndex;
+    const nodeColor = BAND_COLORS[index % BAND_COLORS.length];
 
     if (isSelected) {
       ctx.beginPath();
       ctx.arc(x, y, nodeRadius + 8, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(34, 211, 238, 0.22)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
       ctx.fill();
     }
 
     ctx.beginPath();
-    ctx.arc(x, y, isSelected ? nodeRadius + 2 : nodeRadius, 0, Math.PI * 2);
-    ctx.fillStyle = isBypassed ? '#475569' : band.enabled ? (isSelected ? '#ffffff' : '#06b6d4') : '#334155';
+    ctx.arc(x, y, isSelected ? nodeRadius + 1.5 : nodeRadius, 0, Math.PI * 2);
+    ctx.fillStyle = isBypassed ? '#475569' : band.enabled ? (isSelected ? '#ffffff' : nodeColor) : '#334155';
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = '#080a0f';
+    ctx.strokeStyle = '#06080d';
     ctx.stroke();
 
-    ctx.fillStyle = isSelected ? '#fde047' : '#e2e8f0';
+    ctx.fillStyle = isSelected ? '#ffffff' : '#cbd5e1';
     ctx.font = 'bold 10px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`${index + 1}`, x, y - (nodeRadius + 5));
@@ -726,6 +954,8 @@ function renderGraph() {
 
   ctx.restore();
 }
+
+chkShowAllCurves.addEventListener('change', renderGraph);
 
 canvas.addEventListener('pointerdown', (e) => {
   if (isBypassed) return;
@@ -745,7 +975,9 @@ canvas.addEventListener('pointerdown', (e) => {
 
   if (closestIdx !== -1) {
     draggingBandIndex = closestIdx;
+    selectedBandIndex = closestIdx;
     canvas.setPointerCapture(e.pointerId);
+    renderBandCards();
     renderGraph();
   }
 });
@@ -786,51 +1018,120 @@ canvas.addEventListener('pointerup', (e) => {
     draggingBandIndex = -1;
     canvas.releasePointerCapture(e.pointerId);
     renderPresetDropdown('current');
+    renderBandCards();
     renderGraph();
     scheduleAutoWrite();
   }
 });
 
 // ============================================================================
-// 6. RENDER 8 BAND CARDS
+// 7. RENDER 8 BAND CARDS (NÚT STEP -/+ & QUICK Q TRỰC QUAN)
 // ============================================================================
+function formatSignedDb(val) {
+  const num = Number(val) || 0;
+  return `${num > 0 ? '+' : ''}${num.toFixed(1)}`;
+}
+
 function renderBandCards() {
   bandsContainer.innerHTML = '';
   bands.forEach((band, idx) => {
+    const isFocused = idx === selectedBandIndex || idx === draggingBandIndex;
+    const nodeColor = BAND_COLORS[idx % BAND_COLORS.length];
     const card = document.createElement('div');
-    card.className = 'bg-[#0e121a] border border-slate-800/80 rounded-2xl p-3.5 flex flex-col gap-3 hover:border-slate-700/90 transition shadow-md';
+    card.dataset.cardIdx = idx;
+    card.className = `glass-panel ${
+      isFocused ? 'border-accent ring-1 ring-white/20' : ''
+    } rounded-2xl p-4 flex flex-col gap-3 transition-all shadow-lg`;
+
+    const freqSliderVal = Math.round(
+      ((Math.log10(band.freq) - Math.log10(MIN_FREQ)) / (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ))) * 1000
+    );
+
     card.innerHTML = `
-      <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+      <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div class="flex items-center gap-2">
-          <span class="w-6 h-6 rounded-lg bg-cyan-500/15 text-cyan-400 font-mono text-xs font-bold flex items-center justify-center">#${idx + 1}</span>
-          <span class="text-xs font-medium text-slate-300">Peak Filter</span>
+          <span class="w-6 h-6 rounded-lg font-mono text-xs font-bold flex items-center justify-center text-slate-950"
+                style="background-color: ${band.enabled ? nodeColor : '#475569'}">
+            ${idx + 1}
+          </span>
+          <span class="text-xs font-semibold text-white">Band ${idx + 1}</span>
         </div>
-        <label class="flex items-center gap-1.5 cursor-pointer">
-          <input type="checkbox" data-idx="${idx}" data-field="enabled" ${band.enabled ? 'checked' : ''} class="w-4 h-4 accent-cyan-500 rounded cursor-pointer" />
-          <span class="text-[11px] text-slate-400">Bật</span>
-        </label>
+        <div class="flex items-center gap-2">
+          <button type="button" data-action="zero-band" data-idx="${idx}" 
+            class="text-[10px] font-mono text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 px-2 py-1 rounded-md border border-white/10 transition cursor-pointer">
+            0 dB
+          </button>
+          <input type="checkbox" data-idx="${idx}" data-field="enabled" ${band.enabled ? 'checked' : ''} 
+            class="w-4 h-4 rounded cursor-pointer" />
+        </div>
       </div>
 
-      <div>
-        <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-          <span>Gain (dB)</span>
-          <input type="number" step="0.1" min="-10" max="10" value="${band.gain.toFixed(1)}" data-idx="${idx}" data-field="gain"
-            class="w-16 bg-slate-900 border border-slate-700/80 rounded-md px-2 py-0.5 text-right font-mono text-xs text-cyan-300 focus:border-cyan-500 outline-none" />
+      <!-- GAIN -->
+      <div class="glass-subpanel p-2.5 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-medium text-slate-400">Gain (dB)</span>
+          <div class="flex items-center bg-black/40 rounded-lg border border-white/10 overflow-hidden">
+            <button type="button" data-step="gain" data-dir="-1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">−</button>
+            <input type="text" inputmode="decimal" value="${formatSignedDb(band.gain)}" data-idx="${idx}" data-field="gainText"
+              class="w-14 bg-transparent text-center font-mono text-xs font-bold text-accent focus:bg-white/10 outline-none" />
+            <button type="button" data-step="gain" data-dir="1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">+</button>
+          </div>
         </div>
         <input type="range" step="0.1" min="-10" max="10" value="${band.gain}" data-idx="${idx}" data-field="gainSlider"
-          class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer" />
+          class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer" />
       </div>
 
-      <div class="grid grid-cols-2 gap-2 pt-0.5">
-        <div>
-          <label class="block text-[10px] uppercase text-slate-500 mb-1">Freq (Hz)</label>
-          <input type="number" step="1" min="20" max="20000" value="${band.freq}" data-idx="${idx}" data-field="freq"
-            class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1.5 font-mono text-xs text-white focus:border-cyan-500 outline-none" />
+      <!-- FREQUENCY -->
+      <div class="glass-subpanel p-2.5 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-medium text-slate-400">Freq (Hz)</span>
+          <div class="flex items-center bg-black/40 rounded-lg border border-white/10 overflow-hidden">
+            <button type="button" data-step="freq" data-dir="-1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">−</button>
+            <input type="text" inputmode="numeric" value="${band.freq}" data-idx="${idx}" data-field="freqText"
+              class="w-16 bg-transparent text-center font-mono text-xs font-semibold text-white focus:bg-white/10 outline-none" />
+            <button type="button" data-step="freq" data-dir="1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">+</button>
+          </div>
         </div>
-        <div>
-          <label class="block text-[10px] uppercase text-slate-500 mb-1">Q-Factor</label>
-          <input type="number" step="0.05" min="0.1" max="15" value="${band.q}" data-idx="${idx}" data-field="q"
-            class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1.5 font-mono text-xs text-white focus:border-cyan-500 outline-none" />
+        <input type="range" step="1" min="0" max="1000" value="${freqSliderVal}" data-idx="${idx}" data-field="freqSlider"
+          class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer" />
+      </div>
+
+      <!-- Q-FACTOR -->
+      <div class="glass-subpanel p-2.5 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-medium text-slate-400">Q-Factor</span>
+          <div class="flex items-center bg-black/40 rounded-lg border border-white/10 overflow-hidden">
+            <button type="button" data-step="q" data-dir="-1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">−</button>
+            <input type="text" inputmode="decimal" value="${band.q.toFixed(2)}" data-idx="${idx}" data-field="qText"
+              class="w-14 bg-transparent text-center font-mono text-xs font-semibold text-white focus:bg-white/10 outline-none" />
+            <button type="button" data-step="q" data-dir="1" data-idx="${idx}"
+              class="w-7 h-7 flex items-center justify-center text-slate-200 hover:bg-white/10 font-bold text-sm transition cursor-pointer select-none">+</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-1">
+          ${[
+            { label: '0.7 Rộng', val: 0.71 },
+            { label: '1.4 Vừa', val: 1.41 },
+            { label: '3.0 Hẹp', val: 3.0 },
+            { label: '6.0 Nhọn', val: 6.0 },
+          ]
+            .map(
+              (preset) => `
+            <button type="button" data-quick-q="${preset.val}" data-idx="${idx}"
+              class="text-[10px] font-mono py-1 rounded-md border ${
+                Math.abs(band.q - preset.val) < 0.08
+                  ? 'bg-accent-soft border-accent text-accent font-semibold'
+                  : 'bg-black/30 border-white/5 text-slate-400 hover:text-slate-200'
+              } transition cursor-pointer">
+              ${preset.label}
+            </button>`
+            )
+            .join('')}
         </div>
       </div>
     `;
@@ -839,12 +1140,24 @@ function renderBandCards() {
 }
 
 function updateCardInputs(idx) {
-  const freqInput = bandsContainer.querySelector(`input[data-idx="${idx}"][data-field="freq"]`);
-  const gainInput = bandsContainer.querySelector(`input[data-idx="${idx}"][data-field="gain"]`);
-  const gainSlider = bandsContainer.querySelector(`input[data-idx="${idx}"][data-field="gainSlider"]`);
-  if (freqInput) freqInput.value = bands[idx].freq;
-  if (gainInput) gainInput.value = bands[idx].gain.toFixed(1);
+  const card = bandsContainer.querySelector(`[data-card-idx="${idx}"]`);
+  if (!card) return;
+
+  const gainText = card.querySelector(`input[data-field="gainText"]`);
+  const gainSlider = card.querySelector(`input[data-field="gainSlider"]`);
+  const freqText = card.querySelector(`input[data-field="freqText"]`);
+  const freqSlider = card.querySelector(`input[data-field="freqSlider"]`);
+  const qText = card.querySelector(`input[data-field="qText"]`);
+
+  if (gainText && document.activeElement !== gainText) gainText.value = formatSignedDb(bands[idx].gain);
   if (gainSlider) gainSlider.value = bands[idx].gain;
+  if (freqText && document.activeElement !== freqText) freqText.value = bands[idx].freq;
+  if (freqSlider) {
+    freqSlider.value = Math.round(
+      ((Math.log10(bands[idx].freq) - Math.log10(MIN_FREQ)) / (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ))) * 1000
+    );
+  }
+  if (qText && document.activeElement !== qText) qText.value = bands[idx].q.toFixed(2);
 }
 
 bandsContainer.addEventListener('input', (e) => {
@@ -853,31 +1166,163 @@ bandsContainer.addEventListener('input', (e) => {
   const field = target.dataset.field;
   if (Number.isNaN(idx) || !field) return;
 
+  selectedBandIndex = idx;
+
   if (field === 'enabled') {
     bands[idx].enabled = target.checked;
+    renderBandCards();
   } else if (field === 'gainSlider') {
-    const val = parseFloat(target.value);
-    bands[idx].gain = val;
-    const gainInput = bandsContainer.querySelector(`input[data-idx="${idx}"][data-field="gain"]`);
-    if (gainInput) gainInput.value = val.toFixed(1);
+    bands[idx].gain = parseFloat(target.value);
+    bands[idx].enabled = true;
+    updateCardInputs(idx);
+  } else if (field === 'freqSlider') {
+    const ratio = parseFloat(target.value) / 1000;
+    bands[idx].freq = Math.round(Math.pow(10, Math.log10(MIN_FREQ) + ratio * (Math.log10(MAX_FREQ) - Math.log10(MIN_FREQ))));
+    updateCardInputs(idx);
   } else {
-    let val = parseFloat(target.value);
-    if (!Number.isNaN(val)) {
-      if (field === 'gain') {
-        val = Math.max(MIN_DB, Math.min(MAX_DB, val));
-        const gainSlider = bandsContainer.querySelector(`input[data-idx="${idx}"][data-field="gainSlider"]`);
-        if (gainSlider) gainSlider.value = val;
-      }
-      bands[idx][field] = val;
-    }
+    return;
   }
+
   renderPresetDropdown('current');
   renderGraph();
   scheduleAutoWrite();
 });
 
+function commitTextInput(target) {
+  const idx = Number(target.dataset.idx);
+  const field = target.dataset.field;
+  if (Number.isNaN(idx) || !field) return;
+
+  const rawVal = parseFloat(target.value.replace(',', '.'));
+
+  if (field === 'gainText') {
+    if (!Number.isNaN(rawVal)) {
+      bands[idx].gain = Math.max(MIN_DB, Math.min(MAX_DB, Math.round(rawVal * 10) / 10));
+      bands[idx].enabled = true;
+    }
+    target.value = formatSignedDb(bands[idx].gain);
+  } else if (field === 'freqText') {
+    if (!Number.isNaN(rawVal)) {
+      bands[idx].freq = Math.max(MIN_FREQ, Math.min(MAX_FREQ, Math.round(rawVal)));
+    }
+    target.value = bands[idx].freq;
+  } else if (field === 'qText') {
+    if (!Number.isNaN(rawVal)) {
+      bands[idx].q = Math.max(0.1, Math.min(15, Math.round(rawVal * 100) / 100));
+    }
+    target.value = bands[idx].q.toFixed(2);
+  }
+
+  updateCardInputs(idx);
+  renderPresetDropdown('current');
+  renderGraph();
+  scheduleAutoWrite();
+}
+
+bandsContainer.addEventListener('change', (e) => {
+  if (['gainText', 'freqText', 'qText'].includes(e.target.dataset.field)) commitTextInput(e.target);
+});
+
+bandsContainer.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && ['gainText', 'freqText', 'qText'].includes(e.target.dataset.field)) e.target.blur();
+});
+
+bandsContainer.addEventListener('focusin', (e) => {
+  if (['gainText', 'freqText', 'qText'].includes(e.target.dataset.field)) {
+    selectedBandIndex = Number(e.target.dataset.idx);
+    e.target.select();
+  }
+});
+
+let holdTimer = null;
+let holdInterval = null;
+
+function applyButtonAction(btn) {
+  const idx = Number(btn.dataset.idx);
+  if (Number.isNaN(idx)) return;
+  selectedBandIndex = idx;
+
+  if (btn.dataset.action === 'zero-band') {
+    bands[idx].gain = 0.0;
+  } else if (btn.dataset.quickQ) {
+    bands[idx].q = parseFloat(btn.dataset.quickQ);
+    renderBandCards();
+  } else if (btn.dataset.step) {
+    const dir = Number(btn.dataset.dir);
+    const type = btn.dataset.step;
+
+    if (type === 'gain') {
+      bands[idx].gain = Math.max(MIN_DB, Math.min(MAX_DB, Math.round((bands[idx].gain + dir * 0.1) * 10) / 10));
+      bands[idx].enabled = true;
+    } else if (type === 'freq') {
+      const f = bands[idx].freq;
+      const step = f < 200 ? 5 : f < 1000 ? 20 : f < 5000 ? 100 : 250;
+      bands[idx].freq = Math.max(MIN_FREQ, Math.min(MAX_FREQ, f + dir * step));
+    } else if (type === 'q') {
+      bands[idx].q = Math.max(0.1, Math.min(15, Math.round((bands[idx].q + dir * 0.1) * 100) / 100));
+    }
+  }
+
+  updateCardInputs(idx);
+  renderPresetDropdown('current');
+  renderGraph();
+  scheduleAutoWrite();
+}
+
+bandsContainer.addEventListener('pointerdown', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  applyButtonAction(btn);
+
+  if (btn.dataset.step) {
+    clearTimeout(holdTimer);
+    clearInterval(holdInterval);
+    holdTimer = setTimeout(() => {
+      holdInterval = setInterval(() => applyButtonAction(btn), 65);
+    }, 350);
+  }
+});
+
+['pointerup', 'pointerleave', 'pointercancel'].forEach((evt) => {
+  bandsContainer.addEventListener(evt, () => {
+    clearTimeout(holdTimer);
+    clearInterval(holdInterval);
+  });
+});
+
+// Phím tắt bàn phím chuyên nghiệp (Arrow keys, 1-8, Space)
+window.addEventListener('keydown', (e) => {
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+  if (e.code === 'Space') {
+    e.preventDefault();
+    toggleBypass();
+    return;
+  }
+
+  if (e.key >= '1' && e.key <= '8') {
+    selectedBandIndex = Number(e.key) - 1;
+    renderBandCards();
+    renderGraph();
+    return;
+  }
+
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
+    const b = bands[selectedBandIndex];
+    if (e.key === 'ArrowUp') b.gain = Math.min(MAX_DB, Math.round((b.gain + 0.1) * 10) / 10);
+    if (e.key === 'ArrowDown') b.gain = Math.max(MIN_DB, Math.round((b.gain - 0.1) * 10) / 10);
+    if (e.key === 'ArrowRight') b.freq = Math.min(MAX_FREQ, b.freq + (b.freq < 500 ? 10 : 50));
+    if (e.key === 'ArrowLeft') b.freq = Math.max(MIN_FREQ, b.freq - (b.freq < 500 ? 10 : 50));
+    b.enabled = true;
+    updateCardInputs(selectedBandIndex);
+    renderGraph();
+    scheduleAutoWrite();
+  }
+});
+
 // ============================================================================
-// 7. RENDER DANH SÁCH 24 PRESET PHÂN NHÓM & PROFILE CÁ NHÂN
+// 8. QUẢN LÝ PRESET & PROFILE CÁ NHÂN + WEBHID
 // ============================================================================
 function renderPresetDropdown(selectedValue = 'current') {
   const userPresets = getUserPresets();
@@ -888,7 +1333,6 @@ function renderPresetDropdown(selectedValue = 'current') {
   optCurrent.textContent = '● Cấu hình đang chỉnh sửa';
   presetSelect.appendChild(optCurrent);
 
-  // Nhóm Profile cá nhân do bạn lưu
   const userKeys = Object.keys(userPresets);
   if (userKeys.length > 0) {
     const groupUser = document.createElement('optgroup');
@@ -902,7 +1346,6 @@ function renderPresetDropdown(selectedValue = 'current') {
     presetSelect.appendChild(groupUser);
   }
 
-  // Tự động gom nhóm 24 Preset tích hợp theo từng category
   const categories = {};
   Object.entries(BUILTIN_PRESETS).forEach(([key, item]) => {
     const cat = item.category || 'Khác';
@@ -982,15 +1425,12 @@ document.getElementById('btnShareProfile').addEventListener('click', async () =>
   const shareUrl = `${window.location.origin}${window.location.pathname}#eq=${encoded}`;
   try {
     await navigator.clipboard.writeText(shareUrl);
-    alert('Đã copy link chứa cấu hình EQ! Bạn có thể gửi link này mở trên điện thoại để nạp ngay.');
+    alert('Đã copy link chứa cấu hình EQ! Bạn có thể gửi link này mở trên thiết bị khác.');
   } catch {
-    prompt('Copy đường link dưới đây để mở trên điện thoại:', shareUrl);
+    prompt('Copy đường link dưới đây:', shareUrl);
   }
 });
 
-// ============================================================================
-// 8. KẾT NỐI PHẦN CỨNG & IMPORT/EXPORT
-// ============================================================================
 function parseAutoEQTxt(text) {
   const lines = text.split('\n');
   const parsedBands = [];
@@ -1029,7 +1469,7 @@ document.getElementById('btnConnect').addEventListener('click', async () => {
       document.getElementById('deviceName').textContent = info.productName;
       document.getElementById('deviceSubInfo').textContent = `Đã kết nối phần cứng (VID: 0x${info.vendorId.toString(16)} | PID: 0x${info.productId.toString(16)})`;
       document.getElementById('statusDot').className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]';
-      document.getElementById('deviceVisualWrap').classList.add('device-connected-glow', 'border-cyan-500/50');
+      document.getElementById('deviceVisualWrap').classList.add('device-connected-glow', 'border-accent');
       document.getElementById('connectBtnLabel').textContent = 'Đã kết nối';
       btnPullHardware.disabled = false;
     }
@@ -1042,7 +1482,7 @@ document.getElementById('btnConnect').addEventListener('click', async () => {
 bunnyController.onDisconnectCallback = () => {
   document.getElementById('deviceName').textContent = 'Đã ngắt kết nối';
   document.getElementById('statusDot').className = 'w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse';
-  document.getElementById('deviceVisualWrap').classList.remove('device-connected-glow', 'border-cyan-500/50');
+  document.getElementById('deviceVisualWrap').classList.remove('device-connected-glow', 'border-accent');
   document.getElementById('connectBtnLabel').textContent = 'Kết nối';
   btnPullHardware.disabled = true;
 };
@@ -1095,6 +1535,7 @@ document.getElementById('btnMobileSave').addEventListener('click', handleManualS
 document.getElementById('btnClearLog').addEventListener('click', () => (hidLogBox.innerHTML = ''));
 
 window.addEventListener('resize', renderGraph);
+loadAppearance();
 detectPlatformCompatibility();
 renderPresetDropdown('current');
 renderBandCards();

@@ -7,91 +7,186 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="./manifest.json" />
-  <title>TANCHJIM BUNNY STUDIO | Hardware PEQ</title>
+  <title>TANCHJIM BUNNY STUDIO | Pro Hardware DSP</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --accent: #22d3ee;
+      --accent-dark: #06b6d4;
+      --accent-glow: rgba(34, 211, 238, 0.35);
+      --accent-soft: rgba(34, 211, 238, 0.14);
+      --bg-dim: 0.82;
+      --bg-blur: 14px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      background-color: #06080c;
+    }
+
     .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace; }
+
+    /* Custom Dynamic Accent Utilities */
+    .text-accent { color: var(--accent) !important; }
+    .bg-accent { background-color: var(--accent) !important; }
+    .bg-accent-soft { background-color: var(--accent-soft) !important; }
+    .border-accent { border-color: var(--accent) !important; }
+    .shadow-accent { box-shadow: 0 0 20px var(--accent-glow) !important; }
+
+    /* Glassmorphism Panels */
+    .glass-panel {
+      background: rgba(12, 16, 24, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-subpanel {
+      background: rgba(7, 10, 16, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent);
+    }
+
     ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: #090b0f; }
-    ::-webkit-scrollbar-thumb { background: #1e2430; border-radius: 99px; }
-    input[type="number"]::-webkit-inner-spin-button { opacity: 0.3; }
-    input[type="range"] { accent-color: #06b6d4; }
+    ::-webkit-scrollbar-track { background: rgba(9, 11, 15, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 99px; }
     canvas { touch-action: none; }
+
     @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.35)); }
-      50% { filter: drop-shadow(0 0 22px rgba(34, 211, 238, 0.65)); }
+      0%, 100% { filter: drop-shadow(0 0 10px var(--accent-glow)); }
+      50% { filter: drop-shadow(0 0 22px var(--accent)); }
     }
     .device-connected-glow { animation: pulseGlow 3s infinite ease-in-out; }
   </style>
 </head>
-<body class="bg-[#07090d] text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen flex flex-col pb-20 sm:pb-8">
+<body class="text-slate-200 antialiased selection:bg-cyan-500/30 min-h-screen flex flex-col pb-20 sm:pb-10 relative overflow-x-hidden">
+
+  <!-- DYNAMIC WALLPAPER LAYER -->
+  <div id="customBgImage" class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-500 pointer-events-none"
+       style="background-image: radial-gradient(circle at 15% 15%, rgba(14, 116, 144, 0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.18), transparent 50%);">
+  </div>
+  <div id="customBgOverlay" class="fixed inset-0 z-0 pointer-events-none transition-all duration-300"
+       style="background: rgba(6, 8, 13, 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+  </div>
 
   <!-- TOP HEADER -->
-  <header class="border-b border-slate-800/70 bg-[#0d1017]/90 backdrop-blur-xl sticky top-0 z-30">
+  <header class="border-b border-white/10 bg-[#0a0d14]/80 backdrop-blur-2xl sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2.5 sm:gap-3">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 flex items-center justify-center font-bold text-slate-950 text-xs sm:text-sm tracking-tighter shadow-lg shadow-cyan-500/25">
+      <!-- Brand -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-accent flex items-center justify-center font-bold text-slate-950 text-sm tracking-tighter shadow-accent">
           TJ
         </div>
         <div>
-          <h1 class="font-bold text-sm sm:text-base tracking-wide text-white leading-tight">TANCHJIM <span class="text-cyan-400 font-medium">BUNNY</span></h1>
-          <p class="text-[10px] sm:text-[11px] text-slate-400">8-Band DSP Studio</p>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-sm sm:text-base tracking-wide text-white leading-tight">
+              TANCHJIM <span class="text-accent font-semibold">BUNNY STUDIO</span>
+            </h1>
+            <span class="hidden md:inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-accent-soft text-accent border border-white/10">
+              PRO DSP 2.0
+            </span>
+          </div>
+          <p class="text-[10px] sm:text-[11px] text-slate-400">8-Band Hardware Parametric EQ & Acoustic Lab</p>
         </div>
       </div>
 
+      <!-- Right Controls -->
       <div class="flex items-center gap-2">
+        <!-- Nút mở bảng tùy chỉnh Giao diện / Ảnh nền -->
+        <button id="btnToggleThemeDrawer" class="bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-[11px] sm:text-xs font-medium px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5" title="Đổi ảnh nền & màu sắc giao diện">
+          <svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span class="hidden sm:inline">Giao diện</span>
+        </button>
+
         <!-- Nút so sánh A/B (Bypass EQ) -->
-        <button id="btnBypassToggle" class="bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/30 text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5">
-          <span id="bypassDot" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        <button id="btnBypassToggle" class="bg-white/5 hover:bg-white/10 text-accent border border-white/15 text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5" title="Phím tắt: Space">
+          <span id="bypassDot" class="w-2 h-2 rounded-full bg-accent"></span>
           <span id="bypassText">EQ: ON</span>
         </button>
 
         <!-- Nút kết nối -->
-        <button id="btnConnect" class="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 text-slate-950 font-bold text-[11px] sm:text-xs px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center gap-1.5 cursor-pointer">
+        <button id="btnConnect" class="bg-accent hover:opacity-90 text-slate-950 font-bold text-[11px] sm:text-xs px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition shadow-accent flex items-center gap-1.5 cursor-pointer">
           <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           <span id="connectBtnLabel">Kết nối</span>
         </button>
       </div>
     </div>
+
+    <!-- COLLAPSIBLE APPEARANCE & WALLPAPER STUDIO BAR -->
+    <div id="themeDrawer" class="hidden border-t border-white/10 bg-[#090c12]/95 backdrop-blur-2xl">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Upload & Reset Wallpaper -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <input type="file" id="bgFileInput" accept="image/*" class="hidden" />
+          <button id="btnUploadBg" class="bg-accent-soft hover:bg-white/10 text-accent border border-white/15 text-xs font-semibold px-3 py-1.5 rounded-xl transition cursor-pointer flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+            <span>Up ảnh nền</span>
+          </button>
+          <button id="btnResetBg" class="bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 text-xs px-2.5 py-1.5 rounded-xl transition cursor-pointer">
+            Mặc định
+          </button>
+
+          <!-- Sliders chỉnh độ mờ & độ tối ảnh nền -->
+          <div class="flex items-center gap-3 bg-black/30 px-3 py-1.5 rounded-xl border border-white/5 text-[11px] text-slate-400">
+            <label class="flex items-center gap-1.5">
+              <span>Tối nền:</span>
+              <input type="range" id="bgDimSlider" min="20" max="95" value="78" class="w-16 sm:w-20 h-1 bg-slate-700 rounded cursor-pointer" />
+            </label>
+            <label class="flex items-center gap-1.5">
+              <span>Làm mờ:</span>
+              <input type="range" id="bgBlurSlider" min="0" max="30" value="12" class="w-16 sm:w-20 h-1 bg-slate-700 rounded cursor-pointer" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Bảng chọn 5 Theme màu Audiophile -->
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 mr-1">Màu chủ đạo:</span>
+          <button data-theme="cyan" class="theme-swatch w-6 h-6 rounded-full bg-[#22d3ee] ring-2 ring-white cursor-pointer transition transform hover:scale-110" title="Cyan Studio"></button>
+          <button data-theme="magenta" class="theme-swatch w-6 h-6 rounded-full bg-[#f43f5e] opacity-75 hover:opacity-100 cursor-pointer transition transform hover:scale-110" title="Crimson / Neon Rose"></button>
+          <button data-theme="amber" class="theme-swatch w-6 h-6 rounded-full bg-[#f59e0b] opacity-75 hover:opacity-100 cursor-pointer transition transform hover:scale-110" title="Warm Tube Amp (Vàng hổ phách)"></button>
+          <button data-theme="emerald" class="theme-swatch w-6 h-6 rounded-full bg-[#10b981] opacity-75 hover:opacity-100 cursor-pointer transition transform hover:scale-110" title="Emerald Matrix"></button>
+          <button data-theme="violet" class="theme-swatch w-6 h-6 rounded-full bg-[#a855f7] opacity-75 hover:opacity-100 cursor-pointer transition transform hover:scale-110" title="Cyberpunk Violet"></button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col gap-4 sm:gap-5">
+  <!-- MAIN WORKSPACE -->
+  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col gap-4 sm:gap-5">
 
-    <!-- HARDWARE DEVICE SHOWCASE & AUDIO TESTER ROW -->
+    <!-- HARDWARE CARD & ACOUSTIC SIGNAL LAB -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
       
-      <!-- Card 1: Hình minh họa thiết bị kết nối & Thông số phần cứng -->
-      <div class="lg:col-span-7 bg-gradient-to-br from-[#0f141e] to-[#0a0d14] p-4 sm:p-5 rounded-2xl border border-slate-800/80 shadow-lg flex items-center gap-4 sm:gap-5 relative overflow-hidden">
-        <!-- SVG Minh họa tai nghe Tanchjim Bunny + USB-C DSP -->
-        <div id="deviceVisualWrap" class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-2xl bg-[#07090d] border border-slate-800/90 flex items-center justify-center relative">
+      <!-- Card 1: Hardware Visualizer -->
+      <div class="lg:col-span-7 glass-panel p-4 sm:p-5 rounded-2xl shadow-xl flex items-center gap-4 sm:gap-5 relative overflow-hidden">
+        <div id="deviceVisualWrap" class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-2xl glass-subpanel flex items-center justify-center relative">
           <svg viewBox="0 0 120 120" class="w-20 h-20 sm:w-24 sm:h-24 transition-all duration-500">
-            <!-- Dây cáp -->
-            <path d="M 35 78 C 20 95, 55 112, 75 96 C 90 84, 88 65, 95 48" fill="none" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
-            <!-- Đầu giắc USB-C DSP -->
-            <rect x="87" y="24" width="16" height="26" rx="4" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
-            <rect x="91" y="15" width="8" height="9" rx="1.5" fill="#94a3b8"/>
-            <circle cx="95" cy="37" r="2.5" fill="#22d3ee"/>
-            <!-- Housing IEM Tanchjim Bunny (Vỏ trong suốt ánh bạc) -->
-            <path d="M 28 42 C 28 26, 56 24, 62 40 C 67 54, 56 76, 40 76 C 27 76, 23 58, 28 42 Z" fill="url(#iemGrad)" stroke="#cbd5e1" stroke-width="1.8"/>
-            <!-- Faceplate kim loại chữ TJ -->
-            <path d="M 34 44 C 34 33, 52 32, 56 43 C 59 52, 51 67, 41 67 C 33 67, 30 55, 34 44 Z" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
-            <text x="44" y="54" font-size="10" font-family="sans-serif" font-weight="bold" fill="#38bdf8" text-anchor="middle">BUNNY</text>
-            <!-- Ống nozzle & Eartip -->
+            <path d="M 35 78 C 20 95, 55 112, 75 96 C 90 84, 88 65, 95 48" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round"/>
+            <rect x="87" y="24" width="16" height="26" rx="4" fill="#1e293b" stroke="var(--accent)" stroke-width="1.6"/>
+            <rect x="91" y="15" width="8" height="9" rx="1.5" fill="#cbd5e1"/>
+            <circle cx="95" cy="37" r="2.8" fill="var(--accent)"/>
+            <path d="M 28 42 C 28 26, 56 24, 62 40 C 67 54, 56 76, 40 76 C 27 76, 23 58, 28 42 Z" fill="url(#iemGrad)" stroke="#e2e8f0" stroke-width="1.8"/>
+            <path d="M 34 44 C 34 33, 52 32, 56 43 C 59 52, 51 67, 41 67 C 33 67, 30 55, 34 44 Z" fill="#0f172a" stroke="var(--accent)" stroke-width="1.3"/>
+            <text x="44" y="54" font-size="10" font-family="sans-serif" font-weight="bold" fill="var(--accent)" text-anchor="middle">BUNNY</text>
             <path d="M 60 44 L 72 39 L 75 47 L 62 52 Z" fill="#64748b"/>
-            <ellipse cx="74" cy="43" rx="4.5" ry="8" transform="rotate(-20 74 43)" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+            <ellipse cx="74" cy="43" rx="4.5" ry="8" transform="rotate(-20 74 43)" fill="#1e293b" stroke="#64748b" stroke-width="1.2"/>
             <defs>
               <linearGradient id="iemGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#334155" stop-opacity="0.9"/>
+                <stop offset="0%" stop-color="#475569" stop-opacity="0.9"/>
                 <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95"/>
               </linearGradient>
             </defs>
           </svg>
         </div>
 
-        <!-- Thông tin trạng thái thiết bị -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2 mb-1">
             <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse shrink-0"></span>
@@ -99,76 +194,78 @@
           </div>
           <p id="deviceSubInfo" class="text-xs text-slate-400 mb-3 truncate">Cắm cáp USB-C DSP và bấm "Kết nối" để đồng bộ phần cứng</p>
 
-          <!-- Badges thông số kỹ thuật -->
           <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] font-mono">
-            <span class="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-slate-300">DAC: 48kHz/24-bit</span>
-            <span id="headroomBadge" class="bg-emerald-950/50 border border-emerald-800/50 px-2.5 py-1 rounded-lg text-emerald-300">Headroom: An toàn (0.0 dB)</span>
-            <button id="btnPullHardware" disabled class="bg-slate-800/90 hover:bg-slate-700 disabled:opacity-35 text-cyan-300 px-2.5 py-1 rounded-lg transition cursor-pointer">
-              ↻ Đọc từ chip
+            <span class="glass-subpanel px-2.5 py-1 rounded-lg text-slate-300">48kHz/24-bit</span>
+            <span id="headroomBadge" class="bg-emerald-950/60 border border-emerald-700/50 px-2.5 py-1 rounded-lg text-emerald-300">Headroom: Tốt (+0.0 dB)</span>
+            <button id="btnAutoLevel" class="bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 px-2.5 py-1 rounded-lg transition cursor-pointer" title="Tự động cân bằng Gain nếu bị quá ngưỡng đỉnh">
+              ⚖ Auto-Level
+            </button>
+            <button id="btnPullHardware" disabled class="bg-white/5 hover:bg-white/10 disabled:opacity-35 text-accent border border-white/10 px-2.5 py-1 rounded-lg transition cursor-pointer">
+              ↻ Đọc chip
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Bộ phát âm thanh kiểm tra EQ (Audio Signal Generator) -->
-      <div class="lg:col-span-5 bg-[#0e121a] p-4 sm:p-5 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col justify-between">
+      <!-- Card 2: Acoustic Test Signal Generator -->
+      <div class="lg:col-span-5 glass-panel p-4 sm:p-5 rounded-2xl shadow-xl flex flex-col justify-between">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-            Kiểm tra âm thanh trực tiếp
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+            Phòng thử âm (Acoustic Test)
           </span>
-          <span id="toneStatus" class="text-[11px] font-mono text-slate-500">Tắt</span>
+          <span id="toneStatus" class="text-[11px] font-mono text-slate-400">Sẵn sàng</span>
         </div>
-        <p class="text-[11px] text-slate-400 mb-3">Phát tín hiệu chuẩn để nghe thử độ cân bằng dải tần sau khi chỉnh EQ:</p>
+        <p class="text-[11px] text-slate-400 mb-3">Phát tín hiệu chuẩn kèm phổ tần số trực tiếp trên biểu đồ:</p>
         <div class="grid grid-cols-3 gap-2">
-          <button id="btnTestPink" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+          <button id="btnTestPink" class="glass-subpanel hover:bg-white/10 text-xs font-medium py-2.5 px-2 rounded-xl text-slate-200 transition cursor-pointer">
             Pink Noise
           </button>
-          <button id="btnTestSweep" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+          <button id="btnTestSweep" class="glass-subpanel hover:bg-white/10 text-xs font-medium py-2.5 px-2 rounded-xl text-slate-200 transition cursor-pointer">
             Sweep 20-20k
           </button>
-          <button id="btnTestBass" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-medium py-2 px-2 rounded-xl text-slate-200 transition cursor-pointer">
+          <button id="btnTestBass" class="glass-subpanel hover:bg-white/10 text-xs font-medium py-2.5 px-2 rounded-xl text-slate-200 transition cursor-pointer">
             Sub-Bass 50Hz
           </button>
         </div>
       </div>
     </section>
 
-    <!-- PROFILE & ACTION TOOLBAR -->
-    <section class="bg-[#0e121a] p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+    <!-- PROFILE & PRESET BAR -->
+    <section class="glass-panel p-3.5 sm:p-4 rounded-2xl shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
       <div class="flex flex-wrap items-center gap-2">
-        <div class="flex-1 sm:flex-initial flex items-center gap-2 bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2">
+        <div class="flex-1 sm:flex-initial flex items-center gap-2 glass-subpanel rounded-xl px-3 py-2">
           <span class="text-[11px] font-semibold uppercase text-slate-400">Profile:</span>
           <select id="presetSelect" class="w-full sm:w-auto bg-transparent text-xs sm:text-sm font-medium text-white focus:outline-none cursor-pointer"></select>
         </div>
 
-        <button id="btnSaveCustomPreset" class="bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+        <button id="btnSaveCustomPreset" class="bg-accent-soft hover:bg-white/10 text-accent border border-white/15 text-xs font-semibold px-3 py-2 rounded-xl transition cursor-pointer">
           + Lưu Profile
         </button>
 
-        <button id="btnDeleteCustomPreset" class="hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-medium px-2.5 py-2 rounded-xl transition cursor-pointer" title="Xóa profile">
+        <button id="btnDeleteCustomPreset" class="hidden bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-medium px-2.5 py-2 rounded-xl transition cursor-pointer">
           Xóa
         </button>
 
-        <button id="btnShareProfile" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer" title="Copy link chia sẻ sang điện thoại">
+        <button id="btnShareProfile" class="glass-subpanel hover:bg-white/10 text-slate-200 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
           Chia sẻ Link
         </button>
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-2 rounded-xl cursor-pointer select-none">
-          <input type="checkbox" id="chkAutoWrite" checked class="w-3.5 h-3.5 accent-emerald-500 rounded" />
+        <label class="flex items-center gap-1.5 glass-subpanel px-3 py-2 rounded-xl cursor-pointer select-none">
+          <input type="checkbox" id="chkAutoWrite" checked class="w-3.5 h-3.5 rounded" />
           <span class="text-xs font-medium text-emerald-400">Live Sync</span>
         </label>
 
         <input type="file" id="fileImport" accept=".txt" class="hidden" />
-        <button id="btnImport" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+        <button id="btnImport" class="glass-subpanel hover:bg-white/10 text-slate-200 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
           Import
         </button>
-        <button id="btnExport" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+        <button id="btnExport" class="glass-subpanel hover:bg-white/10 text-slate-200 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
           Export
         </button>
-        <button id="btnReset" class="bg-slate-900 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 border border-slate-700/80 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
+        <button id="btnReset" class="glass-subpanel hover:bg-rose-950/50 text-slate-300 hover:text-rose-300 text-xs font-medium px-3 py-2 rounded-xl transition cursor-pointer">
           Flat
         </button>
         <button id="btnSyncHardware" class="hidden sm:inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
@@ -177,39 +274,45 @@
       </div>
     </section>
 
-    <!-- INTERACTIVE FREQUENCY RESPONSE GRAPH -->
-    <section class="bg-[#0e121a] p-3.5 sm:p-5 rounded-2xl border border-slate-800/80 shadow-xl relative">
-      <div class="flex items-center justify-between gap-2 mb-2.5 px-1">
-        <span class="text-xs font-medium text-slate-300">Đáp tuyến tần số (20Hz – 20kHz)</span>
-        <span id="hoverReadout" class="text-[11px] sm:text-xs font-mono text-cyan-400 bg-cyan-950/40 px-2.5 py-1 rounded-lg border border-cyan-800/40">
-          Chạm & kéo node để chỉnh
+    <!-- SCIENTIFIC FREQUENCY RESPONSE GRAPH -->
+    <section class="glass-panel p-3.5 sm:p-5 rounded-2xl shadow-2xl relative">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 px-1">
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-semibold text-slate-200">Đáp tuyến tần số (20Hz – 20kHz)</span>
+          <label class="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer select-none">
+            <input type="checkbox" id="chkShowAllCurves" checked class="w-3.5 h-3.5 rounded" />
+            <span>Hiện đường cong từng Band</span>
+          </label>
+        </div>
+        <span id="hoverReadout" class="text-[11px] sm:text-xs font-mono text-accent glass-subpanel px-2.5 py-1 rounded-lg">
+          Kéo node hoặc dùng phím mũi tên ↑ ↓ ← →
         </span>
       </div>
-      <div class="w-full h-[250px] sm:h-[310px] relative rounded-xl overflow-hidden bg-[#080a0f] border border-slate-800/90 shadow-inner">
+      <div class="w-full h-[270px] sm:h-[330px] relative rounded-xl overflow-hidden bg-[#06080d]/90 border border-white/10 shadow-inner">
         <canvas id="eqCanvas" class="w-full h-full block cursor-crosshair"></canvas>
       </div>
     </section>
 
-    <!-- RESPONSIVE 8-BAND CONTROLS (Tự động hiển thị dạng Card trên Mobile & Bảng trên Desktop) -->
-    <section id="bandsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-      <!-- Render động 8 Card điều khiển tối ưu cho cả chuột và ngón tay -->
+    <!-- 8-BAND STUDIO CONTROL CARDS -->
+    <section id="bandsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+      <!-- Render động 8 Band Card -->
     </section>
 
     <!-- COMPACT HARDWARE LOG -->
-    <section class="bg-[#0b0e14] rounded-2xl border border-slate-800/70 p-3.5">
+    <section class="glass-panel rounded-2xl p-3.5">
       <div class="flex items-center justify-between mb-2">
         <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Nhật ký phần cứng (WebHID)</span>
-        <button id="btnClearLog" class="text-[11px] text-slate-500 hover:text-slate-300 cursor-pointer">Xóa</button>
+        <button id="btnClearLog" class="text-[11px] text-slate-400 hover:text-white cursor-pointer">Xóa</button>
       </div>
-      <div id="hidLogBox" class="font-mono text-[11px] text-slate-400 h-20 overflow-y-auto space-y-1 bg-[#07090d] p-2.5 rounded-xl border border-slate-800/60">
-        <div>[SYSTEM] Sẵn sàng hoạt động trên macOS & Mobile.</div>
+      <div id="hidLogBox" class="font-mono text-[11px] text-slate-300 h-20 overflow-y-auto space-y-1 glass-subpanel p-2.5 rounded-xl">
+        <div>[SYSTEM] TANCHJIM BUNNY STUDIO PRO 2.0 đã sẵn sàng.</div>
       </div>
     </section>
 
   </main>
 
-  <!-- MOBILE FLOATING ACTION BAR (Chỉ hiện trên màn hình điện thoại) -->
-  <div class="sm:hidden fixed bottom-0 inset-x-0 bg-[#0d1017]/95 backdrop-blur-xl border-t border-slate-800 p-3 z-40 flex items-center gap-2">
+  <!-- MOBILE FLOATING SAVE BAR -->
+  <div class="sm:hidden fixed bottom-0 inset-x-0 bg-[#0a0d14]/95 backdrop-blur-xl border-t border-white/10 p-3 z-40 flex items-center gap-2">
     <button id="btnMobileSave" class="flex-1 bg-emerald-500 active:bg-emerald-400 text-slate-950 font-bold text-xs py-2.5 rounded-xl shadow-lg shadow-emerald-500/20">
       Lưu EQ vào tai nghe Bunny
     </button>
